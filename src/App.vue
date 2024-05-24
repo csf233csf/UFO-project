@@ -1,46 +1,74 @@
 <template>
-    <div class="App" @touchstart="handleTouchStart" @touchmove="handleTouchMove">
-        <h1>这里是主APP界面</h1>
+    <div id="app">
+      <nav>
+        <router-link to="/page1">Page 1</router-link>
+        <router-link to="/page2">Page 2</router-link>
+        <router-link to="/page3">Page 3</router-link>
+      </nav>
+      <transition name="fade" mode="out-in">
+        <router-view :key="$route.fullPath"></router-view>
+      </transition>
     </div>
-    <RouterLink to="/page1">page1</RouterLink>
-    <RouterLink to="/page2">page2</RouterLink>
-    <RouterLink to="/page3">page3</RouterLink>
-    
-    <RouterView/>
-    
-</template>
-<script>
-import { useRouter } from 'vue-router'
-
-export default {
-  setup() {
-    const router = useRouter()
-    let startX = 0
-
-    const handleTouchStart = (e) => {
-      startX = e.touches[0].clientX
+  </template>
+  
+  <script lang="ts" setup>
+  import { onMounted, onBeforeUnmount, ref } from 'vue';
+  import { useRouter, useRoute } from 'vue-router';
+  
+  const router = useRouter();
+  const route = useRoute();
+  const lastScrollLeft = ref(0);
+  
+  const handleScroll = (event: WheelEvent) => {
+    const currentScrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    if (event.deltaX > 0) {
+      navigateNext();
+    } else if (event.deltaX < 0) {
+      navigatePrev();
     }
-
-    const handleTouchMove = (e) => {
-      const moveX = e.touches[0].clientX
-      const diffX = moveX - startX
-
-      if (diffX < -50) { // Swipe left
-        router.push('/page1');
-        console.log("page1"); // Replace with your desired route
-      } else if (diffX > 50) { // Swipe right
-        router.push('/page2') // Replace with your desired route
-      }
+    lastScrollLeft.value = currentScrollLeft <= 0 ? 0 : currentScrollLeft;
+  };
+  
+  const navigateNext = () => {
+    const routes = router.getRoutes();
+    const currentIndex = routes.findIndex(r => r.path === route.path);
+    if (currentIndex < routes.length - 1) {
+      router.push(routes[currentIndex + 1].path);
     }
-
-    return {
-      handleTouchStart,
-      handleTouchMove
+  };
+  
+  const navigatePrev = () => {
+    const routes = router.getRoutes();
+    const currentIndex = routes.findIndex(r => r.path === route.path);
+    if (currentIndex > 0) {
+      router.push(routes[currentIndex - 1].path);
     }
+  };
+  
+  onMounted(() => {
+    window.addEventListener('wheel', handleScroll);
+  });
+  
+  onBeforeUnmount(() => {
+    window.removeEventListener('wheel', handleScroll);
+  });
+  </script>
+  
+  <style>
+  nav {
+    padding: 1em;
   }
-}
-</script>
-
-<style>
-/* Add your styles here */
-</style>
+  nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #42b983;
+  }
+  
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+  }
+  </style>
+  
