@@ -5,10 +5,9 @@
     <RouterLink to="/page1">page1</RouterLink>
     <RouterLink to="/page2">page2</RouterLink>
     <RouterLink to="/page3">page3</RouterLink>
-    <h2>切换</h2>
-    <div>
+    
         <RouterView/>
-    </div>
+    
 </template>
 
 <script lang="ts" setup>

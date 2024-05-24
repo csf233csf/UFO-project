@@ -1,4 +1,16 @@
 <template>
-
-    <h1>你好page2</h1>
+    <section class="background-section">
+    </section>
 </template>
+
+
+
+<style scoped>
+.background-section {
+    width: 100%;
+    height: 100vh;
+    background-image: url('/images/Slide 16_9 - 13.svg');
+    background-size: cover;
+    background-position: center;
+}
+</style>
