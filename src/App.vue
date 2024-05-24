@@ -7,13 +7,12 @@
       </nav>
       <router-view v-slot="{ Component }">
         <transition
-          name="slide"
           mode="out-in"
           @before-enter="beforeEnter"
           @enter="enter"
           @leave="leave"
         >
-          <component :is="Component" />
+          <component :is="Component" :key="$route.fullPath" />
         </transition>
       </router-view>
     </div>
@@ -26,39 +25,45 @@
   
   const router = useRouter();
   const route = useRoute();
-  const scrollDirection = ref(0);
+  const isTransitioning = ref(false);
+  const slideDirection = ref(''); // 'left' or 'right'
   
   const handleScroll = (event: WheelEvent) => {
-    if (event.deltaX > 50) { // Threshold to avoid small scrolls
-      scrollDirection.value = 1; // Right
-      navigateNext();
-    } else if (event.deltaX < -50) { // Threshold to avoid small scrolls
-      scrollDirection.value = -1; // Left
-      navigatePrev();
+    if (!isTransitioning.value) {
+      if (event.deltaX > 50) {
+        slideDirection.value = 'right';
+        console.log("left");
+        navigateNext();
+      } else if (event.deltaX < -50) {
+        console.log("right");
+        slideDirection.value = 'left';
+        navigatePrev();
+      }
     }
   };
   
   const navigateNext = () => {
-    const routes = router.getRoutes().map(route => route.path);
-    const currentIndex = routes.indexOf(route.path);
+    const routes = router.getRoutes();
+    const currentIndex = routes.findIndex(r => r.path === route.path);
     if (currentIndex < routes.length - 1) {
-      router.push(routes[currentIndex + 1]);
+      isTransitioning.value = true;
+      router.push(routes[currentIndex + 1].path);
     }
   };
   
   const navigatePrev = () => {
-    const routes = router.getRoutes().map(route => route.path);
-    const currentIndex = routes.indexOf(route.path);
+    const routes = router.getRoutes();
+    const currentIndex = routes.findIndex(r => r.path === route.path);
     if (currentIndex > 0) {
-      router.push(routes[currentIndex - 1]);
+      isTransitioning.value = true;
+      router.push(routes[currentIndex - 1].path);
     }
   };
   
   const beforeEnter = (el: Element) => {
-    const direction = scrollDirection.value;
     gsap.set(el, {
       opacity: 0,
-      x: direction === 1 ? 100 : -100,
+      x: slideDirection.value === 'right' ? 100 : -100,
     });
   };
   
@@ -67,16 +72,20 @@
       opacity: 1,
       x: 0,
       duration: 1,
-      onComplete: done,
+      ease: 'power2.out',
+      onComplete: () => {
+        done();
+        isTransitioning.value = false;
+      },
     });
   };
   
   const leave = (el: Element, done: () => void) => {
-    const direction = scrollDirection.value;
     gsap.to(el, {
       opacity: 0,
-      x: direction === 1 ? -100 : 100,
+      x: slideDirection.value === 'right' ? -100 : 100,
       duration: 1,
+      ease: 'power2.in',
       onComplete: done,
     });
   };
@@ -98,13 +107,6 @@
     margin: 0 10px;
     text-decoration: none;
     color: #42b983;
-  }
-  
-  .slide-enter-active, .slide-leave-active {
-    transition: opacity 0.5s, transform 0.5s;
-  }
-  .slide-enter, .slide-leave-to {
-    opacity: 0;
   }
   </style>
   
