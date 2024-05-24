@@ -5,7 +5,7 @@
         <router-link to="/page2">Page 2</router-link>
         <router-link to="/page3">Page 3</router-link>
       </nav>
-      <transition name="fade" mode="out-in">
+      <transition>
         <router-view :key="$route.fullPath"></router-view>
       </transition>
     </div>
