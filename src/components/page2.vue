@@ -1,5 +1,6 @@
 <template>
     <section class="background-section">
+        <p>This is the content of Page 2.</p>
     </section>
 </template>
 
@@ -9,7 +10,8 @@
 .background-section {
     width: 100%;
     height: 100vh;
-    background-image: url('/images/Slide 16_9 - 13.svg');
+    /* background-image: url('/images/Slide 16_9 - 13.svg'); */
+    background-color: transparent;
     background-size: cover;
     background-position: center;
 }
