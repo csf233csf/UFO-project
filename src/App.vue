@@ -5,28 +5,34 @@
         <router-link to="/page2">Page 2</router-link>
         <router-link to="/page3">Page 3</router-link>
       </nav>
-      <transition>
-        <router-view :key="$route.fullPath"></router-view>
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition
+          name="fade"
+          mode="out-in"
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @leave="leave"
+        >
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </template>
   
   <script lang="ts" setup>
-  import { onMounted, onBeforeUnmount, ref } from 'vue';
+  import { onMounted, onBeforeUnmount } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
+  import { gsap } from 'gsap';
   
   const router = useRouter();
   const route = useRoute();
-  const lastScrollLeft = ref(0);
   
   const handleScroll = (event: WheelEvent) => {
-    const currentScrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
     if (event.deltaX > 0) {
       navigateNext();
     } else if (event.deltaX < 0) {
       navigatePrev();
     }
-    lastScrollLeft.value = currentScrollLeft <= 0 ? 0 : currentScrollLeft;
   };
   
   const navigateNext = () => {
@@ -43,6 +49,31 @@
     if (currentIndex > 0) {
       router.push(routes[currentIndex - 1].path);
     }
+  };
+  
+  const beforeEnter = (el: Element) => {
+    gsap.set(el, {
+      opacity: 0,
+      x: 100,
+    });
+  };
+  
+  const enter = (el: Element, done: () => void) => {
+    gsap.to(el, {
+      opacity: 1,
+      x: 0,
+      duration: 1,
+      onComplete: done,
+    });
+  };
+  
+  const leave = (el: Element, done: () => void) => {
+    gsap.to(el, {
+      opacity: 0,
+      x: -100,
+      duration: 1,
+      onComplete: done,
+    });
   };
   
   onMounted(() => {
@@ -67,7 +98,7 @@
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.5s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  .fade-enter, .fade-leave-to {
     opacity: 0;
   }
   </style>
