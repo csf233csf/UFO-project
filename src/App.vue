@@ -7,7 +7,7 @@
       </nav>
       <router-view v-slot="{ Component }">
         <transition
-          name="fade"
+          name="slide"
           mode="out-in"
           @before-enter="beforeEnter"
           @enter="enter"
@@ -20,17 +20,20 @@
   </template>
   
   <script lang="ts" setup>
-  import { onMounted, onBeforeUnmount } from 'vue';
+  import { onMounted, onBeforeUnmount, ref } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import { gsap } from 'gsap';
   
   const router = useRouter();
   const route = useRoute();
+  const scrollDirection = ref(0);
   
   const handleScroll = (event: WheelEvent) => {
     if (event.deltaX > 50) { // Threshold to avoid small scrolls
+      scrollDirection.value = 1; // Right
       navigateNext();
     } else if (event.deltaX < -50) { // Threshold to avoid small scrolls
+      scrollDirection.value = -1; // Left
       navigatePrev();
     }
   };
@@ -52,9 +55,10 @@
   };
   
   const beforeEnter = (el: Element) => {
+    const direction = scrollDirection.value;
     gsap.set(el, {
       opacity: 0,
-      x: 100,
+      x: direction === 1 ? 100 : -100,
     });
   };
   
@@ -68,9 +72,10 @@
   };
   
   const leave = (el: Element, done: () => void) => {
+    const direction = scrollDirection.value;
     gsap.to(el, {
       opacity: 0,
-      x: -100,
+      x: direction === 1 ? -100 : 100,
       duration: 1,
       onComplete: done,
     });
@@ -95,10 +100,10 @@
     color: #42b983;
   }
   
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
+  .slide-enter-active, .slide-leave-active {
+    transition: opacity 0.5s, transform 0.5s;
   }
-  .fade-enter, .fade-leave-to {
+  .slide-enter, .slide-leave-to {
     opacity: 0;
   }
   </style>
