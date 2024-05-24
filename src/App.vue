@@ -3,7 +3,9 @@
         <h1>这里是主APP界面</h1>
     </div>
     <RouterLink to="/page1">page1</RouterLink>
-    <h2>这是</h2>
+    <RouterLink to="/page2">page2</RouterLink>
+    <RouterLink to="/page3">page3</RouterLink>
+    <h2>切换</h2>
     <div>
         <RouterView/>
     </div>
