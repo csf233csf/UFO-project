@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/page3',
         name: 'page3',
         component: page3
-    }
+    },
 ]
 
 const router = createRouter({

@@ -28,26 +28,26 @@
   const route = useRoute();
   
   const handleScroll = (event: WheelEvent) => {
-    if (event.deltaX > 0) {
+    if (event.deltaX > 50) { // Threshold to avoid small scrolls
       navigateNext();
-    } else if (event.deltaX < 0) {
+    } else if (event.deltaX < -50) { // Threshold to avoid small scrolls
       navigatePrev();
     }
   };
   
   const navigateNext = () => {
-    const routes = router.getRoutes();
-    const currentIndex = routes.findIndex(r => r.path === route.path);
+    const routes = router.getRoutes().map(route => route.path);
+    const currentIndex = routes.indexOf(route.path);
     if (currentIndex < routes.length - 1) {
-      router.push(routes[currentIndex + 1].path);
+      router.push(routes[currentIndex + 1]);
     }
   };
   
   const navigatePrev = () => {
-    const routes = router.getRoutes();
-    const currentIndex = routes.findIndex(r => r.path === route.path);
+    const routes = router.getRoutes().map(route => route.path);
+    const currentIndex = routes.indexOf(route.path);
     if (currentIndex > 0) {
-      router.push(routes[currentIndex - 1].path);
+      router.push(routes[currentIndex - 1]);
     }
   };
   
