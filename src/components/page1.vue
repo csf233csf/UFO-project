@@ -1,6 +1,5 @@
 <template>
     <section class="background-section">
-        <p>This is the content of Page 1.</p>
     </section>
 </template>
 

@@ -1,106 +1,124 @@
+
+<script lang="ts" setup>
+import { onMounted, ref, nextTick, computed } from 'vue';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
+import throttle from 'lodash/throttle';
+import page1 from '@/components/page1.vue'
+import page2 from '@/components/page2.vue'
+import page3 from '@/components/page3.vue'
+import {useRoute} from 'vue-router'
+import Page4 from './components/page4.vue';
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+const sections = ref(null);
+const currentIndex = ref(0);
+const route = useRoute();
+
+const showSections = computed(() => route.path !== '/page4');
+
+
+onMounted(async () => {
+  await nextTick();
+
+  if (sections.value) {
+    const panels = sections.value.children;
+    const totalSections = panels.length;
+
+    gsap.to(panels, {
+      xPercent: -100 * (totalSections - 1),
+      ease: "none",
+      scrollTrigger: {
+        trigger: sections.value,
+        pin: true,
+        scrub: 1,
+        snap: 1 / (totalSections - 1),
+        end: "+=" + sections.value.offsetWidth
+      }
+    });
+
+    const handleScroll = throttle((event: WheelEvent) => {
+      const sectionWidth = sections.value?.width || 0;
+      if (event.deltaX > 0 && currentIndex.value < totalSections - 1) {
+        currentIndex.value++;
+        console.log("right", currentIndex.value, sectionWidth);
+        gsap.to(window, {
+          scrollTo: { x: sectionWidth * currentIndex.value },
+          duration: 0.1,
+          ease: "none",
+          onComplete: () => {
+            ScrollTrigger.refresh();
+          }
+        });
+      } else if (event.deltaX < 0 && currentIndex.value > 0) {
+        currentIndex.value--;
+        console.log("left", currentIndex.value, sectionWidth);
+        gsap.to(window, {
+          scrollTo: { x: sectionWidth * currentIndex.value },
+          duration: 0.1,
+          ease: "none",
+          onComplete: () => {
+            ScrollTrigger.refresh();
+          }
+        });
+      }
+    }, 500); // 500ms 节流间隔
+
+    window.addEventListener('wheel', handleScroll);
+  }
+});
+</script>
+
+
+
 <template>
-  <div class="app-container">
-    <div class="page-transition">
-      <img :src="currentPage.backgroundImage" :key="currentPage.path" alt="" class="image">
-      <div class="page-transition__red"></div>
-      <div class="page-transition__black"></div>
-      <div class="transition__logo">I'M LOGO</div>
-    </div>
-    <nav>
-      <router-link to="/page1">Page 1</router-link>
-      <router-link to="/page2">Page 2</router-link>
-      <router-link to="/page3">Page 3</router-link>
-    </nav>
-    <div class="page-container">
-      <router-view v-slot="{ Component, route }">
-        <transition @enter="enter" @leave="leave">
-          <component :is="Component" :key="route.fullPath" class="page" />
-        </transition>
-      </router-view>
+  <div class="app-container" v-if="showSections">
+    <div class="sections" ref="sections">
+      <section class="section section1"><page1 /></section>
+      <section class="section section2"><page2 /></section>
+      <section class="section section3"><page3 /></section>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { gsap } from 'gsap';
-
-const router = useRouter();
-const route = useRoute();
-
-const currentPage = ref({
-  path: route.path,
-  backgroundImage: route.meta.backgroundImage,
-});
-
-const enter = (el: Element, done: () => void) => {
-  const tl = gsap.timeline({ onComplete: done });
-
-  tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 });
-};
-
-const leave = (el: Element, done: () => void) => {
-  const tl = gsap.timeline({ onComplete: done });
-
-  tl.fromTo(el, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5 });
-};
-
-watch(
-  () => route.path,
-  () => {
-    const tl = gsap.timeline();
-
-    tl.fromTo('.page-transition__red', { scaleX: 0 }, { scaleX: 1, duration: 1.1, transformOrigin: 'left', ease: 'power4.inOut' })
-      .fromTo('.page-transition__black', { scaleX: 0 }, { scaleX: 1, duration: 1.1, transformOrigin: 'left', ease: 'power4.inOut' }, '-=1')
-      .fromTo('.transition__logo', { xPercent: -100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.8, ease: 'power4.inOut' }, '-=0.8')
-      .set('.page-transition__red', { scaleX: 0 })
-      .set('.image', { autoAlpha: 0 })
-      .to('.page-transition__black', { scaleX: 0, duration: 1.1, transformOrigin: 'right', ease: 'power4.inOut' })
-      .to('.transition__logo', { autoAlpha: 0, duration: 0.2 }, '-=0.6')
-      .set('.image', { autoAlpha: 1 })
-      .set(currentPage, {
-        path: route.path,
-        backgroundImage: route.meta.backgroundImage,
-      });
-  }
-);
-</script>
-
 <style>
-/* ... (same as before) */
-
-.page-transition__black {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100vh;
+.app-container {
   width: 100vw;
-  background: #000;
-  transform: scaleX(0);
-}
-
-.page-transition__red {
-  position: absolute;
-  left: 0;
-  top: 0;
   height: 100vh;
-  width: 100vw;
-  background: red;
-  transform: scaleX(0);
+  padding: 0;
+  /* overflow: hidden; Hide overflow to prevent unwanted scrolling */
 }
 
-.transition__logo {
-  text-transform: uppercase;
-  font-family: sans-serif;
-  font-size: 60px;
-  position: absolute;
-  z-index: 1;
-  color: #fff;
-  font-weight: bold;
-  top: 50vh;
-  left: 50vw;
-  transform: translate(-50%, -50%);
-  opacity: 0;
+.sections {
+  display: flex;
+  width: 300vw; /* 100vw for each section */
+  height: 100vh;
+  overflow: hidden; /* Ensure the container can scroll horizontally */
 }
+
+.section {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  color: white;
+}
+
+/* .section1 {
+  background-color: #1abc9c;
+}
+
+.section2 {
+  background-color: #3498db;
+}
+
+.section3 {
+  background-color: #e74c3c;
+} */
+
 </style>

@@ -13,11 +13,13 @@
   "dependencies": {
     "gsap": "^3.12.5",
     "i": "^0.3.7",
+    "lodash": "^4.17.21",
     "vue": "^3.4.21",
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
+    "@types/lodash": "^4.17.4",
     "@types/node": "^20.12.5",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
