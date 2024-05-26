@@ -12,7 +12,7 @@ import Page4 from './components/page4.vue';
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref(null);
 const route = useRoute();
-const showSections = computed(() => route.path !== '/');
+const showSections = computed(() => route.path === '/');
 
 const startColor = ref('#52FF00');
 const endColor = ref('transparent');
