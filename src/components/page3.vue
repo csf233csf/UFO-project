@@ -11,6 +11,7 @@
   import { ref, nextTick } from 'vue';
   import gsap from 'gsap';
   import p4 from '@/components/page4.vue';
+  import router from '@/router';
   
   const page4 = ref(false);
   const backgroundSection = ref(null);
@@ -30,8 +31,7 @@
               opacity: 1,
               duration: 1,
               onComplete() {
-                if (backgroundSection.value) {
-                }
+                router.push('/page4');
               },
             }
           );

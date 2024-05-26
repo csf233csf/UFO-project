@@ -17,7 +17,7 @@ const sections = ref(null);
 const currentIndex = ref(0);
 const route = useRoute();
 
-const showSections = computed(() => route.path !== '/page4');
+const showSections = computed(() => route.path === '/');
 
 
 
@@ -33,6 +33,7 @@ const showSections = computed(() => route.path !== '/page4');
       <section class="section section3"><page3 /></section>
     </div>
   </div>
+  <router-view></router-view>
 </template>
 
 <style>
