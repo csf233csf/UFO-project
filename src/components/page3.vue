@@ -1,9 +1,9 @@
 <template>
   <section class="background-section" ref="backgroundSection" v-if="!page4">
-    <button class="jump-button" @click="jumptonextpage">跳转下个button</button>
+    <!-- <button class="jump-button" @click="jumptonextpage">跳转下个button</button> -->
   </section>
   <div v-if="page4" ref="page4Div" class="fade-in">
-    <p4></p4>
+    <p4>page4</p4>
   </div>
 </template>
 
@@ -22,16 +22,20 @@ const router = useRouter()
 function jumptonextpage() {
   gsap.to(backgroundSection.value, {
     y: '-100%',
+    opacity:0,
     duration: 1,
-    onComplete() {
+    onComplete() {  
       page4.value = true;
       nextTick(() => {
         gsap.fromTo(
           page4Div.value,
-          { opacity: 0 },
+          { opacity: 0 ,
+            y:'100%',
+          },
           {
             opacity: 1,
             duration: 1,
+            y:'0%',
             onComplete() {
               router.push('/page4');
             },

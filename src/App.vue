@@ -39,24 +39,33 @@
 
 >>>>>>> Stashed changes
 <script lang="ts" setup>
-import { onMounted, ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
+import { useRoute, useRouter } from 'vue-router';
 import page1 from '@/components/page1.vue';
 import page2 from '@/components/page2.vue';
 import page3 from '@/components/page3.vue';
-import { useRoute } from 'vue-router';
-import Page4 from './components/page4.vue';
+// import Page4 from '@/components/page4.vue';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-const sections = ref(null);
+const sections = ref<HTMLElement | null>(null);
 const route = useRoute();
+const router = useRouter();
 const showSections = computed(() => route.path === '/');
 
 const startColor = ref('#52FF00');
 const endColor = ref('transparent');
 const pageNumber = ref(1);
+const showButton1 = ref(false);
+const showButton2 = ref(false);
+const showButton3 = ref(false);
+
+const page4 = ref(false);
+const backgroundSection = ref(null);
+const page4Div = ref(null);
+
 
 const updateGradient = () => {
   document.documentElement.style.setProperty('--start-color', startColor.value);
@@ -67,65 +76,82 @@ watch([startColor, endColor], updateGradient, { immediate: true });
 const scrollProgress = ref(0);
 const previousColor = ref(startColor.value);
 
-const changeColor = (color: string) => {
+const changeColor = (color: string, page: number) => {
+  pageNumber.value = page;
   gsap.to(previousColor, {
     value: color,
     duration: 1,
     onUpdate: () => {
       startColor.value = previousColor.value;
       updateGradient();
-    }
+    },
   });
 };
 
 const checkScrollPosition = () => {
-  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
-  const scrollWidth = document.documentElement.scrollWidth - window.innerWidth;
+  const scrollLeft = sections.value!.scrollLeft || 0;
+  const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
   scrollProgress.value = (scrollLeft / scrollWidth) * 100;
-
-  if (scrollProgress.value >= 0 && scrollProgress.value < 50) {
-    console.log('Scroll progress reached one-third of the page');
-    changeColor('#52FF00'); // Change to the desired color for 0% to 33.33%
-    pageNumber.value = 1;
-  } else if (scrollProgress.value >= 50 && scrollProgress.value < 100) {
-    console.log('Scroll progress reached two-thirds of the page');
-    changeColor('#00FFFF'); // Change to the desired color for 33.33% to 66.66%
-    pageNumber.value = 2;
-  } else if (scrollProgress.value >= 100) {
-    console.log('Scroll progress reached three-thirds of the page');
-    changeColor('#FFF72E'); // Change to the desired color for 66.66% to 100%
-    pageNumber.value = 3;
+  if (scrollProgress.value >= 0 && scrollProgress.value < 33.33) {
+    showButton1.value = true;
+    showButton2.value = false;
+    showButton3.value = false;
+    changeColor('#52FF00', 1); // Change to the desired color for 0% to 33.33%
+  } else if (scrollProgress.value >= 33.33 && scrollProgress.value < 66.66) {
+    showButton1.value = false;
+    showButton2.value = true;
+    showButton3.value = false;
+    changeColor('#00FFFF', 2); // Change to the desired color for 33.33% to 66.66%
+  } else if (scrollProgress.value >= 66.66) {
+    showButton1.value = false;
+    showButton2.value = false;
+    showButton3.value = true;
+    changeColor('#FFF72E', 3); // Change to the desired color for 66.66% to 100%
   }
 };
 
+
+
+
 onMounted(() => {
-  window.addEventListener('scroll', checkScrollPosition);
+  sections.value!.addEventListener('scroll', checkScrollPosition);
   checkScrollPosition();
 });
+
+const scrollToSection = (sectionNumber: number) => {
+  console.log("sectionNumber")
+  const section = document.getElementById(`section${sectionNumber}`);
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+function jumptonextpage(path:string) {
+  const timeline = gsap.timeline();
+  // 移出 backgroundSection
+  timeline.to(backgroundSection.value, {
+    y: '100%',
+    opacity: 0,
+    duration: 1,
+  });
+  // page4Div 出现
+  timeline.to(page4Div.value, {
+    opacity: 1,
+    y: '0%',
+    duration: 0.2,
+    onComplete() {
+      page4.value = true;
+      router.push(path);
+    },
+  });
+}
+
+
+
+
 </script>
 
-<template>
-  <div class="app-container" v-if="showSections">
-    <div class="sections" ref="sections">
-      <div class="text-div">
-        <p>{{ pageNumber }}</p>
-      </div>
-      <div class="gradient-div"></div>
-      <section id="section1" class="section section1">
-        <page1 />
-      </section>
-      <section id="section2" class="section section2">
-        <page2 />
-      </section>
-      <section id="section3" class="section section3">
-        <page3 />
-      </section>
-    </div>
-  </div>
-  <router-view></router-view>
-</template>
-
-<style>
+<style scoped>
 .app-container {
   width: 100vw;
   height: 100vh;
@@ -174,8 +200,10 @@ onMounted(() => {
 
 .sections {
   display: flex;
-  width: 300vw; /* Adjust as needed for testing */
+  width: calc(100vw - 200px); /* Adjust for nav bar width */
   height: 100vh;
+  position: absolute;
+  left:200px;
   overflow-x: auto; /* Ensure the container can scroll horizontally */
 }
 
@@ -192,21 +220,33 @@ onMounted(() => {
 }
 
 .gradient-div {
-  width: 100vw;
+  width: 100%; /* Adjust for nav bar width */
   height: 20%;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 0; /* Adjust for nav bar width */
   background: linear-gradient(to top, var(--start-color), var(--end-color));
 }
 
 .text-div {
-  width: 100vw;
+  /* width: calc(100vw - 200px); Adjust for nav bar width */
+  width:100px;
   height: 20%;
-  padding-left: 30px;
   position: fixed;
   top: 0;
-  left: 0;
-  color:aliceblue;
+  left: 50vw; /* Adjust for nav bar width */
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+}
+
+.jump-button {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  z-index:100;
 }
 </style>
