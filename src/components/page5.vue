@@ -60,6 +60,8 @@ const db = getDatabase();
 const showDescriptionInput = ref(false);
 const selectedFile = ref<File | null>(null);
 const description = ref('');
+// 定义timeline
+let timeline: gsap.core.Timeline;
 
 async function fetchImages() {
   const imagesRef = dbRef(db, 'images');
@@ -102,28 +104,40 @@ async function uploadImage() {
 }
 
 function startScrolling() {
+  // 这边可以控制滑动速度
+  // 现在是从左往右 totalWidth / speed
   if (imageScroller.value && images.value.length > 1) {
-    const scrollerWidth = imageScroller.value.scrollWidth;
     const containerWidth = imageContainer.value ? imageContainer.value.clientWidth : 0;
+    const scrollerWidth = imageScroller.value.scrollWidth;
     const totalWidth = scrollerWidth + containerWidth;
 
-    const timeline = gsap.timeline({ repeat: -1 });
-    timeline.to(imageScroller.value, {
-      x: `-=${scrollerWidth}`,
-      duration: totalWidth / 50, // 控制滚动速度，50 是每秒的像素数，你可以根据需要调整
-      ease: 'linear',
-      modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % scrollerWidth)
+    timeline = gsap.timeline({ repeat: -1 });
+    timeline.fromTo(imageScroller.value, 
+      { x: containerWidth }, // 从右侧开始
+      {
+        x: -scrollerWidth, // 向左滑动到结束位置
+        duration: totalWidth / 320,
+        ease: 'linear',
+        modifiers: {
+          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
+        }
       }
-    });
+    );
   }
 }
 
+
 function showDescription(index: number) {
   activeIndex.value = index;
+  timeline.pause(); // 暂停动画
+  const target = imageScroller.value?.children[index] as HTMLElement;
+  if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
 }
 
 function hideDescription() {
+  const target = imageScroller.value?.children[activeIndex.value!] as HTMLElement;
+  if (target) gsap.to(target.querySelector('img'), { scale: 1, duration: 0.3 }); // 恢复图片大小
+  timeline.resume(); // 恢复动画
   activeIndex.value = null;
 }
 
@@ -175,7 +189,7 @@ onMounted(fetchImages);
 }
 
 .image-container {
-  width: 80%;
+  width: 85%;
   height: 200px;
   overflow: hidden;
   position: relative;
@@ -199,7 +213,9 @@ onMounted(fetchImages);
   width: 200px;
   height: 200px;
   object-fit: cover;
+  transition: transform 0.3s ease; /* 添加过渡效果 */
 }
+
 
 .description {
   position: absolute;
