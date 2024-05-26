@@ -63,6 +63,7 @@ const description = ref('');
 // 定义timeline
 let timeline: gsap.core.Timeline;
 
+// 获取所有image urls
 async function fetchImages() {
   const imagesRef = dbRef(db, 'images');
   onValue(imagesRef, (snapshot) => {
