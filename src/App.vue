@@ -12,7 +12,7 @@ import Page4 from './components/page4.vue';
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref(null);
 const route = useRoute();
-const showSections = computed(() => route.path !== '/page4');
+const showSections = computed(() => route.path !== '/');
 
 const startColor = ref('#52FF00');
 const endColor = ref('transparent');
@@ -67,7 +67,6 @@ onMounted(() => {
 <template>
   <div class="app-container" v-if="showSections">
     <div class="sections" ref="sections">
-      
       <div class="text-div">
         <p>{{ pageNumber }}</p>
       </div>
@@ -83,6 +82,7 @@ onMounted(() => {
       </section>
     </div>
   </div>
+  <router-view></router-view>
 </template>
 
 <style>
