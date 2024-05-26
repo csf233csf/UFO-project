@@ -1,25 +1,20 @@
 
 <script lang="ts" setup>
-import { onMounted, ref, nextTick, computed } from 'vue';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
-// import throttle from 'loadash/throttle';
+import { ref, computed } from 'vue';
+// import gsap from 'gsap';
+// import ScrollTrigger from 'gsap/ScrollTrigger';
+// import ScrollToPlugin from 'gsap/ScrollToPlugin';
 import page1 from '@/components/page1.vue'
 import page2 from '@/components/page2.vue'
 import page3 from '@/components/page3.vue'
 import {useRoute} from 'vue-router'
-import Page4 from './components/page4.vue';
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+// gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const sections = ref(null);
-const currentIndex = ref(0);
 const route = useRoute();
 
 const showSections = computed(() => route.path === '/');
-
-
 
 </script>
 
