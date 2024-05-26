@@ -1,9 +1,9 @@
 <template>
     <div class="pa4">
-        <!-- <h1>page4</h1>
+        <h1>page4</h1>
         <p>pag3</p>
-        <button>jnfsj</button> -->
-        <img src="/images/Slide 16_9 - 19.png" alt="图片" class="absolute-image"/>
+        <button>jnfsj</button>
+        <!-- <img src="/images/Slide 16_9 - 19.png" alt="图片" class="absolute-image"/> -->
     </div>
 </template>
 
@@ -20,5 +20,10 @@
   height: 100%;
   object-fit: cover;
   z-index:-1;
+}
+
+.pa4{
+    color:white;
+    padding:50px;
 }
 </style>
