@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import page1 from '@/components/page1.vue'
 import page2 from '@/components/page2.vue'
 import page3 from '@/components/page3.vue'
+import page4 from '@/components/page4.vue'
 
 // 这边修改ROUTE的路径
 const routes: Array<RouteRecordRaw> = [
@@ -19,7 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/page3',
         name: 'page3',
-        component: page3
+        component: () => import('@/components/page3.vue'),
+    },
+    {
+        path: '/page4',
+        name: 'page4',
+        component: page4
     },
 ]
 
