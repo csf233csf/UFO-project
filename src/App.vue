@@ -47,7 +47,7 @@ import page3 from '@/components/page3.vue';
 // import Page4 from '@/components/page4.vue';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-const sections = ref(null);
+const sections = ref<HTMLElement | null>(null);
 const route = useRoute();
 const router = useRouter();
 const showSections = computed(() => route.path === '/');
@@ -86,8 +86,8 @@ const changeColor = (color: string, page: number) => {
 };
 
 const checkScrollPosition = () => {
-  const scrollLeft = sections.value.scrollLeft || 0;
-  const scrollWidth = sections.value.scrollWidth - sections.value.clientWidth;
+  const scrollLeft = sections.value!.scrollLeft || 0;
+  const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
   scrollProgress.value = (scrollLeft / scrollWidth) * 100;
   if (scrollProgress.value >= 0 && scrollProgress.value < 33.33) {
     showButton1.value = true;
@@ -111,7 +111,7 @@ const checkScrollPosition = () => {
 
 
 onMounted(() => {
-  sections.value.addEventListener('scroll', checkScrollPosition);
+  sections.value!.addEventListener('scroll', checkScrollPosition);
   checkScrollPosition();
 });
 
