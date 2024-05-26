@@ -21,10 +21,9 @@
   const imageContainer = ref<HTMLElement | null>(null);
   const imageScroller = ref<HTMLElement | null>(null);
   
-  // Initialize Realtime Database
   const db = getDatabase();
   
-  // Function to fetch images from Realtime Database
+  // 从database里面获取响应式图片url
   async function fetchImages() {
     const imagesRef = dbRef(db, 'images');
     onValue(imagesRef, (snapshot) => {
