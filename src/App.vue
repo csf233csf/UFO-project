@@ -1,21 +1,14 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-// import gsap from 'gsap';
-// import ScrollTrigger from 'gsap/ScrollTrigger';
-// import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import page1 from '@/components/page1.vue'
-import page2 from '@/components/page2.vue'
-import page3 from '@/components/page3.vue'
+import p1 from '@/components/page1.vue'
+import p2 from '@/components/page2.vue'
+import p3 from '@/components/page3.vue'
 import {useRoute} from 'vue-router'
-
-// gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const sections = ref(null);
 const route = useRoute();
-
 const showSections = computed(() => route.path === '/');
-
 </script>
 
 
@@ -23,9 +16,9 @@ const showSections = computed(() => route.path === '/');
 <template>
   <div class="app-container" v-if="showSections">
     <div class="sections" ref="sections">
-      <section class="section section1"><page1 /></section>
-      <section class="section section2"><page2 /></section>
-      <section class="section section3"><page3 /></section>
+      <section class="section section1"><p1 /></section>
+      <section class="section section2"><p2 /></section>
+      <section class="section section3"><p3 /></section>
     </div>
   </div>
   <router-view></router-view>
