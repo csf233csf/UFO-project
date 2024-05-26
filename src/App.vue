@@ -4,7 +4,7 @@ import { onMounted, ref, nextTick, computed } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import throttle from 'lodash/throttle';
+// import throttle from 'loadash/throttle';
 import page1 from '@/components/page1.vue'
 import page2 from '@/components/page2.vue'
 import page3 from '@/components/page3.vue'
@@ -20,55 +20,7 @@ const route = useRoute();
 const showSections = computed(() => route.path !== '/page4');
 
 
-onMounted(async () => {
-  await nextTick();
 
-  if (sections.value) {
-    const panels = sections.value.children;
-    const totalSections = panels.length;
-
-    gsap.to(panels, {
-      xPercent: -100 * (totalSections - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: sections.value,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (totalSections - 1),
-        end: "+=" + sections.value.offsetWidth
-      }
-    });
-
-    const handleScroll = throttle((event: WheelEvent) => {
-      const sectionWidth = sections.value?.width || 0;
-      if (event.deltaX > 0 && currentIndex.value < totalSections - 1) {
-        currentIndex.value++;
-        console.log("right", currentIndex.value, sectionWidth);
-        gsap.to(window, {
-          scrollTo: { x: sectionWidth * currentIndex.value },
-          duration: 0.1,
-          ease: "none",
-          onComplete: () => {
-            ScrollTrigger.refresh();
-          }
-        });
-      } else if (event.deltaX < 0 && currentIndex.value > 0) {
-        currentIndex.value--;
-        console.log("left", currentIndex.value, sectionWidth);
-        gsap.to(window, {
-          scrollTo: { x: sectionWidth * currentIndex.value },
-          duration: 0.1,
-          ease: "none",
-          onComplete: () => {
-            ScrollTrigger.refresh();
-          }
-        });
-      }
-    }, 500); // 500ms 节流间隔
-
-    window.addEventListener('wheel', handleScroll);
-  }
-});
 </script>
 
 
@@ -107,6 +59,7 @@ onMounted(async () => {
   align-items: center;
   font-size: 3em;
   color: white;
+  position:relative;
 }
 
 /* .section1 {
