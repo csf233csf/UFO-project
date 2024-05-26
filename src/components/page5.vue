@@ -5,8 +5,9 @@
       <div class="image-scroller" ref="imageScroller">
         <div
           v-for="(img, index) in images"
-          :key="index"
+          :key="img.id"
           class="scroll-image-container"
+          @click="showImageDetails(index)"
         >
           <img
             :src="img.url"
@@ -25,6 +26,15 @@
       <input v-model="description" placeholder="Enter image description" />
       <button @click="uploadImage">Upload</button>
     </div>
+
+    <ImageDetail
+      v-if="showImageDetail"
+      :image="selectedImage"
+      :description="selectedImageDescription"
+      :comments="selectedImageComments"
+      @close="closeImageDetail"
+      @addComment="addComment"
+    />
   </div>
 </template>
 
@@ -34,11 +44,17 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'fire
 import { storage } from '@/firebaseConfig';
 import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
 import gsap from 'gsap';
+import ImageDetail from './ImageDetail.vue';
 
-const images = ref<{ url: string; description: string }[]>([]);
+const images = ref<{ id: string; url: string; description: string }[]>([]);
 const imageContainer = ref<HTMLElement | null>(null);
 const imageScroller = ref<HTMLElement | null>(null);
 const activeIndex = ref<number | null>(null);
+const showImageDetail = ref(false);
+const selectedImage = ref<string | null>(null);
+const selectedImageDescription = ref<string | null>(null);
+const selectedImageComments = ref<string[]>([]);
+const selectedImageId = ref<string | null>(null);
 
 const db = getDatabase();
 const showDescriptionInput = ref(false);
@@ -52,6 +68,7 @@ async function fetchImages() {
     snapshot.forEach((childSnapshot) => {
       const imageData = childSnapshot.val();
       images.value.push({
+        id: childSnapshot.key,
         url: imageData.url,
         description: imageData.description,
       });
@@ -84,14 +101,16 @@ async function uploadImage() {
   selectedFile.value = null;
 }
 
-
 function startScrolling() {
   if (imageScroller.value && images.value.length > 1) {
     const scrollerWidth = imageScroller.value.scrollWidth;
-    gsap.to(imageScroller.value, {
-      x: `+=${scrollerWidth}`,
-      duration: 20,
-      repeat: -1,
+    const containerWidth = imageContainer.value ? imageContainer.value.clientWidth : 0;
+    const totalWidth = scrollerWidth + containerWidth;
+
+    const timeline = gsap.timeline({ repeat: -1 });
+    timeline.to(imageScroller.value, {
+      x: `-=${scrollerWidth}`,
+      duration: totalWidth / 50, // 控制滚动速度，50 是每秒的像素数，你可以根据需要调整
       ease: 'linear',
       modifiers: {
         x: gsap.utils.unitize(x => parseFloat(x) % scrollerWidth)
@@ -106,6 +125,40 @@ function showDescription(index: number) {
 
 function hideDescription() {
   activeIndex.value = null;
+}
+
+function showImageDetails(index: number) {
+  const img = images.value[index];
+  selectedImage.value = img.url;
+  selectedImageDescription.value = img.description;
+  selectedImageId.value = img.id;
+  fetchComments(img.id);
+  showImageDetail.value = true;
+}
+
+function closeImageDetail() {
+  showImageDetail.value = false;
+  selectedImage.value = null;
+  selectedImageDescription.value = null;
+  selectedImageComments.value = [];
+  selectedImageId.value = null;
+}
+
+async function fetchComments(imageId: string) {
+  const commentsRef = dbRef(db, `comments/${imageId}`);
+  onValue(commentsRef, (snapshot) => {
+    selectedImageComments.value = [];
+    snapshot.forEach((childSnapshot) => {
+      selectedImageComments.value.push(childSnapshot.val());
+    });
+  });
+}
+
+async function addComment(comment: string) {
+  if (selectedImageId.value) {
+    const commentsRef = dbRef(db, `comments/${selectedImageId.value}`);
+    await push(commentsRef, comment);
+  }
 }
 
 onMounted(fetchImages);
@@ -134,6 +187,7 @@ onMounted(fetchImages);
   display: flex;
   align-items: center;
   white-space: nowrap;
+  transform: translate3d(0, 0, 0); /* 使滚动更平滑 */
 }
 
 .scroll-image-container {
