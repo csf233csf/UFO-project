@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <template>
   <div class="app-container" v-if="showSections" ref="backgroundSection">
     <div class="nav-bar" >
@@ -37,7 +35,6 @@
   <router-view></router-view>
 </template>
 
->>>>>>> Stashed changes
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import gsap from 'gsap';
@@ -57,6 +54,7 @@ const showSections = computed(() => route.path === '/');
 
 const startColor = ref('#52FF00');
 const endColor = ref('transparent');
+const linkColor = ref('#000000');
 const pageNumber = ref(1);
 const showButton1 = ref(false);
 const showButton2 = ref(false);
@@ -65,24 +63,31 @@ const showButton3 = ref(false);
 const page4 = ref(false);
 const backgroundSection = ref(null);
 const page4Div = ref(null);
+const activeLink = ref(0)
 
 
 const updateGradient = () => {
   document.documentElement.style.setProperty('--start-color', startColor.value);
   document.documentElement.style.setProperty('--end-color', endColor.value);
+  document.documentElement.style.setProperty('--link-color', linkColor.value);
+  
 };
-watch([startColor, endColor], updateGradient, { immediate: true });
+watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
+
+
 
 const scrollProgress = ref(0);
 const previousColor = ref(startColor.value);
 
 const changeColor = (color: string, page: number) => {
   pageNumber.value = page;
+  activeLink.value = page;
   gsap.to(previousColor, {
     value: color,
     duration: 1,
     onUpdate: () => {
       startColor.value = previousColor.value;
+      linkColor.value = previousColor.value;
       updateGradient();
     },
   });
@@ -155,10 +160,8 @@ function jumptonextpage(path:string) {
 .app-container {
   width: 100vw;
   height: 100vh;
-<<<<<<< Updated upstream
   padding: 0;
   /* overflow-x: hidden; */
-=======
   display: flex;
   overflow-x: hidden;
 }
@@ -168,7 +171,7 @@ function jumptonextpage(path:string) {
   height:100%;
   color: white;
   display: flex;
-  position: absolute;
+  position: fixed;
   left:0%;
   flex-direction: column;
   align-items: center;
@@ -185,6 +188,7 @@ function jumptonextpage(path:string) {
 .nav-bar li {
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 100px;
 }
 
 .nav-bar li:hover {
@@ -194,8 +198,7 @@ function jumptonextpage(path:string) {
 .nav-bar li.active {
   font-weight: bold;
   font-size: 1.2em;
-  color: #ccff00; /* Customize the active link color */
->>>>>>> Stashed changes
+  color: var(--link-color); /* Customize the active link color */
 }
 
 .sections {
@@ -203,7 +206,7 @@ function jumptonextpage(path:string) {
   width: calc(100vw - 200px); /* Adjust for nav bar width */
   height: 100vh;
   position: absolute;
-  left:200px;
+  left:0px;
   overflow-x: auto; /* Ensure the container can scroll horizontally */
 }
 
@@ -249,4 +252,16 @@ function jumptonextpage(path:string) {
   transform: translateX(-50%);
   z-index:100;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sections::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.sections {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 </style>

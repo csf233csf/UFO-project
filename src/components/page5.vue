@@ -186,7 +186,7 @@ onMounted(fetchImages);
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #282c34;
+  background-color:transparent;
 }
 
 .image-container {
@@ -194,7 +194,7 @@ onMounted(fetchImages);
   height: 200px;
   overflow: hidden;
   position: relative;
-  background-color: #fff;
+  background-color: transparent;
   margin-bottom: 20px;
 }
 

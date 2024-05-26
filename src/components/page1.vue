@@ -1,5 +1,8 @@
 <template>
     <section class="background-section">
+        <h1>page4</h1>
+        <p>pag3</p>
+        <button>jnfsj</button>
     </section>
 </template>
 
