@@ -1,6 +1,6 @@
 <template>
     <section class="background-section" ref="backgroundSection" v-if="!page4">
-      <button @click="jumptonextpage">跳转下个button</button>
+      <button class="jump-button" @click="jumptonextpage">跳转下个button</button>
     </section>
     <div v-if="page4" ref="page4Div" class="fade-in">
       <p4></p4>
@@ -11,10 +11,13 @@
   import { ref, nextTick } from 'vue';
   import gsap from 'gsap';
   import p4 from '@/components/page4.vue';
+  import router from '@/router';
   
   const page4 = ref(false);
   const backgroundSection = ref(null);
   const page4Div = ref(null);
+
+  
   
   function jumptonextpage() {
     gsap.to(backgroundSection.value, {
@@ -30,8 +33,7 @@
               opacity: 1,
               duration: 1,
               onComplete() {
-                if (backgroundSection.value) {
-                }
+                router.push('/page4');
               },
             }
           );
@@ -45,7 +47,7 @@
   .background-section {
     width: 100%;
     height: 100vh;
-    background-image: url('/images/Slide 16_9 - 17.svg');
+    /* background-image: url('/images/Slide 16_9 - 17.svg'); */
     background-color: transparent;
     background-size: cover;
     background-position: center;
@@ -54,5 +56,11 @@
   .fade-in {
     opacity: 1;
   }
-  </style>
+  .jump-button{
+    position:absolute;
+    left:50%;
+    bottom: 10%;
+
+  }
+</style>
   
