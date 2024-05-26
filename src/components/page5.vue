@@ -81,7 +81,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #282c34;
+    background-color: transparent;
   }
   
   .image-container {

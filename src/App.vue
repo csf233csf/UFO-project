@@ -1,3 +1,43 @@
+<<<<<<< Updated upstream
+=======
+<template>
+  <div class="app-container" v-if="showSections" ref="backgroundSection">
+    <div class="nav-bar" >
+        <ul>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">Page 2</li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
+      </ul>
+    </div>
+    
+    <button class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</button>
+    <button class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</button>
+    <button class="jump-button" v-if="showButton3" @click="jumptonextpage('/page6')">跳转下个页面</button>
+    <div class="sections" ref="sections">
+      
+      <div class="text-div">
+        <p>{{ pageNumber }}</p>
+      </div>
+      <div class="gradient-div">
+      </div>
+      <section id="section1" class="section section1">
+        <page1 />
+      </section>
+      <section id="section2" class="section section2">
+        <page2 />
+      </section>
+      <section id="section3" class="section section3">
+        <page3 />
+      </section>
+    </div>
+  </div>
+  <div v-if="page4" ref="page4Div" class="fade-in">
+    <p4>page4</p4>
+  </div>
+  <router-view></router-view>
+</template>
+
+>>>>>>> Stashed changes
 <script lang="ts" setup>
 import { onMounted, ref, computed, watch } from 'vue';
 import gsap from 'gsap';
@@ -89,8 +129,47 @@ onMounted(() => {
 .app-container {
   width: 100vw;
   height: 100vh;
+<<<<<<< Updated upstream
   padding: 0;
   /* overflow-x: hidden; */
+=======
+  display: flex;
+  overflow-x: hidden;
+}
+
+.nav-bar {
+  background-color: transparent;
+  height:100%;
+  color: white;
+  display: flex;
+  position: absolute;
+  left:0%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index:100;
+  padding: 10px;
+}
+
+.nav-bar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-bar li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.nav-bar li:hover {
+  background-color: #555;
+}
+
+.nav-bar li.active {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #ccff00; /* Customize the active link color */
+>>>>>>> Stashed changes
 }
 
 .sections {
