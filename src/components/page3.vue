@@ -43,24 +43,30 @@ function jumptonextpage() {
               },
             }
           );
-        }
-      });
-    },
-  });
-}
-</script>
+        });
+      },
+    });
+  }
+  </script>
+  
+  <style scoped>
+  .background-section {
+    width: 100%;
+    height: 100vh;
+    /* background-image: url('/images/Slide 16_9 - 17.svg'); */
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .fade-in {
+    opacity: 1;
+  }
+  .jump-button{
+    position:absolute;
+    left:50%;
+    bottom: 10%;
 
-<style scoped>
-.background-section {
-  width: 100%;
-  height: 100vh;
-  background-image: url('/images/Slide 16_9 - 17.svg');
-  background-color: transparent;
-  background-size: cover;
-  background-position: center;
-}
-
-.fade-in {
-  opacity: 1;
-}
+  }
 </style>
+  
