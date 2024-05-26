@@ -1,5 +1,5 @@
 <template>
-  <div class="image-detail">
+  <div class="image-detail" v-if="image && description">
     <div class="image-detail-header">
       <button @click="$emit('close')">Close</button>
     </div>
@@ -22,8 +22,8 @@
 import { ref } from 'vue';
 
 const props = defineProps<{
-  image: string;
-  description: string;
+  image: string | null;
+  description: string | null;
   comments: string[];
 }>();
 const emit = defineEmits(['close', 'addComment']);
