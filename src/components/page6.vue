@@ -10,7 +10,7 @@
         <div class="overlay"></div>
       </div>
       <div v-for="(img, index) in images" :key="index" class="image-button"
-        :style="{ top: img.xPos + 'px', left: img.yPos + 'px' }">
+        :style="{ left: img.xPos + 'px', top: img.yPos + 'px' }">
         <button @click.stop="openCommentApp(img.xPos, img.yPos)" @mouseover="showImage(img.url)"
           @mouseleave="hideImage">
           Image {{ index + 1 }}
