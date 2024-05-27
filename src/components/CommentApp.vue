@@ -95,7 +95,7 @@ textarea {
   margin-top: 10px;
 }
 
-button {
+.button {
   margin-top: 10px;
 }
 </style>

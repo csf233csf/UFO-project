@@ -27,7 +27,7 @@
 import { ref, onMounted } from 'vue';
 import { database } from '@/firebaseConfig';
 import { ref as dbRef, onValue } from 'firebase/database';
-import DrawApp from './DrawApp.vue';
+import DrawApp from './DrawApp2.vue';
 import CommentApp from './CommentApp.vue';
 
 const xPos = ref(0);
@@ -50,8 +50,8 @@ const closeCommentApp = () => {
 };
 
 const handleMapClick = (event: MouseEvent) => {
-  xPos.value = event.clientX;
-  yPos.value = event.clientY;
+  xPos.value = event.offsetX;
+  yPos.value = event.offsetY;
   showDrawApp.value = true;
 };
 
