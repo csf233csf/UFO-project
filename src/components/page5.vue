@@ -10,12 +10,18 @@
           @click="showImageDetails(index, 1)"
           
         >
-          <img
+
+        <img
+            :src="img.url"
+            class="scroll-image"
+          />
+
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 1)"
             @mouseleave="hideDescription(1)"
-          />
+          /> -->
           <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
           </div>
@@ -31,12 +37,16 @@
           @click="showImageDetails(index, 2)"
           
         >
-          <img
+        <img
+            :src="img.url"
+            class="scroll-image"
+        />
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 2)"
             @mouseleave="hideDescription(2)"
-          />
+          /> -->
           <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
           </div>
@@ -52,12 +62,19 @@
           @click="showImageDetails(index, 3)"
           
         >
-          <img
+
+        <img
+            :src="img.url"
+            class="scroll-image"
+      
+          />
+
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 3)"
             @mouseleave="hideDescription(3)"
-          />
+          /> -->
           <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
           </div>
@@ -65,6 +82,12 @@
       </div>
     </div>
   </div>
+
+  <button class="uploadbutton" @click="uploadImage">Upload</button>
+  <!-- <div v-if="showDescriptionInput" class="description-input">
+      <input v-model="description" placeholder="Enter image description" />
+      
+  </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -181,7 +204,6 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     if (timeline) {
       timeline.kill();
     }
-
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
@@ -278,12 +300,13 @@ onMounted(fetchImages);
   overflow: hidden;
   background-color: white; /* Light background for better contrast */
   padding: 20px;
+  overflow: hidden;
 }
 
 .images-row {
   display: flex;
   flex-direction: column; /* Arrange containers in a column */
-  position: absolute;
+  position: relative;
   /* left:15%; */
   width: 100vw;
   height:100vh;
@@ -310,7 +333,7 @@ onMounted(fetchImages);
   display: flex;
   flex-wrap: nowrap; /* Prevent line breaks */
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   transform: translate3d(0, 0, 0); /* Smooth scrolling */
 }
 
@@ -327,10 +350,21 @@ onMounted(fetchImages);
   width: auto; /* 自动调整高度以保持原始比例 */
   border-radius: 0; /* 图片圆角 */
   align-self: flex-end;
+  filter:drop-shadow(5px 5px 5px rgb(0, 0, 0, .3))
+  
+}
+
+.scroll-image:hover {
+  max-height: 100%; /* 图片最大宽度为容器宽度 */
+  width: auto; /* 自动调整高度以保持原始比例 */
+  border-radius: 0; /* 图片圆角 */
+  align-self: flex-end;
+  
 }
 
 .scroll-image-container:hover .scroll-image {
   transform: scale(1.05); /* Slight zoom on hover */
+  filter: drop-shadow(5px 5px 5px rgb(0, 0, 0, .0));
 }
 
 .description {
@@ -370,6 +404,14 @@ onMounted(fetchImages);
 
 .description-input button:hover {
   background-color: #21a1f1; /* Darker blue on hover */
+}
+
+.uploadbutton{
+  position:absolute;
+  top:10%;
+  right:5%;
+  
+  
 }
 
 </style>
