@@ -204,10 +204,11 @@ function jumptonextpage(path:string) {
 
 .sections {
   display: flex;
-  width: calc(100vw - 200px); /* Adjust for nav bar width */
+  width: 100vw; 
+  /* Adjust for nav bar width */
+  /* width: calc(100vw - 200px);  */
   height: 100vh;
   position: absolute;
-  left:0px;
   overflow-x: auto; /* Ensure the container can scroll horizontally */
 }
 
@@ -238,7 +239,7 @@ function jumptonextpage(path:string) {
   height: 20%;
   position: fixed;
   top: 0;
-  left: 50vw; /* Adjust for nav bar width */
+  right: 10vw; /* Adjust for nav bar width */
   color: aliceblue;
   display: flex;
   justify-content: center;
