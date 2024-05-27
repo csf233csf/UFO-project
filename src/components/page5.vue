@@ -65,7 +65,13 @@
     </div>
   </div>
 
-  <button class="uploadbutton" @click="uploadImage">Upload</button>
+
+  <input type="file" @change="onFileChange"  class="uploadbutton" />
+    <div v-if="showDescriptionInput" class="description-input">
+      <input v-model="description" placeholder="Enter image description" />
+      <button  @click="uploadImage">Upload</button>
+    </div>
+ 
   <!-- <div v-if="showDescriptionInput" class="description-input">
       <input v-model="description" placeholder="Enter image description" />
       
@@ -349,21 +355,16 @@ onMounted(fetchImages);
   filter: drop-shadow(5px 5px 5px rgb(0, 0, 0, .0));
 }
 
-.description {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: transparent;
-  padding: 5px;
-  border-radius: 5px;
-}
 
 .description-input {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  position:absolute;
+  top:10%;
+  right:5%;
+
 }
 
 .description-input input {
