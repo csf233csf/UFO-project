@@ -15,18 +15,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
-import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
-
+import { ref, onMounted } from 'vue';
+import { ref as dbRef, push, onValue } from 'firebase/database';
+import {database} from '@/firebaseConfig';
+// 接收来自page6的xpos ypos
 const props = defineProps<{ xPos: number; yPos: number }>();
 const emit = defineEmits(['close']);
 
 const newComment = ref('');
 const comments = ref<string[]>([]);
-const database = getDatabase();
 const imageUrl = ref<string | null>(null);
 
 onMounted(() => {
+  // 上传database picture url和xpos-ypos值
   const imageRef = dbRef(database, `images_map/${props.xPos}_${props.yPos}`);
   onValue(imageRef, (snapshot) => {
     const data = snapshot.val();
@@ -34,7 +35,7 @@ onMounted(() => {
       imageUrl.value = data.url;
     }
   });
-
+  // 通过database的xpos_ypos去创建一个独特的comment_map评论区
   const commentsRef = dbRef(database, `comment_map/${props.xPos}_${props.yPos}`);
   onValue(commentsRef, (snapshot) => {
     comments.value = [];
@@ -45,10 +46,12 @@ onMounted(() => {
   });
 });
 
+// 记得emit的对饮检查，关闭commentapp
 const closeCommentApp = () => {
   emit('close');
 };
 
+// 评论，aync异步
 const addComment = async () => {
   if (newComment.value.trim() !== '') {
     const commentsRef = dbRef(database, `comment_map/${props.xPos}_${props.yPos}`);
