@@ -5,6 +5,7 @@ import page2 from '@/components/page2.vue'
 import page4 from '@/components/page4.vue'
 import page3 from '@/components/page3.vue'
 import page5 from '@/components/page5.vue'
+import page6 from '@/components/page6.vue'
 
 // 这边修改ROUTE的路径
 const routes: Array<RouteRecordRaw> = [
@@ -32,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/page5',
         name: 'page5',
         component: page5
+    },
+    {
+        path: '/page6',
+        name: 'page6',
+        component: page6
     }
 ]
 

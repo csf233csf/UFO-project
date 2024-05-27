@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
@@ -72,6 +72,7 @@ const updateGradient = () => {
   document.documentElement.style.setProperty('--link-color', linkColor.value);
   
 };
+
 watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
 
 
@@ -143,7 +144,7 @@ function jumptonextpage(path:string) {
   timeline.to(page4Div.value, {
     opacity: 1,
     y: '0%',
-    duration: 0.2,
+    duration: 0.5,
     onComplete() {
       page4.value = true;
       router.push(path);

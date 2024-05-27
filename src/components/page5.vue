@@ -9,7 +9,13 @@
           class="scroll-image-container"
           @click="showImageDetails(index, 1)"
         >
-          <img
+
+        <img
+            :src="img.url"
+            class="scroll-image"
+          />
+
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 1)"
@@ -30,11 +36,16 @@
           @click="showImageDetails(index, 2)"
           
         >
-          <img
+        <img
+            :src="img.url"
+            class="scroll-image"
+        />
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 2)"
             @mouseleave="hideDescription(2)"
+
           />
           <!-- <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
@@ -51,11 +62,19 @@
           @click="showImageDetails(index, 3)"
           
         >
-          <img
+
+        <img
+            :src="img.url"
+            class="scroll-image"
+      
+          />
+
+          <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 3)"
             @mouseleave="hideDescription(3)"
+
           />
           <!-- <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
@@ -66,12 +85,6 @@
   </div>
 
 
-  <input type="file" @change="onFileChange"  class="uploadbutton" />
-    <div v-if="showDescriptionInput" class="description-input">
-      <input v-model="description" placeholder="Enter image description" />
-      <button  @click="uploadImage">Upload</button>
-    </div>
- 
   <!-- <div v-if="showDescriptionInput" class="description-input">
       <input v-model="description" placeholder="Enter image description" />
       
