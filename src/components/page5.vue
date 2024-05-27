@@ -1,5 +1,5 @@
 <template>
-  <h1>Page5</h1>
+  <!-- <h1>Page5</h1> -->
   <div class="images-row">
     <div class="image-container" ref="imageContainer1">
       <div class="image-scroller" ref="imageScroller1">
@@ -8,6 +8,7 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 1)"
+          
         >
           <img
             :src="img.url"
@@ -28,6 +29,7 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 2)"
+          
         >
           <img
             :src="img.url"
@@ -48,6 +50,7 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 3)"
+          
         >
           <img
             :src="img.url"
@@ -95,6 +98,11 @@ const showDescriptionInput = ref(false);
 const selectedFile = ref<File | null>(null);
 const description = ref('');
 
+const speed = ref();
+
+const currentIndex = ref(0);
+let intervalId = null;
+
 let timeline1: gsap.core.Timeline | null = null;
 let timeline2: gsap.core.Timeline | null = null;
 let timeline3: gsap.core.Timeline | null = null;
@@ -131,6 +139,7 @@ async function fetchImages() {
     console.log(images1, images2, images3)
 
     startScrolling();
+    //startAutoPlay();
   });
 }
 
@@ -159,11 +168,11 @@ async function uploadImage() {
 }
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1);
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2);
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3);
+  startContainerScrolling(imageScroller1, imageContainer1, timeline1,100);
+  startContainerScrolling(imageScroller2, imageContainer2, timeline2,0);
+  startContainerScrolling(imageScroller3, imageContainer3, timeline3,100);
 }
-function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null) {
+function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed:number) {
   if (scroller.value && container.value) {
     const containerWidth = container.value.clientWidth;
     const scrollerWidth = scroller.value.scrollWidth;
@@ -176,18 +185,20 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: 0 }, // Start from the current position
+      { x: -scrollerWidth-speed }, // Start from the negative of the scroller width
       {
-        x: -scrollerWidth, // Scroll to the end
-        duration: totalWidth / 300, // Adjust speed as needed
+        x: totalWidth, // Scroll to the beginning
+        duration: totalWidth / 100, // Adjust speed as needed
         ease: 'linear',
         modifiers: {
-          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth),
+          x: gsap.utils.unitize(x => parseFloat(x) ),
         },
       }
     );
   }
 }
+
+
 
 function showDescription(index: number, container: number) {
   const activeIndex = container === 1 ? activeIndex1 : container === 2 ? activeIndex2 : activeIndex3;
@@ -263,7 +274,9 @@ onMounted(fetchImages);
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f0f0f0; /* Light background for better contrast */
+  width: 100vw;
+  overflow: hidden;
+  background-color: white; /* Light background for better contrast */
   padding: 20px;
 }
 
@@ -271,23 +284,21 @@ onMounted(fetchImages);
   display: flex;
   flex-direction: column; /* Arrange containers in a column */
   position: absolute;
-  left:15%;
-  width: 80%;
-  max-width: 1200px; /* Limit the max width for better layout */
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  /* left:15%; */
+  width: 100vw;
+  height:100vh;
+  background-color: white;
   padding: 20px;
   margin-bottom: 20px;
 }
 
 .image-container {
   width: 100%; /* Ensure the containers fit within the column */
-  height: 200px;
+  height: 33.3%;
   overflow: hidden;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for each container */
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,18 +315,18 @@ onMounted(fetchImages);
 }
 
 .scroll-image-container {
-  flex: 0 0 auto; /* Prevent shrinking */
-  margin-right: 10px;
-  width: 200px; /* Ensure images fit within the container */
-  transition: transform 0.3s ease; /* Add transition effect */
+  flex: 0 0 auto; /* 防止收缩 */
+  height: 200px; /* 确保图片容器的宽度 */
+  margin-right: 100px; /* 图片之间的间距 */
   position: relative;
+  align-items: flex-start; /* 沿顶部对齐 */
 }
 
 .scroll-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px; /* Rounded corners for images */
+  max-height: 100%; /* 图片最大宽度为容器宽度 */
+  width: auto; /* 自动调整高度以保持原始比例 */
+  border-radius: 0; /* 图片圆角 */
+  align-self: flex-end;
 }
 
 .scroll-image-container:hover .scroll-image {
@@ -327,7 +338,7 @@ onMounted(fetchImages);
   bottom: 10px;
   left: 10px;
   background-color: rgba(0, 0, 0, 0.7);
-  color: #fff;
+  color: transparent;
   padding: 5px;
   border-radius: 5px;
 }
