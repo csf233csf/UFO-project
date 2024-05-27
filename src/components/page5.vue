@@ -8,23 +8,16 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 1)"
-          
         >
-
-        <img
-            :src="img.url"
-            class="scroll-image"
-          />
-
-          <!-- <img
+          <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 1)"
             @mouseleave="hideDescription(1)"
-          /> -->
-          <div v-if="activeIndex1 === index" class="description">
+          />
+          <!-- <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -37,19 +30,15 @@
           @click="showImageDetails(index, 2)"
           
         >
-        <img
-            :src="img.url"
-            class="scroll-image"
-        />
-          <!-- <img
+          <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 2)"
             @mouseleave="hideDescription(2)"
-          /> -->
-          <div v-if="activeIndex2 === index" class="description">
+          />
+          <!-- <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -62,22 +51,15 @@
           @click="showImageDetails(index, 3)"
           
         >
-
-        <img
-            :src="img.url"
-            class="scroll-image"
-      
-          />
-
-          <!-- <img
+          <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 3)"
             @mouseleave="hideDescription(3)"
-          /> -->
-          <div v-if="activeIndex3 === index" class="description">
+          />
+          <!-- <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -210,7 +192,7 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
       { x: -scrollerWidth-speed }, // Start from the negative of the scroller width
       {
         x: totalWidth, // Scroll to the beginning
-        duration: totalWidth / 100, // Adjust speed as needed
+        duration: totalWidth / 50, // Adjust speed as needed
         ease: 'linear',
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x) ),
@@ -232,8 +214,8 @@ function showDescription(index: number, container: number) {
   }
 
   const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  const target = scroller.value?.children[index] as HTMLElement;
-  if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
+  //const target = scroller.value?.children[index] as HTMLElement;
+  //if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
 }
 
 function hideDescription(container: number) {
