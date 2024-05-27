@@ -25,8 +25,8 @@ const hoveredImage = ref<string | null>(null);
 const images = ref<{ xPos: number; yPos: number; url: string }[]>([]);
 
 const handleMapClick = (event: MouseEvent) => {
-  xPos.value = event.clientX;
-  yPos.value = event.clientY;
+  xPos.value = event.offsetX;
+  yPos.value = event.offsetY;
   showDrawApp.value = true;
 };
 
