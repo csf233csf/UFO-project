@@ -8,6 +8,7 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 1)"
+          
         >
 
         <img
@@ -20,10 +21,10 @@
             class="scroll-image"
             @mouseover="showDescription(index, 1)"
             @mouseleave="hideDescription(1)"
-          />
-          <!-- <div v-if="activeIndex1 === index" class="description">
+          /> -->
+          <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -45,11 +46,10 @@
             class="scroll-image"
             @mouseover="showDescription(index, 2)"
             @mouseleave="hideDescription(2)"
-
-          />
-          <!-- <div v-if="activeIndex2 === index" class="description">
+          /> -->
+          <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -68,23 +68,21 @@
             class="scroll-image"
       
           />
-
           <!-- <img
             :src="img.url"
             class="scroll-image"
             @mouseover="showDescription(index, 3)"
             @mouseleave="hideDescription(3)"
-
-          />
-          <!-- <div v-if="activeIndex3 === index" class="description">
+          /> -->
+          <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-
+  <button class="uploadbutton" @click="uploadImage">Upload</button>
   <!-- <div v-if="showDescriptionInput" class="description-input">
       <input v-model="description" placeholder="Enter image description" />
       
@@ -211,7 +209,7 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
       { x: -scrollerWidth-speed }, // Start from the negative of the scroller width
       {
         x: totalWidth, // Scroll to the beginning
-        duration: totalWidth / 50, // Adjust speed as needed
+        duration: totalWidth / 100, // Adjust speed as needed
         ease: 'linear',
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x) ),
@@ -233,8 +231,8 @@ function showDescription(index: number, container: number) {
   }
 
   const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  //const target = scroller.value?.children[index] as HTMLElement;
-  //if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
+  const target = scroller.value?.children[index] as HTMLElement;
+  if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
 }
 
 function hideDescription(container: number) {
@@ -368,16 +366,21 @@ onMounted(fetchImages);
   filter: drop-shadow(5px 5px 5px rgb(0, 0, 0, .0));
 }
 
+.description {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: transparent;
+  padding: 5px;
+  border-radius: 5px;
+}
 
 .description-input {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  position:absolute;
-  top:10%;
-  right:5%;
-
 }
 
 .description-input input {
