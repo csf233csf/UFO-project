@@ -7,12 +7,10 @@
         <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
       </ul>
     </div>
-    
     <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
     <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
     <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3" @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
     <div class="sections" ref="sections">
-      
       <div class="text-div">
         <p>{{ pageNumber }}</p>
       </div>
@@ -115,9 +113,6 @@ const checkScrollPosition = () => {
     changeColor('#FFF72E', 3); // Change to the desired color for 66.66% to 100%
   }
 };
-
-
-
 
 onMounted(() => {
   sections.value!.addEventListener('scroll', checkScrollPosition);

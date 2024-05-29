@@ -1,10 +1,5 @@
 <template>
   <div>  
-    <!-- <transition name="fade">
-      <div class="overlay" v-if="loading">
-        <div class="spinner"></div>
-      </div>
-    </transition> -->
     <div v-if="showDrawApp">
       <DrawApp :xPos="xPos" :yPos="yPos" @close="closeDrawApp" />
       <div class="overlay"></div>
@@ -16,20 +11,20 @@
       </div>
       <div v-for="(img, index) in images" :key="index" class="image-button"
         :style="{ left: img.xPos + 'px', top: img.yPos + 'px'  }">
-        <button :style="{backgroundColor:img.color}" @click.stop="openCommentApp(img.xPos, img.yPos)" @mouseover="showImage(img.url)"
+        <button :style="{backgroundColor:img.color}" @click.stop="openCommentApp(img.xPos, img.yPos)" 
+          @mouseover="showImage(img.url, $event)"
           @mouseleave="hideImage">
-          <!-- Image {{ index + 1 }} -->
         </button>
       </div>
-      <div v-if="hoveredImage" class="hover-image">
-        <img :src="hoveredImage" />
+      <div v-if="hoveredImage" class="hover-image" :style="{ top: hoverY + 'px', left: hoverX + 'px' }">
+        <v-img :src="hoveredImage" :width = "200" :height = '200' cover/>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch} from 'vue';
+import { ref, onMounted } from 'vue';
 import { database } from '@/firebaseConfig';
 import { ref as dbRef, onValue } from 'firebase/database';
 import DrawApp from './DrawApp2.vue';
@@ -43,6 +38,8 @@ const showCommentApp = ref(false);
 const selectedXPos = ref<number | null>(null);
 const selectedYPos = ref<number | null>(null);
 const hoveredImage = ref<string | null>(null);
+const hoverX = ref(0);
+const hoverY = ref(0);
 const images = ref<{ xPos: number; yPos: number; url: string; color: string }[]>([]);
 const colors = ['#FF9900', '#FF00C7', '#52FF00','#FFF72E','#00FFFF','#7000FF'];
 const loading = ref(true);
@@ -74,8 +71,11 @@ const openCommentApp = (x: number, y: number) => {
   showCommentApp.value = true;
 };
 
-const showImage = (url: string) => {
+const showImage = (url: string, event: MouseEvent) => {
   hoveredImage.value = url;
+  const buttonRect = (event.target as HTMLElement).getBoundingClientRect();
+  hoverX.value = buttonRect.left + window.scrollX - 200; // Add window scroll position to make it accurate
+  hoverY.value = buttonRect.top + window.scrollY - 70; // Adjust the value based on the image height
 };
 
 const hideImage = () => {
@@ -94,7 +94,7 @@ onMounted(() => {
       data.color = color;
       images.value.push(data);
 
-      // 预加载图片
+      // Preload image
       const img = new Image();
       img.src = data.url;
       promises.push(new Promise<void>((resolve) => {
@@ -103,12 +103,12 @@ onMounted(() => {
     });
 
     Promise.all(promises).then(() => {
-      loading.value = false; // 预加载完成，进行渲染
+      loading.value = false; // Mark loading as complete once all images are preloaded
+      // GSAP fade-in effect
       gsap.fromTo('.map-container', { opacity: 0 }, { opacity: 1, duration: 0.4 });
     });
   });
 });
-
 </script>
 
 <style scoped>
@@ -145,18 +145,16 @@ onMounted(() => {
 
 .hover-image {
   position: absolute;
-  top: 10px;
-  left: 10px;
   z-index: 1000;
   border: 1px solid #ccc;
   background-color: white;
   padding: 5px;
 }
 
-.hover-image img {
+/* .hover-image img {
   max-width: 200px;
   max-height: 200px;
-}
+} */
 
 .overlay {
   position: fixed;
@@ -166,7 +164,6 @@ onMounted(() => {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  /* Ensure it covers all other elements */
   cursor: not-allowed;
 }
 
@@ -180,9 +177,8 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(255, 255, 255, 0.8); */
   backdrop-filter: blur(5px);
-  z-index: 999; /* 确保覆盖其他内容 */
+  z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,5 +207,4 @@ onMounted(() => {
 .fade-leave-to {
   opacity: 0; /* 初始透明度为0 */
 }
-
 </style>

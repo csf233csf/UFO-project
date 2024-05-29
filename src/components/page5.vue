@@ -1,5 +1,4 @@
 <template>
-  <!-- <h1>Page5</h1> -->
   <div class="images-row">
     <div class="image-container" ref="imageContainer1">
       <div class="image-scroller" ref="imageScroller1">
@@ -7,21 +6,12 @@
           v-for="(img, index) in images1"
           :key="img.id"
           class="scroll-image-container"
-          @click="showImageDetails(index, 1)"
-          
+          @click="showImageDetails(index, 1)" 
         >
-
         <img
             :src="img.url"
             class="scroll-image"
           />
-
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 1)"
-            @mouseleave="hideDescription(1)"
-          /> -->
           <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
           </div>
@@ -41,12 +31,6 @@
             :src="img.url"
             class="scroll-image"
         />
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 2)"
-            @mouseleave="hideDescription(2)"
-          /> -->
           <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
           </div>
@@ -60,20 +44,11 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 3)"
-          
         >
-
         <img
             :src="img.url"
             class="scroll-image"
-      
           />
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 3)"
-            @mouseleave="hideDescription(3)"
-          /> -->
           <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
           </div>
@@ -83,14 +58,8 @@
   </div>
   <input type="file" @change="onFileChange"  class="uploadbutton" />
     <div v-if="showDescriptionInput" class="description-input">
-      <input v-model="description" placeholder="Enter image description" />
       <button @click="uploadImage">Upload</button>
     </div>
- 
-  <!-- <div v-if="showDescriptionInput" class="description-input">
-      <input v-model="description" placeholder="Enter image description" />
-
-  </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -98,7 +67,6 @@ import { ref, onMounted, type Ref } from 'vue';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
 import gsap from 'gsap';
-import ImageDetail from './ImageDetail.vue';
 import { storage } from '@/firebaseConfig';
 
 const images1 = ref<{ id: string; url: string; description: string }[]>([]);
@@ -203,7 +171,6 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     const containerWidth = container.value.clientWidth;
     const scrollerWidth = scroller.value.scrollWidth;
     const totalWidth = scrollerWidth + containerWidth;
-
     if (timeline) {
       timeline.kill();
     }
@@ -223,36 +190,6 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
   }
 }
 
-
-
-function showDescription(index: number, container: number) {
-  const activeIndex = container === 1 ? activeIndex1 : container === 2 ? activeIndex2 : activeIndex3;
-  activeIndex.value = index;
-
-  const timeline = container === 1 ? timeline1 : container === 2 ? timeline2 : timeline3;
-  if (timeline) {
-    timeline.pause(); // 暂停动画
-  }
-
-  const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  const target = scroller.value?.children[index] as HTMLElement;
-  if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
-}
-
-function hideDescription(container: number) {
-  const activeIndex = container === 1 ? activeIndex1 : container === 2 ? activeIndex2 : activeIndex3;
-  const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  const target = scroller.value?.children[activeIndex.value!] as HTMLElement;
-  if (target) gsap.to(target.querySelector('img'), { scale: 1, duration: 0.3 }); // 恢复图片大小
-
-  const timeline = container === 1 ? timeline1 : container === 2 ? timeline2 : container === 3 ? timeline3 : null;
-  if (timeline) {
-    timeline.resume(); // 恢复动画
-  }
-
-  activeIndex.value = null;
-}
-
 function showImageDetails(index: number, container: number) {
   const images = container === 1 ? images1 : container === 2 ? images2 : images3;
   const img = images.value[index];
@@ -261,14 +198,6 @@ function showImageDetails(index: number, container: number) {
   selectedImageId.value =img.id;
   fetchComments(img.id);
 showImageDetail.value = true;
-}
-
-function closeImageDetail() {
-showImageDetail.value = false;
-selectedImage.value = null;
-selectedImageDescription.value = null;
-selectedImageComments.value = [];
-selectedImageId.value = null;
 }
 
 async function fetchComments(imageId: string) {
@@ -280,14 +209,6 @@ async function fetchComments(imageId: string) {
     });
   });
 }
-
-async function addComment(comment: string) {
-  if (selectedImageId.value) {
-    const commentsRef = dbRef(db, `comments/${selectedImageId.value}`);
-    await push(commentsRef, comment);
-  }
-}
-
 
 onMounted(fetchImages);
 </script>
@@ -301,7 +222,7 @@ onMounted(fetchImages);
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: white; /* Light background for better contrast */
+  background-color: rgb(255, 255, 255); /* Light background for better contrast */
   padding: 20px;
   overflow: hidden;
 }
@@ -313,7 +234,7 @@ onMounted(fetchImages);
   /* left:15%; */
   width: 100vw;
   height:100vh;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   padding: 20px;
   margin-bottom: 20px;
 }
