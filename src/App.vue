@@ -1,5 +1,12 @@
 <template>
-  <div class="app-container" v-if="showSections" ref="backgroundSection">
+   <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
+    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
+      @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
+      
+  <div class="gradient-div">
+    </div>
+
     <div class="nav-bar" >
         <ul>
         <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
@@ -7,6 +14,12 @@
         <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
       </ul>
     </div>
+
+   
+  <div class="app-container" v-if="showSections" ref="backgroundSection">
+    
+
+    
     
     <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
     <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
@@ -231,6 +244,7 @@ function jumptonextpage(path:string) {
   bottom: 0;
   left: 0; /* Adjust for nav bar width */
   background: linear-gradient(to top, var(--start-color), var(--end-color));
+  z-index:1000000;
 }
 
 .text-div {
@@ -252,7 +266,7 @@ function jumptonextpage(path:string) {
   left: 50%;
   bottom: 10%;
   transform: translateX(-50%);
-  z-index:100;
+  z-index:1000001;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
