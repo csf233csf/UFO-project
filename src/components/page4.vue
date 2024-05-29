@@ -1,11 +1,85 @@
 <template>
-    <div class="pa4">
-        <h1>page4</h1>
-        <p>pag3</p>
-        <button>jnfsj</button>
-        <!-- <img src="/images/Slide 16_9 - 19.png" alt="图片" class="absolute-image"/> -->
-    </div>
-</template>
+  <div>
+    <v-toolbar
+      image="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      dark
+      prominent
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Vuetify</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-export</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </div>
+    <v-container>
+      <v-row align="center" justify="center">
+        <v-col class="text-center" cols="12">
+          <v-btn size="x-large">Default Elevation (2)</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="4" size="x-large">Elevation 4</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="8" size="x-large">Elevation 8</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="12" size="x-large">Elevation 12</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="16" size="x-large">Elevation 16</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="20" size="x-large">Elevation 20</v-btn>
+        </v-col>
+  
+        <v-col cols="auto">
+          <v-btn elevation="24" size="x-large">Elevation 24</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  <v-container>
+    <v-row justify="space-between">
+      <v-col v-for="cursor in cursors" :key="cursor" cols="3">
+        <v-btn
+          :class="`cursor-${cursor}`"
+          :text="cursor"
+          block
+        ></v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+  </template>
+
+<script>
+export default {
+  data: () => ({
+    cursors: [
+      'auto',
+      'default',
+      'grab',
+      'grabbing',
+      'help',
+      'move',
+      'none',
+      'not-allowed',
+      'pointer',
+      'progress',
+      'text',
+      'wait',
+    ],
+  }),
+}
+</script>
 
 <style scoped>
 /* .pa4{

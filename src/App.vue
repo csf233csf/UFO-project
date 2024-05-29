@@ -8,9 +8,9 @@
       </ul>
     </div>
     
-    <button class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</button>
-    <button class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</button>
-    <button class="jump-button" v-if="showButton3" @click="jumptonextpage('/page6')">跳转下个页面</button>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
+    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3" @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
     <div class="sections" ref="sections">
       
       <div class="text-div">
