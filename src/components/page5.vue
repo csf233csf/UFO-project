@@ -81,11 +81,15 @@
       </div>
     </div>
   </div>
-
-  <button class="uploadbutton" @click="uploadImage">Upload</button>
+  <input type="file" @change="onFileChange"  class="uploadbutton" />
+    <div v-if="showDescriptionInput" class="description-input">
+      <input v-model="description" placeholder="Enter image description" />
+      <button @click="uploadImage">Upload</button>
+    </div>
+ 
   <!-- <div v-if="showDescriptionInput" class="description-input">
       <input v-model="description" placeholder="Enter image description" />
-      
+
   </div> -->
 </template>
 
@@ -409,8 +413,6 @@ onMounted(fetchImages);
   position:absolute;
   top:10%;
   right:5%;
-  
-  
 }
 
 </style>
