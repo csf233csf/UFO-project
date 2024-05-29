@@ -1,5 +1,4 @@
 <template>
-  <!-- <h1>Page5</h1> -->
   <div class="images-row">
     <div class="image-container" ref="imageContainer1">
       <div class="image-scroller" ref="imageScroller1">
@@ -7,21 +6,12 @@
           v-for="(img, index) in images1"
           :key="img.id"
           class="scroll-image-container"
-          @click="showImageDetails(index, 1)"
-          
+          @click="showImageDetails(index, 1)" 
         >
-
         <img
             :src="img.url"
             class="scroll-image"
           />
-
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 1)"
-            @mouseleave="hideDescription(1)"
-          /> -->
           <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
           </div>
@@ -41,12 +31,6 @@
             :src="img.url"
             class="scroll-image"
         />
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 2)"
-            @mouseleave="hideDescription(2)"
-          /> -->
           <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
           </div>
@@ -60,20 +44,11 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 3)"
-          
         >
-
         <img
             :src="img.url"
             class="scroll-image"
-      
           />
-          <!-- <img
-            :src="img.url"
-            class="scroll-image"
-            @mouseover="showDescription(index, 3)"
-            @mouseleave="hideDescription(3)"
-          /> -->
           <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
           </div>
@@ -81,12 +56,24 @@
       </div>
     </div>
   </div>
-
-  <button class="uploadbutton" @click="uploadImage">Upload</button>
-  <!-- <div v-if="showDescriptionInput" class="description-input">
-      <input v-model="description" placeholder="Enter image description" />
-      
-  </div> -->
+  <v-btn @click="showUploadDialog = true" class="uploadbutton" color="primary">Upload Image</v-btn>
+  
+  <v-dialog v-model="showUploadDialog" max-width="600px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">Upload Image</span>
+      </v-card-title>
+      <v-card-text>
+        <v-file-input v-model="selectedFile" label="Select Image" @change="previewImage"></v-file-input>
+        <v-img v-if="previewUrl" :src="previewUrl" max-height="300"></v-img>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" @click="uploadImage">Upload</v-btn>
+        <v-btn color="grey darken-1" @click="showUploadDialog = false">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -114,6 +101,8 @@ const selectedImage = ref<string | null>(null);
 const selectedImageDescription = ref<string | null>(null);
 const selectedImageComments = ref<string[]>([]);
 const selectedImageId = ref<string | null>(null);
+const showUploadDialog = ref(false);
+const previewUrl = ref<string | null>(null);
 
 const db = getDatabase();
 const showDescriptionInput = ref(false);
@@ -129,6 +118,11 @@ let timeline1: gsap.core.Timeline | null = null;
 let timeline2: gsap.core.Timeline | null = null;
 let timeline3: gsap.core.Timeline | null = null;
 
+function previewImage(event: Event) {
+    if (selectedFile.value) {
+      previewUrl.value = URL.createObjectURL(selectedFile.value);
+    }
+  }
 async function fetchImages() {
   const imagesRef = dbRef(db, 'images');
   onValue(imagesRef, (snapshot) => {
@@ -190,64 +184,42 @@ async function uploadImage() {
 }
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1,100);
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2,0);
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3,100);
+  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 100);
+  startContainerScrolling(imageScroller2, imageContainer2, timeline2, 0);
+  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 100);
 }
-function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed:number) {
+
+function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed: number) {
   if (scroller.value && container.value) {
     const containerWidth = container.value.clientWidth;
     const scrollerWidth = scroller.value.scrollWidth;
     const totalWidth = scrollerWidth + containerWidth;
-
     if (timeline) {
       timeline.kill();
     }
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: -scrollerWidth-speed }, // Start from the negative of the scroller width
+      { x: -scrollerWidth - 750 },
       {
-        x: totalWidth, // Scroll to the beginning
-        duration: totalWidth / 100, // Adjust speed as needed
+        x: totalWidth - 550,
+        duration: totalWidth / 120,
         ease: 'linear',
         modifiers: {
-          x: gsap.utils.unitize(x => parseFloat(x) ),
+          x: gsap.utils.unitize(x => parseFloat(x)),
         },
       }
     );
+    // Add event listeners to pause/resume on hover
+    // container.value.addEventListener('mouseenter', () => {
+    //   timeline?.pause();
+    // });
+    // container.value.addEventListener('mouseleave', () => {
+    //   timeline?.resume();
+    // });
   }
 }
 
-
-
-function showDescription(index: number, container: number) {
-  const activeIndex = container === 1 ? activeIndex1 : container === 2 ? activeIndex2 : activeIndex3;
-  activeIndex.value = index;
-
-  const timeline = container === 1 ? timeline1 : container === 2 ? timeline2 : timeline3;
-  if (timeline) {
-    timeline.pause(); // 暂停动画
-  }
-
-  const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  const target = scroller.value?.children[index] as HTMLElement;
-  if (target) gsap.to(target.querySelector('img'), { scale: 1.1, duration: 0.3 }); // 图片放大
-}
-
-function hideDescription(container: number) {
-  const activeIndex = container === 1 ? activeIndex1 : container === 2 ? activeIndex2 : activeIndex3;
-  const scroller = container === 1 ? imageScroller1 : container === 2 ? imageScroller2 : imageScroller3;
-  const target = scroller.value?.children[activeIndex.value!] as HTMLElement;
-  if (target) gsap.to(target.querySelector('img'), { scale: 1, duration: 0.3 }); // 恢复图片大小
-
-  const timeline = container === 1 ? timeline1 : container === 2 ? timeline2 : container === 3 ? timeline3 : null;
-  if (timeline) {
-    timeline.resume(); // 恢复动画
-  }
-
-  activeIndex.value = null;
-}
 
 function showImageDetails(index: number, container: number) {
   const images = container === 1 ? images1 : container === 2 ? images2 : images3;
@@ -257,14 +229,6 @@ function showImageDetails(index: number, container: number) {
   selectedImageId.value =img.id;
   fetchComments(img.id);
 showImageDetail.value = true;
-}
-
-function closeImageDetail() {
-showImageDetail.value = false;
-selectedImage.value = null;
-selectedImageDescription.value = null;
-selectedImageComments.value = [];
-selectedImageId.value = null;
 }
 
 async function fetchComments(imageId: string) {
@@ -277,12 +241,7 @@ async function fetchComments(imageId: string) {
   });
 }
 
-async function addComment(comment: string) {
-  if (selectedImageId.value) {
-    const commentsRef = dbRef(db, `comments/${selectedImageId.value}`);
-    await push(commentsRef, comment);
-  }
-}
+
 
 
 onMounted(fetchImages);
@@ -409,8 +368,6 @@ onMounted(fetchImages);
   position:absolute;
   top:10%;
   right:5%;
-  
-  
 }
 
 </style>

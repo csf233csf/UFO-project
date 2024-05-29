@@ -11,12 +11,16 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.11",
     "firebase": "^10.12.1",
     "gsap": "^3.12.5",
     "i": "^0.3.7",
     "lodash": "^4.17.21",
+    "vite-plugin-vuetify": "^2.0.3",
     "vue": "^3.4.21",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vuetify": "^3.6.0-beta.0.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
