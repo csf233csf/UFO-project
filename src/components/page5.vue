@@ -200,10 +200,10 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: -scrollerWidth - speed },
+      { x: -scrollerWidth - 750 },
       {
-        x: totalWidth,
-        duration: totalWidth / 100,
+        x: totalWidth - 550,
+        duration: totalWidth / 120,
         ease: 'linear',
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x)),
