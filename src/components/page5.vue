@@ -56,10 +56,24 @@
       </div>
     </div>
   </div>
-  <input type="file" @change="onFileChange"  class="uploadbutton" />
-    <div v-if="showDescriptionInput" class="description-input">
-      <button @click="uploadImage">Upload</button>
-    </div>
+  <v-btn @click="showUploadDialog = true" class="uploadbutton" color="primary">Upload Image</v-btn>
+  
+  <v-dialog v-model="showUploadDialog" max-width="600px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">Upload Image</span>
+      </v-card-title>
+      <v-card-text>
+        <v-file-input v-model="selectedFile" label="Select Image" @change="previewImage"></v-file-input>
+        <v-img v-if="previewUrl" :src="previewUrl" max-height="300"></v-img>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="uploadImage">Upload</v-btn>
+        <v-btn color="grey darken-1" text @click="showUploadDialog = false">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -67,6 +81,7 @@ import { ref, onMounted, type Ref } from 'vue';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
 import gsap from 'gsap';
+import ImageDetail from './ImageDetail.vue';
 import { storage } from '@/firebaseConfig';
 
 const images1 = ref<{ id: string; url: string; description: string }[]>([]);
@@ -86,6 +101,8 @@ const selectedImage = ref<string | null>(null);
 const selectedImageDescription = ref<string | null>(null);
 const selectedImageComments = ref<string[]>([]);
 const selectedImageId = ref<string | null>(null);
+const showUploadDialog = ref(false);
+const previewUrl = ref<string | null>(null);
 
 const db = getDatabase();
 const showDescriptionInput = ref(false);
@@ -101,6 +118,11 @@ let timeline1: gsap.core.Timeline | null = null;
 let timeline2: gsap.core.Timeline | null = null;
 let timeline3: gsap.core.Timeline | null = null;
 
+function previewImage(event: Event) {
+    if (selectedFile.value) {
+      previewUrl.value = URL.createObjectURL(selectedFile.value);
+    }
+  }
 async function fetchImages() {
   const imagesRef = dbRef(db, 'images');
   onValue(imagesRef, (snapshot) => {
@@ -162,11 +184,12 @@ async function uploadImage() {
 }
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1,100);
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2,0);
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3,100);
+  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 100);
+  startContainerScrolling(imageScroller2, imageContainer2, timeline2, 0);
+  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 100);
 }
-function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed:number) {
+
+function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed: number) {
   if (scroller.value && container.value) {
     const containerWidth = container.value.clientWidth;
     const scrollerWidth = scroller.value.scrollWidth;
@@ -177,18 +200,26 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: -scrollerWidth-speed }, // Start from the negative of the scroller width
+      { x: -scrollerWidth - speed },
       {
-        x: totalWidth, // Scroll to the beginning
-        duration: totalWidth / 100, // Adjust speed as needed
+        x: totalWidth,
+        duration: totalWidth / 100,
         ease: 'linear',
         modifiers: {
-          x: gsap.utils.unitize(x => parseFloat(x) ),
+          x: gsap.utils.unitize(x => parseFloat(x)),
         },
       }
     );
+    // Add event listeners to pause/resume on hover
+    container.value.addEventListener('mouseenter', () => {
+      timeline?.pause();
+    });
+    container.value.addEventListener('mouseleave', () => {
+      timeline?.resume();
+    });
   }
 }
+
 
 function showImageDetails(index: number, container: number) {
   const images = container === 1 ? images1 : container === 2 ? images2 : images3;
@@ -210,6 +241,9 @@ async function fetchComments(imageId: string) {
   });
 }
 
+
+
+
 onMounted(fetchImages);
 </script>
 
@@ -222,7 +256,7 @@ onMounted(fetchImages);
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: rgb(255, 255, 255); /* Light background for better contrast */
+  background-color: white; /* Light background for better contrast */
   padding: 20px;
   overflow: hidden;
 }
@@ -234,7 +268,7 @@ onMounted(fetchImages);
   /* left:15%; */
   width: 100vw;
   height:100vh;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   padding: 20px;
   margin-bottom: 20px;
 }
