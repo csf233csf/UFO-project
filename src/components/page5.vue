@@ -69,8 +69,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="uploadImage">Upload</v-btn>
-        <v-btn color="grey darken-1" text @click="showUploadDialog = false">Cancel</v-btn>
+        <v-btn color="blue darken-1" @click="uploadImage">Upload</v-btn>
+        <v-btn color="grey darken-1" @click="showUploadDialog = false">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -211,12 +211,12 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
       }
     );
     // Add event listeners to pause/resume on hover
-    container.value.addEventListener('mouseenter', () => {
-      timeline?.pause();
-    });
-    container.value.addEventListener('mouseleave', () => {
-      timeline?.resume();
-    });
+    // container.value.addEventListener('mouseenter', () => {
+    //   timeline?.pause();
+    // });
+    // container.value.addEventListener('mouseleave', () => {
+    //   timeline?.resume();
+    // });
   }
 }
 
