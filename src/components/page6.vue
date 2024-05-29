@@ -34,6 +34,7 @@ import { database } from '@/firebaseConfig';
 import { ref as dbRef, onValue } from 'firebase/database';
 import DrawApp from './DrawApp2.vue';
 import CommentApp from './CommentApp.vue';
+import { gsap } from 'gsap';
 
 const xPos = ref(0);
 const yPos = ref(0);
@@ -93,11 +94,11 @@ onMounted(() => {
     });
   }),
   setTimeout(() => {
-      loading.value = false; // 页面加载完成
-    }, 2000); // 这里可以根据实际情况调整加载时间
-  }
-);
-
+    loading.value = false; // 页面加载完成
+    // GSAP fade-in effect
+    gsap.fromTo('.map-container', { opacity: 0 }, { opacity: 1, duration:0.4 });
+  }, 2000); // 这里可以根据实际情况调整加载时间
+});
 
 </script>
 
@@ -111,11 +112,10 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
   background-image: url('/images/mapbg.jpg');
   background-size: cover;
   background-position: center;
+  opacity: 0; /* Initial opacity for fade-in effect */
 }
 
 .image-button {

@@ -138,7 +138,7 @@ function jumptonextpage(path:string) {
   timeline.to(backgroundSection.value, {
     y: '100%',
     opacity: 0,
-    duration: 1,
+    duration: 0.5,
   });
   // page4Div 出现
   timeline.to(page4Div.value, {
