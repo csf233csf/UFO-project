@@ -1,61 +1,100 @@
 <template>
-    <div style="width:80vw; height:60vh; position: absolute; right:20px; top:10px">
-        <div class="grid-container">
-            <div class="iPhonecontainer">
-                <v-img
-                :width="1"
-                aspect-ratio="1"
-                src="/images/iPhone-img1.png" alt="Image 1" />
-            </div>
-            <div class="iPhonecontainer">
-                <v-img
-                src="/images/iPhone-img1.png" alt="Image 1" />
-               
-            </div>
-            <div class="iPhonecontainer">
-                <v-img
-                src="/images/iPhone-img1.png" alt="Image 1" />
-                
-            </div>
-        </div>
+  <div class="container">
+    <div class="iPhoneContainer" @mouseover="showVideo(video1)" @mouseleave="hideVideo(video1)">
+      <img class="img1" src="/images/iPhone1.png">
+      <img class="img2" src="/images/iPhone.png">
+      <video ref="video1" class="hover-video" muted loop>
+        <source src="/images/0514.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
+    <div class="iPhoneContainer" @mouseover="showVideo(video2)" @mouseleave="hideVideo(video2)">
+      <img class="img1" src="/images/iPhone2.png">
+      <img class="img2" src="/images/iPhone.png">
+      <video ref="video2" class="hover-video" muted loop>
+        <source src="/images/0514.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="iPhoneContainer" @mouseover="showVideo(video3)" @mouseleave="hideVideo(video3)">
+      <img class="img1" src="/images/iPhone3.png">
+      <img class="img2" src="/images/iPhone.png">
+      <video ref="video3" class="hover-video" muted loop>
+        <source src="/images/0514.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
 </template>
 
-<script>
-export default {
-    name: 'ThreeColumnGrid',
+<script lang="ts" setup>
+import { ref, onMounted, type Ref } from 'vue';
+
+const video1 = ref<HTMLVideoElement | null>(null);
+const video2 = ref<HTMLVideoElement | null>(null);
+const video3 = ref<HTMLVideoElement | null>(null);
+
+const showVideo = (videoRef: Ref<HTMLElement | null>) => {
+  const videoElement = videoRef;
+  if (videoElement) {
+    console.log('Showing video:', videoElement);
+    videoElement.style.display = 'block';
+    videoElement.play().catch(error => {
+      console.error('Error trying to play video:', error);
+    });
+  } else {
+    console.error('Video element is null');
+  }
+};
+
+const hideVideo = (videoRef: Ref<HTMLElement | null>) => {
+  const videoElement = videoRef;
+  if (videoElement) {
+    console.log('Hiding video:', videoElement);
+    videoElement.pause();
+    videoElement.style.display = 'none';
+  } else {
+    console.error('Video element is null');
+  }
 };
 </script>
 
-<style>
-.grid-container {
-    width: 100%;
-    height:100%;
-    display: grid;
-    grid-template-columns: repeat(3, 33.3%);
-    justify-content: space-between;
-    
-    right:50px;
-    /* Ensure spacing between columns */
+<style scoped>
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 60vw;
 }
 
-.iPhonecontainer {
-    border: 1px solid #adadad;
-    padding: 20px;
-    width: 100%;
-    display:flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    /* Ensure padding and border are included in width */
+.container .iPhoneContainer {
+  background-color: transparent;
 }
 
-.iPhonecontainer img {
-    max-width: 100%;
-    /* Ensure image does not exceed the width of the container */
-    height: auto;
-    /* Maintain aspect ratio */
+img {
+  height: 400px;
+}
 
+.iPhoneContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.img1 {
+  z-index: 1;
+}
+
+.img2 {
+  position: absolute;
+  z-index: 2;
+}
+
+.hover-video {
+  height: 300px;
+  position: absolute;
+  z-index: 3;
+  width: auto;
+  display: none; /* Hide video by default */
+  top: 20px;
 }
 </style>
