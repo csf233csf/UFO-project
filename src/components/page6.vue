@@ -86,18 +86,27 @@ onMounted(() => {
   const imagesRef = dbRef(database, 'images_map');
   onValue(imagesRef, (snapshot) => {
     images.value = [];
+    const promises: Promise<void>[] = [];
+    
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
       const color = getRandomColor();
       data.color = color;
       images.value.push(data);
+
+      // 预加载图片
+      const img = new Image();
+      img.src = data.url;
+      promises.push(new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+      }));
     });
-  }),
-  setTimeout(() => {
-    loading.value = false; // 页面加载完成
-    // GSAP fade-in effect
-    gsap.fromTo('.map-container', { opacity: 0 }, { opacity: 1, duration:0.4 });
-  }, 2000); // 这里可以根据实际情况调整加载时间
+
+    Promise.all(promises).then(() => {
+      loading.value = false; // 预加载完成，进行渲染
+      gsap.fromTo('.map-container', { opacity: 0 }, { opacity: 1, duration: 0.4 });
+    });
+  });
 });
 
 </script>

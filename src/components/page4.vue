@@ -147,48 +147,5 @@
   </div>
   </template>
 
-<script>
-export default {
-  data: () => ({
-    cursors: [
-      'auto',
-      'default',
-      'grab',
-      'grabbing',
-      'help',
-      'move',
-      'none',
-      'not-allowed',
-      'pointer',
-      'progress',
-      'text',
-      'wait',
-    ],
-    expand: false,
-      expand2: false,
-  }),
-}
+<script lang="ts" setup>
 </script>
-
-<style scoped>
-/* .pa4{
-    background-image: url('/images/Slide 16_9 - 19.png');
-} */
-
-.absolute-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index:-1;
-}
-
-
-
-.pa4{
-    color:white;
-    padding:50px;
-}
-</style>
