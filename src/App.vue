@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUpdated } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
@@ -154,9 +154,15 @@ const checkScrollPosition = () => {
 
 
 
-onMounted(() => {
+onMounted(() => {      
   sections.value!.addEventListener('scroll', checkScrollPosition);
   checkScrollPosition();
+  router.afterEach((to) => {
+        if (to.name === "/") {
+          sections.value!.addEventListener('scroll', checkScrollPosition);
+          checkScrollPosition();
+        }
+      });
 });
 
 const scrollToSection = (sectionNumber: number) => {
