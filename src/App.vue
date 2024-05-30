@@ -3,17 +3,14 @@
   <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
   <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
     @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
-
   <div class="gradient-div">
   </div>
-
   <div class="Title">
     <div class="titleWrapper">
     <h1>{{ title }}</h1>
     <p>{{ content }},</p>
     </div>
   </div>
-
   <div class="nav-bar">
     <ul>
       <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
@@ -21,8 +18,6 @@
       <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
     </ul>
   </div>
-
-
   <div class="app-container" v-if="showSections" ref="backgroundSection">
     <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
     <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
@@ -45,14 +40,14 @@
       </section>
     </div>
   </div>
-  <div v-if="page4" ref="page4Div" class="fade-in">
+  <!-- <div v-if="page4" ref="page4Div" class="fade-in">
     <p4>page4</p4>
-  </div>
-  <router-view></router-view>
+  </div> -->
+  <router-view v-if="route.path !== '/'"></router-view>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, defineComponent } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
@@ -61,6 +56,7 @@ import page1 from '@/components/page1.vue';
 import page2 from '@/components/page2.vue';
 import page3 from '@/components/page3.vue';
 // import Page4 from '@/components/page4.vue';
+
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -85,7 +81,6 @@ let title = ref('Initial Title');
 let content = ref('Initial Content');
 
 // const changeTitle = (newTitle: string) => {
-//   console.log("wij");
 //   title.value = newTitle;
 // };
 function changeTitle(newTitle: string,newContent: string){
@@ -101,8 +96,6 @@ const updateGradient = () => {
 };
 
 watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
-
-
 
 const scrollProgress = ref(0);
 const previousColor = ref(startColor.value);
@@ -156,8 +149,7 @@ onMounted(() => {
 
 function handleBackNavigation() {
   console.log('User navigated back to this page');
-  sections.value!.addEventListener('scroll', checkScrollPosition);
-  checkScrollPosition();
+  location.reload()
 }
 
 onBeforeUnmount(() => {

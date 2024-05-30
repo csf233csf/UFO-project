@@ -37,7 +37,6 @@ const video3 = ref<HTMLVideoElement | null>(null);
 const showVideo = (videoRef: Ref<HTMLElement | null>) => {
   const videoElement = videoRef;
   if (videoElement) {
-    console.log('Showing video:', videoElement);
     videoElement.style.display = 'block';
     videoElement.play().catch(error => {
       console.error('Error trying to play video:', error);
@@ -50,7 +49,6 @@ const showVideo = (videoRef: Ref<HTMLElement | null>) => {
 const hideVideo = (videoRef: Ref<HTMLElement | null>) => {
   const videoElement = videoRef;
   if (videoElement) {
-    console.log('Hiding video:', videoElement);
     videoElement.pause();
     videoElement.style.display = 'none';
   } else {

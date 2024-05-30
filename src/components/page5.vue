@@ -25,7 +25,6 @@
           :key="img.id"
           class="scroll-image-container"
           @click="showImageDetails(index, 2)"
-          
         >
         <img
             :src="img.url"
@@ -78,11 +77,11 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, type Ref } from 'vue';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
 import gsap from 'gsap';
-import ImageDetail from './ImageDetail.vue';
 import { storage } from '@/firebaseConfig';
+// import ImageDetail from './ImageDetail.vue';
 
 const images1 = ref<{ id: string; url: string; description: string }[]>([]);
 const images2 = ref<{ id: string; url: string; description: string }[]>([]);
@@ -210,6 +209,7 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
         },
       }
     );
+    // 暂停动画，注释
     // Add event listeners to pause/resume on hover
     // container.value.addEventListener('mouseenter', () => {
     //   timeline?.pause();
@@ -219,7 +219,6 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     // });
   }
 }
-
 
 function showImageDetails(index: number, container: number) {
   const images = container === 1 ? images1 : container === 2 ? images2 : images3;
@@ -240,9 +239,6 @@ async function fetchComments(imageId: string) {
     });
   });
 }
-
-
-
 
 onMounted(fetchImages);
 </script>

@@ -6,9 +6,15 @@ import page4 from '@/components/page4.vue'
 import page3 from '@/components/page3.vue'
 import page5 from '@/components/page5.vue'
 import page6 from '@/components/page6.vue'
+import main from '@/App.vue'
 
 // 这边修改ROUTE的路径
 const routes: Array<RouteRecordRaw> = [
+    {
+        path:'/',
+        name: 'main',
+        component: main
+    },
     {
         path: '/page1',
         name: 'page1',
