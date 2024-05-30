@@ -31,7 +31,7 @@
     <div class="sections" ref="sections">
       <div class="text-div">
         <p>{{ pageNumber }}</p>
-      </div> -->
+      </div> 
       <div class="gradient-div">
       </div>
       <section id="section1" class="section section1">
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, onUpdated } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
@@ -145,15 +145,26 @@ const checkScrollPosition = () => {
     changeTitle('Title3','Content3');
   }
 };
+
 onMounted(() => {
+  window.addEventListener('popstate', handleBackNavigation);
+  if (sections.value) {
+    sections.value.addEventListener('scroll', checkScrollPosition);
+    checkScrollPosition();
+  }
+});
+
+function handleBackNavigation() {
+  console.log('User navigated back to this page');
   sections.value!.addEventListener('scroll', checkScrollPosition);
   checkScrollPosition();
-  router.afterEach((to) => {
-        if (to.name === "/") {
-          sections.value!.addEventListener('scroll', checkScrollPosition);
-          checkScrollPosition();
-        }
-      });
+}
+
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', handleBackNavigation);
+  if (sections.value) {
+    sections.value.removeEventListener('scroll', checkScrollPosition);
+  }
 });
 
 const scrollToSection = (sectionNumber: number) => {
