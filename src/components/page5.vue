@@ -268,7 +268,7 @@ onMounted(fetchImages);
   /* left:15%; */
   width: 100vw;
   height:100vh;
-  background-color: white;
+  /* background-color: white; */
   padding: 20px;
   margin-bottom: 20px;
 }
