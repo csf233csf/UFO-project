@@ -1,25 +1,25 @@
 <template>
   <div class="container">
-    <div class="iPhoneContainer" @mouseover="showVideo(video1)" @mouseleave="hideVideo(video1)">
-      <img class="img1" src="/images/iPhone1.png">
-      <img class="img2" src="/images/iPhone.png">
-      <video ref="video1" class="hover-video" muted loop>
+    <div class="iPhoneContainer" @mouseover="showVideo('1')" @mouseleave="hideVideo('1')">
+      <img class="img1" src="/images/iPhone1.png" />
+      <img class="img2" src="/images/iPhone.png" />
+      <video ref="video1" class="hover-video" muted>
         <source src="/images/0514.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
-    <div class="iPhoneContainer" @mouseover="showVideo(video2)" @mouseleave="hideVideo(video2)">
-      <img class="img1" src="/images/iPhone2.png">
-      <img class="img2" src="/images/iPhone.png">
-      <video ref="video2" class="hover-video" muted loop>
+    <div class="iPhoneContainer" @mouseover="showVideo('2')" @mouseleave="hideVideo('2')">
+      <img class="img1" src="/images/iPhone2.png" />
+      <img class="img2" src="/images/iPhone.png" />
+      <video ref="video2" class="hover-video" muted>
         <source src="/images/0514.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
-    <div class="iPhoneContainer" @mouseover="showVideo(video3)" @mouseleave="hideVideo(video3)">
-      <img class="img1" src="/images/iPhone3.png">
-      <img class="img2" src="/images/iPhone.png">
-      <video ref="video3" class="hover-video" muted loop>
+    <div class="iPhoneContainer" @mouseover="showVideo('3')" @mouseleave="hideVideo('3')">
+      <img class="img1" src="/images/iPhone3.png" />
+      <img class="img2" src="/images/iPhone.png" />
+      <video ref="video3" class="hover-video" muted>
         <source src="/images/0514.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -28,14 +28,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, type Ref } from 'vue';
+import { ref, reactive, type Ref } from 'vue';
 
 const video1 = ref<HTMLVideoElement | null>(null);
 const video2 = ref<HTMLVideoElement | null>(null);
 const video3 = ref<HTMLVideoElement | null>(null);
 
-const showVideo = (videoRef: Ref<HTMLElement | null>) => {
-  const videoElement = videoRef;
+const videoHash = <{ [key: string]: Ref<HTMLVideoElement | null> }>({
+  '1': video1,
+  '2': video2,
+  '3': video3,
+});
+
+const showVideo = (key: string) => { 
+  const videoRef = videoHash[key];
+  const videoElement = videoRef?.value;
   if (videoElement) {
     videoElement.style.display = 'block';
     videoElement.play().catch(error => {
@@ -46,8 +53,9 @@ const showVideo = (videoRef: Ref<HTMLElement | null>) => {
   }
 };
 
-const hideVideo = (videoRef: Ref<HTMLElement | null>) => {
-  const videoElement = videoRef;
+const hideVideo = (key: string) => {
+  const videoRef = videoHash[key];
+  const videoElement = videoRef?.value;
   if (videoElement) {
     videoElement.pause();
     videoElement.style.display = 'none';
