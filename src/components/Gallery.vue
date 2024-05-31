@@ -55,8 +55,32 @@
       </div>
     </div>
   </div>
-  <v-btn @click="showUploadDialog = true" class="uploadbutton" color="primary">Upload Image</v-btn>
+  <v-btn @click="showUploadDialog = true" class="uploadbutton"> Upload<br></br>UFO<br></br>photo</v-btn>
   
+  
+  <div>
+      <v-btn
+        color="primary"
+        class="text-none"
+        round
+        depressed
+        :loading="isSelecting"
+        @click="onButtonClick"
+      >
+        <v-icon left>
+          cloud_upload
+        </v-icon>
+        {{ buttonText }}
+      </v-btn>
+      <input
+        ref="uploader"
+        class="d-none"
+        type="file"
+        accept="image/*"
+        @change="onFileChanged"
+      >
+    </div>
+
   <v-dialog v-model="showUploadDialog" max-width="600px">
     <v-card>
       <v-card-title>
@@ -76,7 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, type Ref } from 'vue';
+import { ref, onMounted, type Ref, inject } from 'vue';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getDatabase, ref as dbRef, set, push, onValue } from 'firebase/database';
 import gsap from 'gsap';
@@ -102,6 +126,7 @@ const selectedImageComments = ref<string[]>([]);
 const selectedImageId = ref<string | null>(null);
 const showUploadDialog = ref(false);
 const previewUrl = ref<string | null>(null);
+
 
 const db = getDatabase();
 const showDescriptionInput = ref(false);
@@ -183,9 +208,9 @@ async function uploadImage() {
 }
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 100);
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2, 0);
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 100);
+  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 400);
+  startContainerScrolling(imageScroller2, imageContainer2, timeline2, 350);
+  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 500);
 }
 
 function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed: number) {
@@ -199,10 +224,10 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: -scrollerWidth - 750 },
+      { x: -scrollerWidth - speed },
       {
         x: totalWidth - 550,
-        duration: totalWidth / 120,
+        duration: totalWidth / (speed/2),
         ease: 'linear',
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x)),
@@ -239,8 +264,12 @@ async function fetchComments(imageId: string) {
     });
   });
 }
+const inject_inst = inject('changep5') as () => void
 
-onMounted(fetchImages);
+onMounted(()=>{
+  fetchImages()
+  inject_inst()
+})
 </script>
 
 <style scoped>
@@ -361,9 +390,17 @@ onMounted(fetchImages);
 }
 
 .uploadbutton{
-  position:absolute;
-  top:10%;
+  position:fixed;
+  top:5%;
   right:5%;
+  height:60px;
+  width:60px;
+  border-radius: 50%;
+  font-size:10px;
+  flex-shrink: 0;
+  min-width: 32px;
+  background-color: #52FF00;
+  font-size:10px;
 }
 
 </style>

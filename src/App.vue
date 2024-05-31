@@ -1,34 +1,49 @@
 <template>
-  <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
-  <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
+  <v-btn variant="tonal" class="jump-button" v-if="showButton1"
+    @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    跳转下个页面
+  </v-btn>
+  <v-btn variant="tonal" class="jump-button" v-if="showButton2"
+    @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    跳转下个页面
+  </v-btn>
   <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
-    @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
-  <div class="gradient-div">
-  </div>
+    @click="jumptonextpage('/page6', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    跳转下个页面
+  </v-btn>
+  <div class="gradient-div"></div>
+  <div class="gradient-div1" ></div>
+
   <div class="Title">
     <div class="titleWrapper">
-    <h1>{{ title }}</h1>
-    <p>{{ content }},</p>
+      <h1>{{ title }}</h1>
+      <p>{{ content }}</p>
     </div>
   </div>
+
   <div class="nav-bar">
     <ul>
       <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
       <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">Page 2</li>
       <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
+      <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">Page 3</li>
     </ul>
   </div>
   <div class="app-container" v-if="showSections" ref="backgroundSection">
-    <v-btn variant="tonal" class="jump-button" v-if="showButton1" @click="jumptonextpage('/page4')">跳转下个页面</v-btn>
-    <v-btn variant="tonal" class="jump-button" v-if="showButton2" @click="jumptonextpage('/page5')">跳转下个页面</v-btn>
+    <!-- <v-btn variant="tonal" class="jump-button" v-if="showButton1"
+      @click="jumptonextpage('/page4', 'Default Title', 'Default Content')">跳转下个页面</v-btn>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton2"
+      @click="jumptonextpage('/page5', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">跳转下个页面</v-btn>
     <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
-      @click="jumptonextpage('/page6')">跳转下个页面</v-btn>
+      @click="jumptonextpage('/page6', 'Default Title', 'Default Content')">跳转下个页面</v-btn> -->
     <div class="sections" ref="sections">
-      <div class="text-div">
+      <!-- <div class="text-div">
         <p>{{ pageNumber }}</p>
-      </div> 
-      <div class="gradient-div">
-      </div>
+      </div> -->
+
+      <section id="section0" class="section section0">
+        <page0 />
+      </section>
       <section id="section1" class="section section1">
         <page1 />
       </section>
@@ -40,23 +55,20 @@
       </section>
     </div>
   </div>
-  <!-- <div v-if="page4" ref="page4Div" class="fade-in">
-    <p4>page4</p4>
-  </div> -->
   <router-view v-if="route.path !== '/'"></router-view>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, defineComponent } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import { useRoute, useRouter } from 'vue-router';
+import page0 from '@/components/page0.vue';
 import page1 from '@/components/page1.vue';
 import page2 from '@/components/page2.vue';
 import page3 from '@/components/page3.vue';
 // import Page4 from '@/components/page4.vue';
-
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -66,7 +78,9 @@ const showSections = computed(() => route.path === '/');
 
 const startColor = ref('#52FF00');
 const endColor = ref('transparent');
-const linkColor = ref('#000000');
+const linkColor = ref('transparent');
+const titleColor = ref('#FF00F5');
+
 const pageNumber = ref(1);
 const showButton1 = ref(false);
 const showButton2 = ref(false);
@@ -76,39 +90,47 @@ const page4 = ref(false);
 const backgroundSection = ref(null);
 const page4Div = ref(null);
 const activeLink = ref(0);
+const flagleft = ref(false);
 
 let title = ref('Initial Title');
 let content = ref('Initial Content');
 
-// const changeTitle = (newTitle: string) => {
-//   title.value = newTitle;
-// };
-function changeTitle(newTitle: string,newContent: string){
+function changeTitle(newTitle: string, newContent: string, color: string) {
   title.value = newTitle;
-  content.value = newTitle;
+  content.value = newContent;
+  titleColor.value = color;
+  document.documentElement.style.setProperty('--title-color', titleColor.value);
 }
 
 const updateGradient = () => {
   document.documentElement.style.setProperty('--start-color', startColor.value);
   document.documentElement.style.setProperty('--end-color', endColor.value);
   document.documentElement.style.setProperty('--link-color', linkColor.value);
-
 };
 
 watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
 
 const scrollProgress = ref(0);
 const previousColor = ref(startColor.value);
+const previousColor2 = ref(endColor.value);
+const previousColor3 = ref(linkColor.value);
 
-const changeColor = (color: string, page: number) => {
+
+const changeColor = (startColorValue: string, endColorValue: string, linkColorValue: string, page: number) => {
   pageNumber.value = page;
   activeLink.value = page;
-  gsap.to(previousColor, {
-    value: color,
+
+  gsap.to([previousColor, previousColor2, previousColor3], {
+    value: (i) => {
+      if (i === 0) return startColorValue;
+      if (i === 1) return endColorValue;
+      return linkColorValue;
+    },
     duration: 1,
     onUpdate: () => {
       startColor.value = previousColor.value;
-      linkColor.value = previousColor.value;
+      endColor.value = previousColor2.value;
+      linkColor.value = previousColor3.value;
       updateGradient();
     },
   });
@@ -118,56 +140,94 @@ const checkScrollPosition = () => {
   const scrollLeft = sections.value!.scrollLeft || 0;
   const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
   scrollProgress.value = (scrollLeft / scrollWidth) * 100;
-  if (scrollProgress.value >= 0 && scrollProgress.value < 33.33) {
-    showButton1.value = true;
+  if (scrollProgress.value >= 0 && scrollProgress.value < 20) {
+    showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
-    changeColor('#52FF00', 1); // Change to the desired color for 0% to 33.33%
-    changeTitle('Title1','Content1');
-  } else if (scrollProgress.value >= 33.33 && scrollProgress.value < 66.66) {
+    changeColor('tranparent', '#5F004A', '#FF00C7', 1); // Change to the desired color for 0% to 33.33%
+    changeTitle('The Lighthouse Project', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FF00C7');
+  } else if (scrollProgress.value >= 20 && scrollProgress.value < 40) {
     showButton1.value = false;
     showButton2.value = true;
     showButton3.value = false;
-    changeColor('#00FFFF', 2); // Change to the desired color for 33.33% to 66.66%
-    changeTitle('Title2','Content2');
-  } else if (scrollProgress.value >= 66.66) {
+    changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
+    changeTitle('AR Search for Urban Legends.', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
+  } else if (scrollProgress.value >= 40 && scrollProgress.value < 60) {
+    showButton1.value = true;
+    showButton2.value = false;
+    showButton3.value = false;
+    changeColor('#00FFFF', 'transparent', '#00FFFF', 3); // Change to the desired color for 66.66% to 100%
+    changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
+  } else if (scrollProgress.value >= 80) {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = true;
-    changeColor('#FFF72E', 3); // Change to the desired color for 66.66% to 100%
-    changeTitle('Title3','Content3');
+    changeColor('#FFF72E', 'transparent', '#FFF72E', 4); // Change to the desired color for 66.66% to 100%
+    changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
   }
 };
 
+function changep6(){
+  changeColor('#FFF72E', 'transparent', '#FFF72E', 4);
+  changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
+  flagleft.value = true
+}
+
+function changep5(){
+  changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
+  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
+}
+
+function changep4(){
+  changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
+  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF')
+}
+
+provide('changep6', changep6)
+provide('changep5', changep5)
+provide('changep4', changep4)
+
 onMounted(() => {
+  const route = useRoute()
   window.addEventListener('popstate', handleBackNavigation);
-  if (sections.value) {
+  if (route.path === '/'){
+    if (sections.value) {
     sections.value.addEventListener('scroll', checkScrollPosition);
     checkScrollPosition();
-  }
+    endColor.value = "#FF00F5"
+    linkColor.value = '#FF00F5'
+  }}
 });
 
 function handleBackNavigation() {
   console.log('User navigated back to this page');
-  location.reload()
+  location.reload();
 }
 
-onBeforeUnmount(() => {
-  window.removeEventListener('popstate', handleBackNavigation);
-  if (sections.value) {
-    sections.value.removeEventListener('scroll', checkScrollPosition);
-  }
-});
+// onBeforeUnmount(() => {
+//   window.removeEventListener('popstate', handleBackNavigation);
+//   if (sections.value) {
+//     // sections.value.removeEventListener('scroll', checkScrollPosition);
+//   }
+// });
 
 const scrollToSection = (sectionNumber: number) => {
-  console.log("sectionNumber")
+  console.log("sectionNumber");
   const section = document.getElementById(`section${sectionNumber}`);
   if (section) {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 };
 
-function jumptonextpage(path: string) {
+function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
+  console.log(newTitle, newContent);
+  if(path == '/page4'||'/page5'||'/page6'){
+    showButton1.value = false;
+    showButton2.value = false;
+    showButton3.value = false;
+  }
+  title.value = newTitle;
+  content.value = newContent;
   const timeline = gsap.timeline();
   // 移出 backgroundSection
   timeline.to(backgroundSection.value, {
@@ -186,10 +246,6 @@ function jumptonextpage(path: string) {
     },
   });
 }
-
-
-
-
 </script>
 
 <style scoped>
@@ -238,39 +294,44 @@ function jumptonextpage(path: string) {
   /* Customize the active link color */
 }
 
-.Title{
-  position:fixed;
-  top:0px;
-  width:100%;
-  color: var(--start-color);
-  z-index:1000000;
+.Title {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  color: var(--title-color);
+  z-index: 1000000;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin:20px;
+  margin: 20px;
   margin-left: 0px;
 }
 
-.titleWrapper{
-  width:60vw;
+.titleWrapper {
+  width: 60vw;
   /* border-color: azure; */
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  
-}
-
-.Title h1{
-
 
 }
 
-.Title p{
+.Title h1 {
+  max-width: 300px;
+  /* margin-right: 50%; */
+  font-size: 40px;
 
- padding-right: 100px;
+
 }
+
+.Title p {
+  width: 400px;
+  /* padding-right: 100px; */
+  margin-top: 10px;
+}
+
 .sections {
   display: flex;
   width: 100vw;
@@ -302,8 +363,20 @@ function jumptonextpage(path: string) {
   bottom: 0;
   left: 0;
   /* Adjust for nav bar width */
-  background: linear-gradient(to top, var(--start-color), var(--end-color));
-  z-index: 1000000;
+  background: linear-gradient(to top, var(--start-color), transparent);
+  z-index: 99;
+}
+
+.gradient-div1 {
+  width: 15%;
+  /* Adjust for nav bar width */
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* Adjust for nav bar width */
+  background: linear-gradient(to right, var(--end-color), transparent);
+  z-index: 99;
 }
 
 .text-div {

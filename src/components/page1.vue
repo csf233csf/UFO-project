@@ -31,8 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, type Ref } from 'vue';
-import model1 from '@/components/model1.vue';
+import { ref, reactive, type Ref, inject, onMounted } from 'vue';
 
 const video1 = ref<HTMLVideoElement | null>(null);
 const video2 = ref<HTMLVideoElement | null>(null);
@@ -96,7 +95,7 @@ img {
 
 .img2 {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
 }
 
 .hover-video {

@@ -98,3 +98,18 @@
     </v-container>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { inject, onMounted } from 'vue';
+
+
+const injected_func = inject('changep4') as () => void
+onMounted(()=>{
+  injected_func()
+})
+</script>
+
+<style lang="scss" scoped>
+
+
+</style>
