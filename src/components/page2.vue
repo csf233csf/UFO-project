@@ -7,6 +7,11 @@
 </template>
 
 
+<script lang="ts" setup>
+import { inject, onMounted } from 'vue';
+
+</script>
+
 
 <style scoped>
 .background-section {

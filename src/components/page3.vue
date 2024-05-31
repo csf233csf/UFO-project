@@ -1,8 +1,8 @@
 <template>
   <section class="background-section" ref="backgroundSection" v-if="!page4">
-    <h1>page4</h1>
-        <p>pag3</p>
-        <button>jnfsj</button>
+    <v-img>
+      
+    </v-img>
   </section>
   <div v-if="page4" ref="page4Div" class="fade-in">
     <p4>page4</p4>

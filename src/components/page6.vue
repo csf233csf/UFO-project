@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { database } from '@/firebaseConfig';
 import { ref as dbRef, onValue } from 'firebase/database';
 import DrawApp from './DrawApp2.vue';
@@ -43,6 +43,10 @@ const hoverY = ref(0);
 const images = ref<{ xPos: number; yPos: number; url: string; color: string }[]>([]);
 const colors = ['#FF9900', '#FF00C7', '#52FF00','#FFF72E','#00FFFF','#7000FF'];
 const loading = ref(true);
+
+const injected_func = inject('changep6') as () => void
+
+
 
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
@@ -83,6 +87,7 @@ const hideImage = () => {
 };
 
 onMounted(() => {
+  injected_func()
   const imagesRef = dbRef(database, 'images_map');
   onValue(imagesRef, (snapshot) => {
     images.value = [];
@@ -129,6 +134,7 @@ onMounted(() => {
 
 .image-button {
   position: absolute;
+  z-index: 1000000;
 }
 
 .image-button button {

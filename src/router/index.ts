@@ -4,7 +4,7 @@ import page1 from '@/components/page1.vue'
 import page2 from '@/components/page2.vue'
 import page4 from '@/components/page4.vue'
 import page3 from '@/components/page3.vue'
-import page5 from '@/components/page5.vue'
+import Gallery from '@/components/Gallery.vue'
 import page6 from '@/components/page6.vue'
 import main from '@/App.vue'
 
@@ -36,9 +36,9 @@ const routes: Array<RouteRecordRaw> = [
         component: page4
     },
     {
-        path: '/page5',
+        path: '/gallery',
         name: 'page5',
-        component: page5
+        component: Gallery
     },
     {
         path: '/page6',
