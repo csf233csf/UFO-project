@@ -227,8 +227,8 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
       { x: -scrollerWidth - speed },
       {
         x: totalWidth - 550,
-        duration: totalWidth / (speed/2),
-        ease: 'linear',
+        duration: totalWidth / (speed/5),
+        ease: "slow(0.7,0.7,false)",
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x)),
         },
@@ -333,7 +333,7 @@ onMounted(()=>{
   width: auto; /* 自动调整高度以保持原始比例 */
   border-radius: 0; /* 图片圆角 */
   align-self: flex-end;
-  filter:drop-shadow(5px 5px 5px rgb(0, 0, 0, .3))
+  filter:drop-shadow(-10px 5px 5px rgba(82, 255, 0, 0.3))
   
 }
 
