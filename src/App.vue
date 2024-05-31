@@ -124,7 +124,7 @@ const changeColor = (startColorValue: string, endColorValue: string, linkColorVa
   activeLink.value = page;
 
   gsap.to([previousColor, previousColor2, previousColor3], {
-    value: (i) => {
+    value: (i: number) => {
       if (i === 0) return startColorValue;
       if (i === 1) return endColorValue;
       return linkColorValue;
