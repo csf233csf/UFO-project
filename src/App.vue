@@ -1,34 +1,37 @@
 <template>
-  <v-btn variant="tonal" class="jump-button" v-if="showButton1"
-    @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-    跳转下个页面
-  </v-btn>
-  <v-btn variant="tonal" class="jump-button" v-if="showButton2"
-    @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-    跳转下个页面
-  </v-btn>
-  <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
-    @click="jumptonextpage('/page6', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-    跳转下个页面
-  </v-btn>
-  <div class="gradient-div"></div>
-  <div class="gradient-div1" ></div>
+  <div v-if="route.path !== '/cardgallery'">
+    <v-btn variant="tonal" class="jump-button" v-if="showButton1"
+      @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+      跳转下个页面
+    </v-btn>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton2"
+      @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+      跳转下个页面
+    </v-btn>
+    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
+      @click="jumptonextpage('/page6', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+      跳转下个页面
+    </v-btn>
+    <div class="gradient-div"></div>
+    <div class="gradient-div1"></div>
 
-  <div class="Title">
-    <div class="titleWrapper">
-      <h1>{{ title }}</h1>
-      <p>{{ content }}</p>
+    <div class="Title">
+      <div class="titleWrapper">
+        <h1>{{ title }}</h1>
+        <p>{{ content }}</p>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <ul>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">Page 2</li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
+        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">Page 3</li>
+      </ul>
     </div>
   </div>
 
-  <div class="nav-bar">
-    <ul>
-      <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
-      <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">Page 2</li>
-      <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
-      <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">Page 3</li>
-    </ul>
-  </div>
   <div class="app-container" v-if="showSections" ref="backgroundSection">
     <!-- <v-btn variant="tonal" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/page4', 'Default Title', 'Default Content')">跳转下个页面</v-btn>
@@ -167,18 +170,18 @@ const checkScrollPosition = () => {
   }
 };
 
-function changep6(){
+function changep6() {
   changeColor('#FFF72E', 'transparent', '#FFF72E', 4);
   changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
   flagleft.value = true
 }
 
-function changep5(){
+function changep5() {
   changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
   changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
 }
 
-function changep4(){
+function changep4() {
   changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
   changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF')
 }
@@ -190,13 +193,14 @@ provide('changep4', changep4)
 onMounted(() => {
   const route = useRoute()
   window.addEventListener('popstate', handleBackNavigation);
-  if (route.path === '/'){
+  if (route.path === '/') {
     if (sections.value) {
-    sections.value.addEventListener('scroll', checkScrollPosition);
-    checkScrollPosition();
-    endColor.value = "#FF00F5"
-    linkColor.value = '#FF00F5'
-  }}
+      sections.value.addEventListener('scroll', checkScrollPosition);
+      checkScrollPosition();
+      endColor.value = "#FF00F5"
+      linkColor.value = '#FF00F5'
+    }
+  }
 });
 
 function handleBackNavigation() {
@@ -221,7 +225,7 @@ const scrollToSection = (sectionNumber: number) => {
 
 function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
   console.log(newTitle, newContent);
-  if(path == '/page4'||'/page5'||'/page6'){
+  if (path == '/page4' || '/page5' || '/page6') {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
