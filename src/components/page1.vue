@@ -1,7 +1,4 @@
 <template>
-  <div class='model1'>
-    <model1></model1>
-  </div>
   <div class="container">
     <div class="iPhoneContainer" @mouseover="showVideo('1')" @mouseleave="hideVideo('1')">
       <img class="img1" src="/images/iPhone1.png" />

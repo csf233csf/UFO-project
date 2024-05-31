@@ -56,47 +56,6 @@
     </div>
   </div>
   <v-btn @click="showUploadDialog = true" class="uploadbutton"> Upload<br></br>UFO<br></br>photo</v-btn>
-  
-  
-  <div>
-      <v-btn
-        color="primary"
-        class="text-none"
-        round
-        depressed
-        :loading="isSelecting"
-        @click="onButtonClick"
-      >
-        <v-icon left>
-          cloud_upload
-        </v-icon>
-        {{ buttonText }}
-      </v-btn>
-      <input
-        ref="uploader"
-        class="d-none"
-        type="file"
-        accept="image/*"
-        @change="onFileChanged"
-      >
-    </div>
-
-  <v-dialog v-model="showUploadDialog" max-width="600px">
-    <v-card>
-      <v-card-title>
-        <span class="headline">Upload Image</span>
-      </v-card-title>
-      <v-card-text>
-        <v-file-input v-model="selectedFile" label="Select Image" @change="previewImage"></v-file-input>
-        <v-img v-if="previewUrl" :src="previewUrl" max-height="300"></v-img>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" @click="uploadImage">Upload</v-btn>
-        <v-btn color="grey darken-1" @click="showUploadDialog = false">Cancel</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script lang="ts" setup>
