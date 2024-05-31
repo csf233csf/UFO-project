@@ -4,9 +4,9 @@
       
     </v-img>
   </section>
-  <div v-if="page4" ref="page4Div" class="fade-in">
+  <!-- <div v-if="page4" ref="page4Div" class="fade-in">
     <p4>page4</p4>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -38,9 +38,9 @@ function jumptonextpage() {
             opacity: 1,
             duration: 1,
             y:'0%',
-            onComplete() {
-              router.push('/page4');
-            },
+            // onComplete() {
+            //   router.push('/page4');
+            // },
           }
         );
       });

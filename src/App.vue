@@ -1,5 +1,5 @@
 <template>
-  <div v-if="route.path !== '/cardgallery'">
+  <div v-if="route.path !== '/modeltest'">
     <v-btn variant="tonal" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
       跳转下个页面
@@ -8,7 +8,7 @@
       @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
       跳转下个页面
     </v-btn>
-    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
+    <v-btn variant="tonal" class="jump-button" v-if="showButton3"
       @click="jumptonextpage('/page6', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
       跳转下个页面
     </v-btn>
@@ -71,7 +71,7 @@ import page0 from '@/components/page0.vue';
 import page1 from '@/components/page1.vue';
 import page2 from '@/components/page2.vue';
 import page3 from '@/components/page3.vue';
-// import Page4 from '@/components/page4.vue';
+import Page4 from '@/components/page4.vue';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -225,7 +225,7 @@ const scrollToSection = (sectionNumber: number) => {
 
 function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
   console.log(newTitle, newContent);
-  if (path == '/page4' || '/page5' || '/page6') {
+  if (path === '/page4' || '/page5' || '/page6') {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
