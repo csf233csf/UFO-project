@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path:'/cardgallery',
         name:'cardgallery',
-        component: cardgal2
+        component: cardgallery
     },
     // {
     //     path:'/cardgaltypescript',
