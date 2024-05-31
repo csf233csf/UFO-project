@@ -1,4 +1,7 @@
 <template>
+  <div class='model1'>
+    <model1></model1>
+  </div>
   <div class="container">
     <div class="iPhoneContainer" @mouseover="showVideo('1')" @mouseleave="hideVideo('1')">
       <img class="img1" src="/images/iPhone1.png" />
@@ -29,6 +32,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, type Ref } from 'vue';
+import model1 from '@/components/model1.vue';
 
 const video1 = ref<HTMLVideoElement | null>(null);
 const video2 = ref<HTMLVideoElement | null>(null);
@@ -103,4 +107,5 @@ img {
   display: none; /* Hide video by default */
   top: 20px;
 }
+
 </style>
