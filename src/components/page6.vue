@@ -5,7 +5,7 @@
       <div class="overlay"></div>
     </div>
     <div class="map-container" v-show="!loading" @click.self="handleMapClick">
-      <div v-if="showCommentApp && selectedXPos !== null && selectedYPos !== null">
+      <div class='commentapp' v-if="showCommentApp && selectedXPos !== null && selectedYPos !== null">
         <CommentApp :xPos="selectedXPos" :yPos="selectedYPos" @close="closeCommentApp" />
         <div class="overlay"></div>
       </div>
@@ -134,7 +134,7 @@ onMounted(() => {
 
 .image-button {
   position: absolute;
-  z-index: 1000000;
+  z-index: 1;
 }
 
 .image-button button {
@@ -202,6 +202,10 @@ onMounted(() => {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.commentapp{
+  z-index: 10000000;
 }
 
 .fade-enter-active,

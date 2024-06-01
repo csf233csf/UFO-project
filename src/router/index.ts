@@ -8,6 +8,7 @@ import Gallery from '@/components/Gallery.vue'
 import page6 from '@/components/page6.vue'
 import main from '@/App.vue'
 import cardgallery from '@/components/cardgallery.vue'
+import modeltest from '@/components/models/model1.vue'
 
 // 这边修改ROUTE的路径
 const routes: Array<RouteRecordRaw> = [
@@ -56,6 +57,11 @@ const routes: Array<RouteRecordRaw> = [
     //     name:'cardgalts',
     //     component: cardgal2
     // }
+    {
+        path:'/modeltest',
+        name:'modeltest',
+        component:modeltest
+    }
 ]
 
 const router = createRouter({

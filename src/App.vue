@@ -76,7 +76,6 @@ import Cardgallery from './components/cardgallery.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiChevronDown } from '@mdi/js';
 
-// import Page4 from '@/components/page4.vue';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -230,7 +229,7 @@ const scrollToSection = (sectionNumber: number) => {
 
 function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
   console.log(newTitle, newContent);
-  if (path == '/page4' || '/page5' || '/page6') {
+  if (path === '/page4' || '/page5' || '/page6') {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
