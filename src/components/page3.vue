@@ -1,5 +1,7 @@
 <template>
   <section class="background-section" ref="backgroundSection" v-if="!page4">
+    <v-btn @click="showVideo" class="uploadbutton"> View<br></br>Panoramic<br></br>Video</v-btn>
+
     <v-img>
       
     </v-img>
@@ -66,6 +68,22 @@ function jumptonextpage() {
   position:absolute;
   left:50%;
   bottom: 10%;
+}
 
+.uploadbutton{
+  position:absolute;
+  top:5%;
+  right:5%;
+  height:60px;
+  width:60px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  min-width: 32px;
+  background-color: #FFF72E;
+  font-size:9px;
+  letter-spacing: 0.5px;
+  color:black;
+  min-height:60px;
+  z-index:1000000;
 }
 </style>

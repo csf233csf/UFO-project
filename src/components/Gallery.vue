@@ -167,9 +167,10 @@ async function uploadImage() {
 }
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 400);
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2, 350);
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 500);
+  // 正值表示向右移动，负值表示向左移动
+  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 400); // 向右移动
+  startContainerScrolling(imageScroller2, imageContainer2, timeline2, -350); // 向左移动
+  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 500); // 向右移动
 }
 
 function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed: number) {
@@ -183,16 +184,19 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: -scrollerWidth - speed },
+      { x: speed > 0 ? containerWidth : (-scrollerWidth+500) },
       {
-        x: totalWidth - 550,
-        duration: totalWidth / (speed/5),
-        ease: "slow(0.7,0.7,false)",
+        x: speed > 0 ? (-scrollerWidth+500) : containerWidth,
+        duration: totalWidth / Math.abs(speed / 5),
+        ease: "slow(0.7, 0.7, false)",
         modifiers: {
           x: gsap.utils.unitize(x => parseFloat(x)),
         },
       }
     );
+  
+
+
     // 暂停动画，注释
     // Add event listeners to pause/resume on hover
     // container.value.addEventListener('mouseenter', () => {
@@ -292,8 +296,8 @@ onMounted(()=>{
   width: auto; /* 自动调整高度以保持原始比例 */
   border-radius: 0; /* 图片圆角 */
   align-self: flex-end;
-  filter:drop-shadow(-10px 5px 5px rgba(82, 255, 0, 0.3))
-  
+  filter:drop-shadow(-6px 6px 10px   rgba(82, 255, 0, 0.6));
+  /* box-shadow: 6px 6px 10px 2px(rgba(82, 255, 0, 0.)); */
 }
 
 .scroll-image:hover {
@@ -355,11 +359,10 @@ onMounted(()=>{
   height:60px;
   width:60px;
   border-radius: 50%;
-  font-size:10px;
+  font-size:9px;
   flex-shrink: 0;
   min-width: 32px;
   background-color: #52FF00;
-  font-size:10px;
 }
 
 </style>

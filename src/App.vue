@@ -1,17 +1,15 @@
 <template>
   <div v-if="route.path !== '/cardgallery'">
-    <v-btn variant="tonal" class="jump-button" v-if="showButton1"
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-      跳转下个页面
     </v-btn>
-    <v-btn variant="tonal" class="jump-button" v-if="showButton2"
-      @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-      跳转下个页面
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2"
+      @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')"> 
     </v-btn>
-    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
+    <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
       @click="jumptonextpage('/page6', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
-      跳转下个页面
     </v-btn>
+
     <div class="gradient-div"></div>
     <div class="gradient-div1"></div>
 
@@ -24,10 +22,10 @@
 
     <div class="nav-bar">
       <ul>
-        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">Page 1</li>
-        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">Page 2</li>
-        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">Page 3</li>
-        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">Page 3</li>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">01 <br><br><span class="spaced-text">Projects</span></li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">02 <br><br><span class="spaced-text">AR</span></li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">03 <br><br><span class="spaced-text">WORKSHOP</span></li>
+        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">04 <br><br><span class="spaced-text">VR</span></li>
       </ul>
     </div>
   </div>
@@ -51,7 +49,7 @@
         <page1 />
       </section>
       <section id="section2" class="section section2">
-        <page2 />
+        <Cardgallery />
       </section>
       <section id="section3" class="section section3">
         <page3 />
@@ -60,6 +58,9 @@
   </div>
   <router-view v-if="route.path !== '/'"></router-view>
 </template>
+
+
+
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
@@ -71,6 +72,10 @@ import page0 from '@/components/page0.vue';
 import page1 from '@/components/page1.vue';
 import page2 from '@/components/page2.vue';
 import page3 from '@/components/page3.vue';
+import Cardgallery from './components/cardgallery.vue';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiChevronDown } from '@mdi/js';
+
 // import Page4 from '@/components/page4.vue';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -253,6 +258,9 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 </script>
 
 <style scoped>
+.body{
+  font-family: "HelveticaNeue", sans-serif !important; 
+}
 .app-container {
   width: 100vw;
   height: 100vh;
@@ -260,6 +268,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   /* overflow-x: hidden; */
   display: flex;
   overflow-x: hidden;
+  
 }
 
 .nav-bar {
@@ -284,7 +293,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 .nav-bar li {
   padding: 10px;
   cursor: pointer;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
 }
 
 .nav-bar li:hover {
@@ -292,7 +301,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 }
 
 .nav-bar li.active {
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 1.2em;
   color: var(--link-color);
   /* Customize the active link color */
@@ -324,6 +333,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 
 .Title h1 {
   max-width: 300px;
+  line-height: 1.3;
   /* margin-right: 50%; */
   font-size: 40px;
 
@@ -357,6 +367,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   font-size: 3em;
   color: white;
   position: relative;
+  overflow: hidden;
 }
 
 .gradient-div {
@@ -401,9 +412,10 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 .jump-button {
   position: absolute;
   left: 50%;
-  bottom: 10%;
+  bottom: 6%;
   transform: translateX(-50%);
   z-index: 1000001;
+  opacity: 40%;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -418,4 +430,17 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   scrollbar-width: none;
   /* Firefox */
 }
+
+@font-face {
+    font-family: "HelveticaNeue";
+    src: url('/fonts/HelveticaNeue.ttc') format('ttc');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.spaced-text {
+  display: inline-block;
+  padding-left: 100px; /* 在文字前添加空格 */
+}
+
 </style>
