@@ -64,7 +64,6 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
 import page0 from './components/main_sections/mainentry.vue';
 import page1 from './components/main_sections/phonespage.vue';
-import page2 from '@/components/page2.vue';
 import page3 from './components/main_sections/virtualreality.vue';
 import Cardgallery from './components/main_sections/cardgallery.vue';
 
