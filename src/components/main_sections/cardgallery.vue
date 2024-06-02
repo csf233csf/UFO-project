@@ -1,5 +1,5 @@
 <template>
-    <div  style="width:100vw; height:70vh;overflow: hidden; position:relative; margin-left:15vw">
+    <div  style="width:100vw; height:70vh; position:relative; margin-left:15vw">
       <!-- <div class="indicator"></div> -->
       <!-- <nav>
         <div>
