@@ -8,14 +8,13 @@
   <script lang="ts" setup>
   import { ref, onMounted, onBeforeUnmount } from 'vue';
   import * as THREE from 'three';
-  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-  
+  import { GLTFLoader } from 'three-stdlib';
+
   const canvasContainer = ref<HTMLDivElement | null>(null);
   const rotationSpeed = ref(0.03); // Initial rotation speed
-  
   onMounted(() => {
     let scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer;
-    let model: THREE.Object3D | undefined, requestID: number;
+    let model: any , requestID: number;
   
     const init = () => {
       // Scene

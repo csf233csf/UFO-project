@@ -1,7 +1,8 @@
 <template>
+  <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
-    <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
     <component
+      class = 'components'
       v-for="(visible, key) in componentsVisibility"
       :is="components[key]"
       :key="key"
@@ -13,7 +14,7 @@
         @click="showComponent(component)"
         :style="{
           backgroundColor: colors[index % colors.length],
-          top: positions[component].top + 'px',
+          top: positions[component].top + 'px', 
           left: positions[component].left + 'px'
         }"
       ></button>
@@ -89,10 +90,13 @@ function hideAllComponents() {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
   z-index: 10;
+}
+.components{
+  z-index: 10000;
 }
 
 .image-button button {
