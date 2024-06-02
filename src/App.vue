@@ -1,0 +1,439 @@
+<template>
+  <div v-if="route.path !== '/map_test'">
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
+      @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    </v-btn>
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2"
+      @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')"> 
+    </v-btn>
+    <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
+      @click="jumptonextpage('/alien_map', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    </v-btn>
+    <div class="gradient-div"></div>
+    <div class="gradient-div1"></div>
+    <div class="Title">
+      <div class="titleWrapper">
+        <h1>{{ title }}</h1>
+        <p>{{ content }}</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <ul>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">01 <br><br><span class="spaced-text">Projects</span></li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">02 <br><br><span class="spaced-text">AR</span></li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">03 <br><br><span class="spaced-text">WORKSHOP</span></li>
+        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">04 <br><br><span class="spaced-text">VR</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="app-container" v-if="showSections" ref="backgroundSection">
+    <!-- <v-btn variant="tonal" class="jump-button" v-if="showButton1"
+      @click="jumptonextpage('/page4', 'Default Title', 'Default Content')">跳转下个页面</v-btn>
+    <v-btn variant="tonal" class="jump-button" v-if="showButton2"
+      @click="jumptonextpage('/page5', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">跳转下个页面</v-btn>
+    <v-btn :ripple="true" variant="tonal" class="jump-button" v-if="showButton3"
+      @click="jumptonextpage('/alien_map', 'Default Title', 'Default Content')">跳转下个页面</v-btn> -->
+    <div class="sections" ref="sections">
+      <!-- <div class="text-div">
+        <p>{{ pageNumber }}</p>
+      </div> -->
+
+      <section id="section0" class="section section0">
+        <page0 />
+      </section>
+      <section id="section1" class="section section1">
+        <page1 />
+      </section>
+      <section id="section2" class="section section2">
+        <Cardgallery />
+      </section>
+      <section id="section3" class="section section3">
+        <page3 />
+      </section>
+    </div>
+  </div>
+  <router-view v-if="route.path !== '/'"></router-view>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
+import page0 from './components/main_sections/mainentry.vue';
+import page1 from './components/main_sections/phonespage.vue';
+import page2 from '@/components/page2.vue';
+import page3 from './components/main_sections/virtualreality.vue';
+import Cardgallery from './components/main_sections/cardgallery.vue';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiChevronDown } from '@mdi/js';
+
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+const sections = ref<HTMLElement | null>(null);
+const route = useRoute();
+const router = useRouter();
+const showSections = computed(() => route.path === '/');
+
+const startColor = ref('#52FF00');
+const endColor = ref('transparent');
+const linkColor = ref('transparent');
+const titleColor = ref('#FF00F5');
+
+const pageNumber = ref(1);
+const showButton1 = ref(false);
+const showButton2 = ref(false);
+const showButton3 = ref(false);
+
+const page4 = ref(false);
+const backgroundSection = ref(null);
+const page4Div = ref(null);
+const activeLink = ref(0);
+const flagleft = ref(false);
+
+let title = ref('Initial Title');
+let content = ref('Initial Content');
+
+function changeTitle(newTitle: string, newContent: string, color: string) {
+  title.value = newTitle;
+  content.value = newContent;
+  titleColor.value = color;
+  document.documentElement.style.setProperty('--title-color', titleColor.value);
+}
+
+const updateGradient = () => {
+  document.documentElement.style.setProperty('--start-color', startColor.value);
+  document.documentElement.style.setProperty('--end-color', endColor.value);
+  document.documentElement.style.setProperty('--link-color', linkColor.value);
+};
+
+watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
+
+const scrollProgress = ref(0);
+const previousColor = ref(startColor.value);
+const previousColor2 = ref(endColor.value);
+const previousColor3 = ref(linkColor.value);
+
+
+const changeColor = (startColorValue: string, endColorValue: string, linkColorValue: string, page: number) => {
+  pageNumber.value = page;
+  activeLink.value = page;
+
+  gsap.to([previousColor, previousColor2, previousColor3], {
+    value: (i: number) => {
+      if (i === 0) return startColorValue;
+      if (i === 1) return endColorValue;
+      return linkColorValue;
+    },
+    duration: 1,
+    onUpdate: () => {
+      startColor.value = previousColor.value;
+      endColor.value = previousColor2.value;
+      linkColor.value = previousColor3.value;
+      updateGradient();
+    },
+  });
+};
+
+const checkScrollPosition = () => {
+  const scrollLeft = sections.value!.scrollLeft || 0;
+  const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
+  scrollProgress.value = (scrollLeft / scrollWidth) * 100;
+  if (scrollProgress.value >= 0 && scrollProgress.value < 20) {
+    showButton1.value = false;
+    showButton2.value = false;
+    showButton3.value = false;
+    changeColor('tranparent', '#5F004A', '#FF00C7', 1); // Change to the desired color for 0% to 33.33%
+    changeTitle('The Lighthouse Project', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FF00C7');
+  } else if (scrollProgress.value >= 20 && scrollProgress.value < 40) {
+    showButton1.value = false;
+    showButton2.value = true;
+    showButton3.value = false;
+    changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
+    changeTitle('AR Search for Urban Legends.', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
+  } else if (scrollProgress.value >= 40 && scrollProgress.value < 60) {
+    showButton1.value = true;
+    showButton2.value = false;
+    showButton3.value = false;
+    changeColor('#00FFFF', 'transparent', '#00FFFF', 3); // Change to the desired color for 66.66% to 100%
+    changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
+  } else if (scrollProgress.value >= 80) {
+    showButton1.value = false;
+    showButton2.value = false;
+    showButton3.value = true;
+    changeColor('#FFF72E', 'transparent', '#FFF72E', 4); // Change to the desired color for 66.66% to 100%
+    changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
+  }
+};
+
+function changep6() {
+  changeColor('#FFF72E', 'transparent', '#FFF72E', 4);
+  changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
+  flagleft.value = true
+}
+
+function changep5() {
+  changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
+  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
+}
+
+function changep4() {
+  changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
+  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF')
+}
+
+provide('changep6', changep6)
+provide('changep5', changep5)
+provide('changep4', changep4)
+
+onMounted(() => {
+  const route = useRoute()
+  window.addEventListener('popstate', handleBackNavigation);
+  if (route.path === '/') {
+    if (sections.value) {
+      sections.value.addEventListener('scroll', checkScrollPosition);
+      checkScrollPosition();
+      endColor.value = "#FF00F5"
+      linkColor.value = '#FF00F5'
+    }
+  }
+});
+
+function handleBackNavigation() {
+  console.log('User navigated back to this page');
+  location.reload();
+}
+
+// onBeforeUnmount(() => {
+//   window.removeEventListener('popstate', handleBackNavigation);
+//   if (sections.value) {
+//     // sections.value.removeEventListener('scroll', checkScrollPosition);
+//   }
+// });
+
+const scrollToSection = (sectionNumber: number) => {
+  console.log("sectionNumber");
+  const section = document.getElementById(`section${sectionNumber}`);
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
+  console.log(newTitle, newContent);
+  if (path === '/page4' || '/page5' || '/alien_map') {
+    showButton1.value = false;
+    showButton2.value = false;
+    showButton3.value = false;
+  }
+  title.value = newTitle;
+  content.value = newContent;
+  const timeline = gsap.timeline();
+  // 移出 backgroundSection
+  timeline.to(backgroundSection.value, {
+    y: '100%',
+    opacity: 0,
+    duration: 0.5,
+  });
+  // page4Div 出现
+  timeline.to(page4Div.value, {
+    opacity: 1,
+    y: '0%',
+    duration: 0.5,
+    onComplete() {
+      page4.value = true;
+      router.push(path);
+    },
+  });
+}
+</script>
+
+<style scoped>
+.body{
+  font-family: "HelveticaNeue", sans-serif !important; 
+}
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  /* overflow-x: hidden; */
+  display: flex;
+  overflow-x: hidden;
+  
+}
+
+.nav-bar {
+  background-color: transparent;
+  height: 100%;
+  color: white;
+  display: flex;
+  position: fixed;
+  left: 0%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 10px;
+}
+
+.nav-bar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-bar li {
+  padding: 10px;
+  cursor: pointer;
+  margin-bottom: 70px;
+}
+
+.nav-bar li:hover {
+  background-color: #555;
+}
+
+.nav-bar li.active {
+  /* font-weight: bold; */
+  font-size: 1.2em;
+  color: var(--link-color);
+  /* Customize the active link color */
+}
+
+.Title {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  color: var(--title-color);
+  z-index: 1000000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  margin-left: 0px;
+}
+
+.titleWrapper {
+  width: 60vw;
+  /* border-color: azure; */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+
+}
+
+.Title h1 {
+  max-width: 300px;
+  line-height: 1.3;
+  /* margin-right: 50%; */
+  font-size: 40px;
+
+
+}
+
+.Title p {
+  width: 400px;
+  /* padding-right: 100px; */
+  margin-top: 10px;
+}
+
+.sections {
+  display: flex;
+  width: 100vw;
+  /* Adjust for nav bar width */
+  /* width: calc(100vw - 200px);  */
+  height: 100vh;
+  position: absolute;
+  overflow-x: auto;
+  /* Ensure the container can scroll horizontally */
+}
+
+.section {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-div {
+  width: 100%;
+  /* Adjust for nav bar width */
+  height: 20%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* Adjust for nav bar width */
+  background: linear-gradient(to top, var(--start-color), transparent);
+  z-index: 99;
+}
+
+.gradient-div1 {
+  width: 15%;
+  /* Adjust for nav bar width */
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* Adjust for nav bar width */
+  background: linear-gradient(to right, var(--end-color), transparent);
+  z-index: 99;
+}
+
+.text-div {
+  /* width: calc(100vw - 200px); Adjust for nav bar width */
+  width: 100px;
+  height: 20%;
+  position: fixed;
+  top: 0;
+  right: 10vw;
+  /* Adjust for nav bar width */
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+}
+
+.jump-button {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  z-index: 1000001;
+  opacity: 40%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sections::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.sections {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@font-face {
+    font-family: "HelveticaNeue";
+    src: url('/fonts/HelveticaNeue.ttc') format('ttc');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.spaced-text {
+  display: inline-block;
+  padding-left: 100px; /* 在文字前添加空格 */
+}
+
+</style>
