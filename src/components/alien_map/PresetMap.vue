@@ -25,34 +25,34 @@
 <script lang="ts" setup>
 import { ref, type Ref } from 'vue';
 
-// Import components
+// 导入模型组件
 import YellowDog from '@/components/models/model1.vue';
-import AnotherComponent from '@/components/models/model2.vue'; // Make sure this path is correct
+import AnotherComponent from '@/components/models/model2.vue';
 
-// Define components
+// 哈希模型组件
 const componentList = ['YellowDog', 'AnotherComponent'];
 const componentsVisibility: Record<string, Ref<boolean>> = {
   YellowDog: ref(false),
   AnotherComponent: ref(false),
 };
 
-// Register components dynamically
+// 储存模型组件列表
 const components: Record<string, any> = {
   YellowDog,
   AnotherComponent,
 };
 
-// Button positions
+// 按钮的位置
 const positions: Record<string, { top: number; left: number }> = {
   YellowDog: { top: 50, left: 50 },
   AnotherComponent: { top: 100, left: 100 },
 };
 
+// 按钮的颜色
 const colors = ['#FF9900', '#FF00C7', '#52FF00', '#FFF72E', '#00FFFF', '#7000FF'];
 const overlayVisible = ref(false);
 
 function showComponent(component: string) {
-  // Hide other components before showing the clicked one
   hideAllComponents();
   const visible = componentsVisibility[component];
   visible.value = true;
@@ -83,7 +83,7 @@ function hideAllComponents() {
   background-image: url('/images/mapbg.jpg');
   background-size: cover;
   background-position: center;
-  opacity: 1; /* Initial opacity for fade-in effect */
+  opacity: 1; 
 }
 
 .overlay {
