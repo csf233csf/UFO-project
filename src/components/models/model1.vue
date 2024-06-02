@@ -46,7 +46,7 @@
       // Load GLB model
       const loader = new GLTFLoader();
       loader.load(
-        'scene (6).glb',
+        'alien10.glb',
         (gltf : any) => {
           model = gltf.scene;
   

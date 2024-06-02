@@ -1,5 +1,5 @@
 <template>
-  <div v-if="route.path !== '/alien_doc'">
+  <div>
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
     </v-btn>
@@ -67,9 +67,6 @@ import page1 from './components/main_sections/phonespage.vue';
 import page2 from '@/components/page2.vue';
 import page3 from './components/main_sections/virtualreality.vue';
 import Cardgallery from './components/main_sections/cardgallery.vue';
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiChevronDown } from '@mdi/js';
-
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
