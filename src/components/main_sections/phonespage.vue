@@ -69,6 +69,7 @@ const hideVideo = (key: string) => {
   display: flex;
   justify-content: space-between;
   width: 60vw;
+  
 }
 
 .container .iPhoneContainer {
@@ -76,7 +77,7 @@ const hideVideo = (key: string) => {
 }
 
 img {
-  height: 400px;
+  height: 60vh;
 }
 
 .iPhoneContainer {
@@ -95,7 +96,7 @@ img {
 }
 
 .hover-video {
-  height: 300px;
+  height: 60vh;
   position: absolute;
   z-index: 3;
   width: auto;

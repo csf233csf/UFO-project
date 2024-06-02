@@ -19,10 +19,10 @@
     </div>
     <div class="nav-bar">
       <ul>
-        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(1)">01 <br><br><span class="spaced-text">Projects</span></li>
-        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(2)">02 <br><br><span class="spaced-text">AR</span></li>
-        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(3)">03 <br><br><span class="spaced-text">WORKSHOP</span></li>
-        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(4)">04 <br><br><span class="spaced-text">VR</span></li>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">01 <br><br><span class="spaced-text">PROJECTS</span></li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">02 <br><br><span class="spaced-text">AR</span></li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(2)">03 <br><br><span class="spaced-text">WORKSHOP</span></li>
+        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(3)">04 <br><br><span class="spaced-text">VR</span></li>
       </ul>
     </div>
   </div>
@@ -290,7 +290,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 }
 
 .nav-bar li:hover {
-  background-color: #555;
+  font-weight: bold;
 }
 
 .nav-bar li.active {
@@ -305,7 +305,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   top: 0px;
   width: 100%;
   color: var(--title-color);
-  z-index: 1000000;
+  z-index: 99;
   display: flex;
   flex-direction: row;
   align-items: center;
