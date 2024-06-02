@@ -1,5 +1,5 @@
 <template>
-  <div v-if="route.path !== '/map_test'">
+  <div v-if="route.path !== '/alien_doc'">
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
     </v-btn>

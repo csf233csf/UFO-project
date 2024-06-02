@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     { path: '/gallery', name: 'ScrollGallery', component: Gallery },
     // alien map page, src/components/alien_map
     { path: '/alien_map', name: 'AlienMap', component: AlienMap },
-    { path: '/map_test', name:'maptest', component: maptest},
+    { path: '/alien_doc', name:'maptest', component: maptest},
     // model test page, /models
     { path: '/modeltest', name: 'modeltest', component: modeltest}
 ]
