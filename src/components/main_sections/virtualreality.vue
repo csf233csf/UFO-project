@@ -1,6 +1,7 @@
 <template>
   <section class="background-section" ref="backgroundSection" v-if="!page4">
-    <v-btn @click="showVideo" class="uploadbutton"> View<br></br>Panoramic<br></br>Video</v-btn>
+    <!-- @click="showvideos" -->
+    <v-btn class="uploadbutton"> View<br></br>Panoramic<br></br>Video</v-btn>
 
     <v-img>
       
