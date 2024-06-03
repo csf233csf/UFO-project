@@ -1,7 +1,7 @@
 <template>
-  <div v-if="route.path !== '/alien_doc'">
+  <div>
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
-      @click="jumptonextpage('/page4', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+      @click="jumptonextpage('/alien_doc', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
     </v-btn>
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2"
       @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')"> 
@@ -141,25 +141,25 @@ const checkScrollPosition = () => {
   const scrollLeft = sections.value!.scrollLeft || 0;
   const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
   scrollProgress.value = (scrollLeft / scrollWidth) * 100;
-  if (scrollProgress.value >= 0 && scrollProgress.value < 20) {
+  if (scrollProgress.value >= 0 && scrollProgress.value < 25) {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
     changeColor('tranparent', '#5F004A', '#FF00C7', 1); // Change to the desired color for 0% to 33.33%
     changeTitle('The Lighthouse Project', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FF00C7');
-  } else if (scrollProgress.value >= 20 && scrollProgress.value < 40) {
+  } else if (scrollProgress.value >= 25 && scrollProgress.value < 50) {
     showButton1.value = false;
     showButton2.value = true;
     showButton3.value = false;
     changeColor('#52FF00', 'transparent', '#52FF00', 2); // Change to the desired color for 33.33% to 66.66%
     changeTitle('AR Search for Urban Legends.', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
-  } else if (scrollProgress.value >= 40 && scrollProgress.value < 60) {
+  } else if (scrollProgress.value >= 50 && scrollProgress.value < 75) {
     showButton1.value = true;
     showButton2.value = false;
     showButton3.value = false;
     changeColor('#00FFFF', 'transparent', '#00FFFF', 3); // Change to the desired color for 66.66% to 100%
     changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
-  } else if (scrollProgress.value >= 80) {
+  } else if (scrollProgress.value >= 75) {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = true;
@@ -294,8 +294,8 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 }
 
 .nav-bar li.active {
-  /* font-weight: bold; */
-  font-size: 1.2em;
+  font-weight: bold;
+  /* font-size: 1.2em; */
   color: var(--link-color);
   /* Customize the active link color */
 }
