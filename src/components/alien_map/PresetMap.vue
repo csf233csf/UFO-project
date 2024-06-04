@@ -93,7 +93,7 @@ function buttonStyle(index: number, component: string) {
 }
 
 function navigateToNextPage() {
-  router.push('/alien_map'); // Replace '/next-page' with your desired route
+  // router.push('/alien_map'); // Replace '/next-page' with your desired route
 }
 </script>
 

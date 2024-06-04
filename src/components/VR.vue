@@ -17,13 +17,13 @@ import { onMounted } from 'vue'
 import 'aframe'
 
 onMounted(() => {
-  const video = document.getElementById('vr-video') as HTMLVideoElement
+  const video = document.getElementById('vr-video') as any
   if (video) {
     video.addEventListener('canplay', () => {
       console.log('Video can play')
     })
 
-    video.addEventListener('error', (e) => {
+    video.addEventListener('error', (e: any) => {
       console.error('Error loading video', e)
     })
 

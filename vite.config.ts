@@ -14,7 +14,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    https: false, // 确保 HTTPS 选项设置为 false
-  }
 })
