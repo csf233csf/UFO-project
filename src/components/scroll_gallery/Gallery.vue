@@ -1,13 +1,15 @@
 <template>
+  <div class="page-container">
+    <video autoplay muted loop id="background-video">
+      <source src="/images/bg.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
   <div class="images-row">
     <div class="image-container" ref="imageContainer1">
       <div class="image-scroller" ref="imageScroller1">
-        <div
-          v-for="(img, index) in images1"
-          :key="img.id"
-          class="scroll-image-container"
-          @click="showImageDetails(index, 1)" 
-        >
+        <div v-for="(img, index) in images1" :key="img.id" class="scroll-image-container"
+          @click="showImageDetails(index, 1)">
           <img :src="img.url" class="scroll-image" />
           <div v-if="activeIndex1 === index" class="description">
             {{ img.description }}
@@ -17,12 +19,8 @@
     </div>
     <div class="image-container" ref="imageContainer2">
       <div class="image-scroller" ref="imageScroller2">
-        <div
-          v-for="(img, index) in images2"
-          :key="img.id"
-          class="scroll-image-container"
-          @click="showImageDetails(index, 2)"
-        >
+        <div v-for="(img, index) in images2" :key="img.id" class="scroll-image-container"
+          @click="showImageDetails(index, 2)">
           <img :src="img.url" class="scroll-image" />
           <div v-if="activeIndex2 === index" class="description">
             {{ img.description }}
@@ -32,12 +30,8 @@
     </div>
     <div class="image-container" ref="imageContainer3">
       <div class="image-scroller" ref="imageScroller3">
-        <div
-          v-for="(img, index) in images3"
-          :key="img.id"
-          class="scroll-image-container"
-          @click="showImageDetails(index, 3)"
-        >
+        <div v-for="(img, index) in images3" :key="img.id" class="scroll-image-container"
+          @click="showImageDetails(index, 3)">
           <img :src="img.url" class="scroll-image" />
           <div v-if="activeIndex3 === index" class="description">
             {{ img.description }}
@@ -55,14 +49,9 @@
         <span>{{ uploadButtonText }}</span>
       </template>
     </v-btn>
-    <input 
-      type="file" 
-      ref="fileInput" 
-      @change="handleFileUpload" 
-      accept="image/*" 
-      style="display: none;"
-    />
+    <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" style="display: none;" />
   </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -160,9 +149,9 @@ function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: R
     timeline = gsap.timeline({ repeat: -1 });
     timeline.fromTo(
       scroller.value,
-      { x: speed > 0 ? containerWidth : (-scrollerWidth+500) },
+      { x: speed > 0 ? containerWidth : (-scrollerWidth + 500) },
       {
-        x: speed > 0 ? (-scrollerWidth+500) : containerWidth,
+        x: speed > 0 ? (-scrollerWidth + 500) : containerWidth,
         duration: totalWidth / Math.abs(speed / 5),
         ease: "slow(0.7, 0.7, false)",
         modifiers: {
@@ -255,14 +244,28 @@ onMounted(() => {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: white; /* Light background for better contrast */
+  background-color: rgb(0, 0, 0);
   padding: 20px;
   overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.page-container video {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  z-index: -1;
+  /* transform: scale(0.1); */
 }
 
 .images-row {
   display: flex;
-  flex-direction: column; /* Arrange containers in a column */
+  flex-direction: column;
+  /* Arrange containers in a column */
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -271,7 +274,8 @@ onMounted(() => {
 }
 
 .image-container {
-  width: 100%; /* Ensure the containers fit within the column */
+  width: 100%;
+  /* Ensure the containers fit within the column */
   height: 33.3%;
   overflow: hidden;
   background-color: transparent;
@@ -280,43 +284,57 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 20px; /* Add space between containers */
+  margin-bottom: 20px;
+  /* Add space between containers */
 }
 
 .image-scroller {
   display: flex;
-  flex-wrap: nowrap; /* Prevent line breaks */
+  flex-wrap: nowrap;
+  /* Prevent line breaks */
   width: 100%;
-  transform: translate3d(0, 0, 0); /* Smooth scrolling */
+  transform: translate3d(0, 0, 0);
+  /* Smooth scrolling */
 }
 
 .scroll-image-container {
-  flex: 0 0 auto; /* Prevent shrinking */
-  height: 200px; /* Ensure the height of the image container */
-  margin-right: 100px; /* Space between images */
+  flex: 0 0 auto;
+  /* Prevent shrinking */
+  height: 200px;
+  /* Ensure the height of the image container */
+  margin-right: 100px;
+  /* Space between images */
   position: relative;
-  align-items: flex-start; /* Align to the top */
+  align-items: flex-start;
+  /* Align to the top */
 }
 
 .scroll-image {
-  max-height: 100%; /* Max height of the image */
-  width: auto; /* Auto adjust width to maintain aspect ratio */
-  border-radius: 0; /* No border radius */
+  max-height: 100%;
+  /* Max height of the image */
+  width: auto;
+  /* Auto adjust width to maintain aspect ratio */
+  border-radius: 0;
+  /* No border radius */
   align-self: flex-end;
-  filter:drop-shadow(-6px 6px 10px   rgba(82, 255, 0, 0.6));
-  /*   filter: drop-shadow(-10px 5px 5px rgba(82, 255, 0, 0.3)); main merged*/ 
-  
+  filter: drop-shadow(-6px 6px 10px rgba(82, 255, 0, 0.6));
+  /*   filter: drop-shadow(-10px 5px 5px rgba(82, 255, 0, 0.3)); main merged*/
+
 }
 
 .scroll-image:hover {
-  max-height: 100%; /* Max height of the image */
-  width: auto; /* Auto adjust width to maintain aspect ratio */
-  border-radius: 0; /* No border radius */
+  max-height: 100%;
+  /* Max height of the image */
+  width: auto;
+  /* Auto adjust width to maintain aspect ratio */
+  border-radius: 0;
+  /* No border radius */
   align-self: flex-end;
 }
 
 .scroll-image-container:hover .scroll-image {
-  transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05);
+  /* Slight zoom on hover */
   filter: drop-shadow(5px 5px 5px rgb(0, 0, 0, .0));
 }
 
@@ -356,7 +374,8 @@ onMounted(() => {
 }
 
 .description-input button:hover {
-  background-color: #21a1f1; /* Darker blue on hover */
+  background-color: #21a1f1;
+  /* Darker blue on hover */
 }
 
 .uploadbutton {
@@ -366,7 +385,7 @@ onMounted(() => {
   height: 60px;
   width: 60px;
   border-radius: 50%;
-  font-size:9px;
+  font-size: 9px;
   flex-shrink: 0;
   min-width: 32px;
   background-color: #52ff00;
