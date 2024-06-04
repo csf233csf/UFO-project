@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <img src="/images/profile.jpg" class="background-image" />
+      <img src="/images/gaga.jpg" class="background-image" />
       <div ref="canvasContainer" class="canvas-container"></div>
     </div>
   </template>
@@ -45,12 +45,12 @@
       // Load GLB model
       const loader = new GLTFLoader();
       loader.load(
-        'alien10.glb',
+        'bigmouth1.glb',
         (gltf : any) => {
           model = gltf.scene;
   
           // Center the model
-          const scale = 1.1
+          const scale = 1.8
           const box = new THREE.Box3().setFromObject(model);
           const center = box.getCenter(new THREE.Vector3());
           model?.position.sub(center); // Reposition the model to the center
@@ -93,7 +93,7 @@
   .container {
     position: relative;
     height: 800px;
-    width: 560px
+    width: 600px;
    
   }
   
@@ -101,13 +101,13 @@
     align-self: center;
     object-fit: cover;
     z-index: 1;
-    height: 800px;
-    width: 560px
+    height: 100%;
+    width: 100%;
   }
   
   .canvas-container {
     position: absolute;
-    top: 74px; /* Adjust according to the red box position */
+    top: 30px; /* Adjust according to the red box position */
     right: -170px; /* Adjust according to the red box position */
     pointer-events: none; /* Ensure the canvas doesn't block pointer events */
     z-index: 2;

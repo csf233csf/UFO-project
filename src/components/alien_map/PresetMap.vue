@@ -1,48 +1,61 @@
 <template>
+  <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
-    <component
-      class='components'
-      v-for="(visible, key) in componentsVisibility"
-      :is="components[key]"
-      :key="key"
-      v-show="visible.value"
-      @click.stop
-    ></component>
+    <component class='components' v-for="(visible, key) in componentsVisibility" :is="components[key]" :key="key"
+      v-show="visible.value" @click.stop>
+    </component>
+    <button v-show="overlayVisible" class="close-button" @click="hideAllComponents">
+      <img src="/images/close.svg" alt="Close Icon" class="svg-icon" />
+    </button>
     <div class="image-button" v-for="(component, index) in componentList" :key="component">
-      <button 
-        @click="showComponent(component)"
-        :class="'button-style'"
-        :style="buttonStyle(index, component)"
-      ></button>
+      <button @click="showComponent(component)" :class="'button-style'" :style="buttonStyle(index, component)"></button>
     </div>
+  </div>
+  <v-btn class="nav-button" @click="navigateToNextPage">
+    <span>Add<br>Your<br>Alien</span>
+  </v-btn>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, type Ref } from 'vue';
-
-// 导入模型组件
+import { ref, type Ref } from 'vue'; // 导入模型组件
 import YellowDog from '@/components/models/model1.vue';
-import AnotherComponent from '@/components/models/model2.vue';
+import Bigmouth from '@/components/models/model2.vue';
+import AnotherComponent from '@/components/models/model3.vue';
+import Frogman from '@/components/models/model4.vue';
+import Singer from '@/components/models/model5.vue';
+import Hearted from '@/components/models/model6.vue';
 
 // 哈希模型组件
-const componentList = ['YellowDog', 'AnotherComponent'];
+const componentList = ['YellowDog', 'AnotherComponent','Bigmouth','Frogman','Singer','Hearted'];
 const componentsVisibility: Record<string, Ref<boolean>> = {
   YellowDog: ref(false),
   AnotherComponent: ref(false),
+  Bigmouth: ref(false),
+  Frogman: ref(false),
+  Singer: ref(false),
+  Hearted: ref(false),
 };
 
 // 储存模型组件列表
 const components: Record<string, any> = {
   YellowDog,
   AnotherComponent,
+  Bigmouth,
+  Frogman,
+  Singer,
+  Hearted
 };
 
 // 按钮的位置
 const positions: Record<string, { top: number; left: number }> = {
-  YellowDog: { top: 50, left: 350 },
-  AnotherComponent: { top: 100, left: 500 },
+  YellowDog: { top: 50, left: 50 },
+  AnotherComponent: { top: 100, left: 100 },
+  Bigmouth: { top: 200, left: 200 },
+  Frogman: { top: 300, left: 300 },
+  Singer: { top: 400, left: 400 },
+  Hearted: { top: 440, left: 500 },
 };
 
 // 按钮的颜色
@@ -78,16 +91,25 @@ function buttonStyle(index: number, component: string) {
     left: positions[component].left + 'px',
   };
 }
+
+function navigateToNextPage() {
+  router.push('/alien_map'); // Replace '/next-page' with your desired route
+}
 </script>
 
 <style scoped>
-body {
+.wrapper {
   align-items: center;
-  background: #212121;
+  background: transparent;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-size: contain;
   width: 100%;
   height: 100vh;
+  background-image: url('/images/mapbg.jpg');
+  background-repeat: no-repeat;
+ background-position: 25%;
 }
 
 .button-style {
@@ -101,66 +123,102 @@ body {
   padding: .75em 2em;
   position: relative;
   text-transform: uppercase;
-  transition: all .3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   animation: glow var(--animation-duration) ease-in infinite;
   animation-delay: var(--animation-delay);
 }
 
 .button-style:hover {
-  transform: scale(1.1); /* 放大 */
-  animation: none; /* 移除动画 */
-  box-shadow: 0 0 20px var(--button-color); /* 添加阴影 */
+  transform: scale(1.1);
+  /* 放大 */
+  box-shadow: 0 0 20px var(--button-color);
+  /* 添加阴影 */
 }
 
 .button-style::before {
-  animation: glow var(--animation-duration) ease-in infinite;
-  animation-delay: var(--animation-delay);
   background: var(--button-color);
   border-radius: inherit;
   content: '';
   filter: blur(10px);
-  opacity: .90;
+  opacity: .75;
   position: absolute;
   transition: all .3s ease-in-out;
-  width: 120%;
-  height: 120%;
+  width: 100%;
+  height: 100%;
   top: 0;
   right: 0;
   z-index: -1;
+  animation: glow var(--animation-duration) ease-in infinite;
+  animation-delay: var(--animation-delay);
 }
 
 .button-style:hover::before {
   filter: blur(20px);
   opacity: 1;
-  animation: none; /* 移除动画 */
+  animation: none;
+  /* 移除动画 */
 }
 
+.map-container {
+  width: 462px;
+  height: 654px;
+  position: relative;
+  margin: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 6px;
+  right: -2px;
+  background: transparent;
+  /* color: rgb(255, 34, 34); */
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  transition: opacity 0.3s; /* 添加透明度变化的过渡效果 */
+  opacity: 0.9;
+}
+
+.close-button:hover {
+  opacity: 0.3;
+}
+
+
+.close-button img.svg-icon {
+  margin-right: 8px;
+  width: 10px;  /* 调整SVG图标宽度 */
+  height: 10px; /* 调整SVG图标高度 */
+  
+}
 
 @keyframes glow {
   0% {
     background: var(--button-color);
   }
+
   25% {
-    background: var(--button-color-transparent); /* 使用透明颜色 */
+    background: var(--button-color-transparent);
+    /* 使用透明颜色 */
   }
+
   100% {
     background: var(--button-color);
   }
-}
-
-.map-container {
-  width: 80vw;
-  height: 80vh;
-  position: relative;
-  margin: auto;
-  top: 10vh;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-image: url('/images/mapbg.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 1; 
 }
 
 .overlay {
@@ -175,7 +233,13 @@ body {
 
 .components {
   position: relative;
-  z-index: 10;
+  z-index: 100;
+  box-shadow: 0 0px 20px rgba(255, 255, 255, 0.684); /* 白色阴影 */
+  /* sheight: 600px; */
+  height:100%;
+  width: auto;
+  background-size: cover;
+  background: trans;
 }
 
 .image-button button {
@@ -183,11 +247,33 @@ body {
   padding: 0px;
   border: 0;
   cursor: pointer;
-  width: 20px; /* 设置按钮宽度 */
-  height: 20px; /* 设置按钮高度 */
-  border-radius: 50%; /* 将按钮形状设置为圆形 */
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* 添加阴影 */
-  transition: transform 0.2s, box-shadow 0.2s; /* 添加过渡效果 */
-  z-index: 15; /* Ensure buttons are above overlay */
+  width: 15px;
+  /* 设置按钮宽度 */
+  height: 15px;
+  /* 设置按钮高度 */
+  border-radius: 50%;
+  /* 将按钮形状设置为圆形 */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  /* 添加阴影 */
+  transition: transform 0.2s, box-shadow 0.2s;
+  /* 添加过渡效果 */
+  z-index: 99;
+  /* Ensure buttons are above overlay */
+}
+
+.nav-button {
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  font-size:9px;
+  flex-shrink: 0;
+  min-width: 32px;
+  background-color: #00FFFF;
+  font-size: 10px;
+  z-index: 10000000;
+
 }
 </style>

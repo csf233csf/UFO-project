@@ -7,9 +7,9 @@
       @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')"> 
     </v-btn>
     <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
-      @click="jumptonextpage('/alien_map', 'Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+      @click="jumptonextpage('/VR_video', '', '')">
     </v-btn>
-    <div class="gradient-div"></div>
+    <div v-if="showNav" class="gradient-div" ></div>
     <div class="gradient-div1"></div>
     <div class="Title">
       <div class="titleWrapper">
@@ -17,7 +17,7 @@
         <p>{{ content }}</p>
       </div>
     </div>
-    <div class="nav-bar">
+    <div v-if="showNav" class="nav-bar" >
       <ul>
         <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">01 <br><br><span class="spaced-text">PROJECTS</span></li>
         <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">02 <br><br><span class="spaced-text">AR</span></li>
@@ -66,6 +66,7 @@ import page0 from './components/main_sections/mainentry.vue';
 import page1 from './components/main_sections/phonespage.vue';
 import page3 from './components/main_sections/virtualreality.vue';
 import Cardgallery from './components/main_sections/cardgallery.vue';
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -82,6 +83,7 @@ const pageNumber = ref(1);
 const showButton1 = ref(false);
 const showButton2 = ref(false);
 const showButton3 = ref(false);
+const showNav = ref(true);
 
 const page4 = ref(false);
 const backgroundSection = ref(null);
@@ -224,6 +226,10 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
     showButton2.value = false;
     showButton3.value = false;
   }
+  if(path ==='/VR_video'){
+    showNav.value = false;
+  }
+  console.log(showNav.value);
   title.value = newTitle;
   content.value = newContent;
   const timeline = gsap.timeline();
