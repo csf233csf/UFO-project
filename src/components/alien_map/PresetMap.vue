@@ -19,13 +19,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type Ref } from 'vue'; // 导入模型组件
+import { ref, type Ref, onMounted, inject } from 'vue'; // 导入模型组件
 import YellowDog from '@/components/models/model1.vue';
 import Bigmouth from '@/components/models/model2.vue';
 import AnotherComponent from '@/components/models/model3.vue';
 import Frogman from '@/components/models/model4.vue';
 import Singer from '@/components/models/model5.vue';
+import router from '@/router/index';
 import Hearted from '@/components/models/model6.vue';
+const inject_func_map = inject('changep6') as () => void
+
+onMounted(()=>{
+  inject_func_map()
+})
 
 // 哈希模型组件
 const componentList = ['YellowDog', 'AnotherComponent','Bigmouth','Frogman','Singer','Hearted'];
@@ -93,7 +99,8 @@ function buttonStyle(index: number, component: string) {
 }
 
 function navigateToNextPage() {
-  // router.push('/alien_map'); // Replace '/next-page' with your desired route
+  router.push('/alien_map'); // Replace '/next-page' with your desired route
+  
 }
 </script>
 

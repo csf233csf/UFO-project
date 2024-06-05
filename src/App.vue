@@ -206,8 +206,8 @@ const checkScrollPosition = () => {
 };
 
 function changep6() {
-  changeColor('#FFF72E', 'transparent', '#FFF72E', 4);
-  changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
+  changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
+  changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
   flagleft.value = true;
 }
 
