@@ -2,10 +2,7 @@
   <section class="background-section" ref="backgroundSection" v-if="!page4">
     <!-- @click="showvideos" -->
     <v-btn class="uploadbutton"> View<br></br>Panoramic<br></br>Video</v-btn>
-
-    <v-img>
-      
-    </v-img>
+    <img src="/images/VRbg.png" class="background-image" />
   </section>
   <!-- <div v-if="page4" ref="page4Div" class="fade-in">
     <p4>page4</p4>
@@ -60,6 +57,16 @@ function jumptonextpage() {
   background-color: transparent;
   background-size: cover;
   background-position: center;
+  display:flex;
+  align-items:end;
+  justify-content:end;
+}
+
+.background-image{
+  height:73%;
+  width:77%;
+  object-fit: cover;
+  margin-right: 3%;
 }
 
 .fade-in {
@@ -73,10 +80,11 @@ function jumptonextpage() {
 
 .uploadbutton{
   position:absolute;
-  top:5%;
-  right:5%;
+  top:20px;
+  right:0;
   height:60px;
   width:60px;
+  margin-right: 3%;
   border-radius: 50%;
   flex-shrink: 0;
   min-width: 32px;
