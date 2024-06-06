@@ -2,6 +2,7 @@
   <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
+    <img src="/images/mapbg.jpg"/>
     <component class='components' v-for="(visible, key) in componentsVisibility" :is="components[key]" :key="key"
       v-show="visible.value" @click.stop>
     </component>
@@ -114,7 +115,7 @@ function navigateToNextPage() {
   background-size: contain;
   width: 100%;
   height: 100vh;
-  background-image: url('/images/mapbg.jpg');
+  /* background-image: url('/images/mapbg.jpg'); */
   background-repeat: no-repeat;
  background-position: 25%;
 }
