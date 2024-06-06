@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if='route.path !== "/VR_video"'>
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/alien_doc', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
     </v-btn>
@@ -26,7 +26,6 @@
       </ul>
     </div>
   </div>
-
   <div class="app-container" v-if="showSections" ref="backgroundSection">
     <div class="sections" ref="sections">
       <section id="section0" class="section section0">
@@ -50,9 +49,8 @@
   <router-view v-if="route.path !== '/'"></router-view>
 </template>
 
-
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
+import { nextTick, ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -90,6 +88,8 @@ const backgroundSection = ref(null);
 const page4Div = ref(null);
 const activeLink = ref(0);
 const flagleft = ref(false);
+const loading = ref(true);
+
 
 let title = ref('Initial Title');
 let content = ref('Initial Content');
@@ -175,7 +175,6 @@ const checkScrollPosition = () => {
     gsap.to(blurDiv2.value, { filter: 'blur(10px)', duration: 1 });
     gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
   }
-
   if (scrollProgress.value >= 0 && scrollProgress.value < 25) {
     showButton1.value = false;
     showButton2.value = false;
@@ -225,8 +224,42 @@ provide('changep6', changep6);
 provide('changep5', changep5);
 provide('changep4', changep4);
 
+// onMounted(() => {
+//   window.addEventListener('popstate', handleBackNavigation);
+//   if (route.path === '/') {
+//     if (sections.value) {
+//       sections.value.addEventListener('scroll', checkScrollPosition);
+//       checkScrollPosition();
+//       endColor.value = "#FF00F5";
+//       linkColor.value = '#FF00F5';
+//     }
+//   }
+// });
+
 onMounted(() => {
   window.addEventListener('popstate', handleBackNavigation);
+
+  // Check localStorage for target section on page load
+  const targetSection = localStorage.getItem('targetSection');
+  if (targetSection !== null) {
+    localStorage.removeItem('targetSection'); // Clear the stored section number
+    sectionNumber.value = parseInt(targetSection, 10);
+    nextTick(() => {
+      const section = document.getElementById(`section${sectionNumber.value}`);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        // Set loading to false after scroll
+        section.addEventListener('scroll', () => {
+          loading.value = false;
+        }, { once: true });
+      } else {
+        loading.value = false; // If no section is found, stop loading
+      }
+    });
+  } else {
+    loading.value = false; // If no target section, stop loading
+  }
+
   if (route.path === '/') {
     if (sections.value) {
       sections.value.addEventListener('scroll', checkScrollPosition);
@@ -237,17 +270,56 @@ onMounted(() => {
   }
 });
 
+
+
 function handleBackNavigation() {
   console.log('User navigated back to this page');
   location.reload();
 }
 
-const scrollToSection = (sectionNumber: number) => {
-  const section = document.getElementById(`section${sectionNumber}`);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
+// const scrollToSectionrecur = (sectionNumber: number) => {
+//   // if (route.path !== '/'){
+//   //   router.push('/')
+//   // }
+//   console.log(sectionNumber +'helo')
+//   const section = document.getElementById(`section${sectionNumber}`);
+//   if (section) {
+//     section.scrollIntoView({ behavior: 'smooth' });
+//   }
+// };
+
+const sectionNumber = ref<number | null>(null);
+
+const scrollToSection = async (sectionNum: number) => {
+  sectionNumber.value = sectionNum;
+  localStorage.setItem('targetSection', sectionNum.toString()); // Store the section number in localStorage
+  if (route.path !== '/') {
+    await router.push('/');
+    window.location.reload(); // Reload the page
+  } else {
+    // Use nextTick to wait for the DOM update
+    await nextTick();
+
+    const section = document.getElementById(`section${sectionNum}`);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 };
+
+// Watch for route changes to ensure scroll happens after navigation
+watch(() => route.path, async (newPath) => {
+  if (newPath === '/' && sectionNumber.value !== null) {
+    await nextTick();
+    const section = document.getElementById(`section${sectionNumber.value}`);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+});
+
+
+
 
 function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
   if (path === '/page4' || '/page5' || '/alien_map') {
@@ -386,6 +458,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   backdrop-filter: blur(0px);
   z-index: 98;
   transition: backdrop-filter 1s ease;
+  pointer-events: none;
 }
 
 .gradient-div {
