@@ -2,7 +2,7 @@
   <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
-    <img src="/images/mapbg.jpg"/>
+     <img src="/images/mapbg.jpg"/>
     <component class='components' v-for="(visible, key) in componentsVisibility" :is="components[key]" :key="key"
       v-show="visible.value" @click.stop>
     </component>
@@ -182,6 +182,13 @@ function navigateToNextPage() {
   justify-content: center;
 }
 
+.map-container img {
+  position: absolute;
+  top:0;
+  scale:0.8;
+
+}
+
 .close-button {
   position: absolute;
   top: 6px;
@@ -197,7 +204,7 @@ function navigateToNextPage() {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 101;
+  z-index: 1010;
   transition: opacity 0.3s; /* 添加透明度变化的过渡效果 */
   opacity: 0.9;
 }
@@ -241,7 +248,7 @@ function navigateToNextPage() {
 
 .components {
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   box-shadow: 0 0px 20px rgba(255, 255, 255, 0.684); /* 白色阴影 */
   /* sheight: 600px; */
   height:100%;

@@ -78,7 +78,7 @@ const openCommentApp = (x: number, y: number) => {
 const showImage = (url: string, event: MouseEvent) => {
   hoveredImage.value = url;
   const buttonRect = (event.target as HTMLElement).getBoundingClientRect();
-  hoverX.value = buttonRect.left + window.scrollX - 200; // Add window scroll position to make it accurate
+  hoverX.value = buttonRect.left + window.scrollX - 100; // Add window scroll position to make it accurate
   hoverY.value = buttonRect.top + window.scrollY - 70; // Adjust the value based on the image height
 };
 
@@ -134,9 +134,8 @@ onMounted(() => {
 
 .image-button {
   position: absolute;
-  z-index: 1;
+  z-index: 6;
 }
-
 .image-button button {
   position: absolute;
   padding: 0px;
@@ -147,11 +146,12 @@ onMounted(() => {
   border-radius: 50%; /* 将按钮形状设置为圆形 */
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* 添加阴影 */
   transition: transform 0.2s, box-shadow 0.2s; /* 添加过渡效果 */
+  z-index:6;
 }
 
 .hover-image {
   position: absolute;
-  z-index: 1000;
+  z-index: 7;
   border: 1px solid #ccc;
   background-color: white;
   padding: 5px;
@@ -183,7 +183,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
   z-index: 999;
   display: flex;
   justify-content: center;
