@@ -2,49 +2,35 @@
   <div class="background">
     <div class="draw-app">
       <button class="close-button" @click="closeDrawApp">
-      <img src="/images/close1.svg" alt="Close Icon" class="svg-icon" />
-    </button>
+        <img src="/images/close1.svg" alt="Close Icon" class="svg-icon" />
+      </button>
       <div class="canvascontainer">
         <p class="stroked-text">Draw your aliens</p>
         <canvas ref="canvas" :width="canvasSize" :height="canvasSize"></canvas>
         <div class="toolbar">
-          <!-- <input type="color" v-model="penColor" /> -->
           <button @click="setEraser">
             <img src="/images/eraser1.svg" alt="Eraser" />
           </button>
-          
           <button @click="setPen">
             <img src="/images/pencil.svg" style="padding:5px" alt="Pen" />
           </button>
-
           <button class="colorbutton" @click="changePenColor('#FF00F5')" style="background-color: #FF00F5;">
           </button>
-
           <button class="colorbutton" @click="changePenColor('#00FFFF')" style="background-color: #00FFFF;">
           </button>
-
           <button class="colorbutton" @click="changePenColor('#FFF72E')" style="background-color: #FFF72E;">
           </button>
-
           <button class="colorbutton" @click="changePenColor('#52FF00')" style="background-color: #52FF00;">
           </button>
-
-          <!-- <label>
-            Pixel Size:
-            <input type="number" v-model="pixelSize" min="1" max="50" />
-          </label> -->
         </div>
       </div>
       <div class="input">
         <p class="stroked-text">Story input</p>
-        <input type="text" />
+        <textarea v-model="story" placeholder="Write your story here..."></textarea>
         <button class="uploadbutton" @click="saveDrawing" :disabled="isUploading">Post</button>
-        <!-- <button @click="clearCanvas">Clear Canvas</button>
-        <button @click="closeDrawApp">Close</button> -->
         <div v-if="isUploading" class="spinner"></div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -60,17 +46,19 @@ const penColor = ref('#FF00F5');
 const pixelSize = ref(10);
 const isUploading = ref(false);
 const canvasSize = 500;
+const story = ref('');
 const emit = defineEmits(['close']);
 let drawing = false;
 
 const setEraser = () => {
   if (ctx.value) {
-    ctx.value.strokeStyle = '#000';
+    ctx.value.globalCompositeOperation = 'destination-out';
   }
 };
 
 const setPen = () => {
   if (ctx.value) {
+    ctx.value.globalCompositeOperation = 'source-over';
     ctx.value.strokeStyle = penColor.value;
   }
 };
@@ -80,7 +68,7 @@ const startDrawing = (event: MouseEvent) => {
     drawing = true;
     ctx.value.beginPath();
     ctx.value.moveTo(event.offsetX, event.offsetY);
-    draw(event); // Start drawing immediately
+    draw(event);
   }
 };
 
@@ -91,14 +79,12 @@ const stopDrawing = () => {
   }
 };
 
-
 const changePenColor = (color: string) => {
   penColor.value = color;
   if (ctx.value) {
     ctx.value.strokeStyle = penColor.value;
   }
 };
-
 
 const draw = (event: MouseEvent) => {
   if (!drawing) return;
@@ -119,7 +105,7 @@ const saveDrawing = async () => {
 
     const db = getDatabase();
     const imageDbRef = dbRef(db, `images_map/${props.xPos}_${props.yPos}`);
-    await set(imageDbRef, { xPos: props.xPos, yPos: props.yPos, url });
+    await set(imageDbRef, { xPos: props.xPos, yPos: props.yPos, url, story: story.value });
     closeDrawApp();
     alert('Drawing saved!');
     isUploading.value = false;
@@ -164,6 +150,7 @@ watch(pixelSize, (newSize) => {
   }
 });
 </script>
+
 
 <style scoped>
 .background {
@@ -300,15 +287,15 @@ button img {
 }
 
 
-.input input[type="text"] {
+textarea{
   width: 100%;
   height:100px;
   padding: 5px;
   background-color: #000000;
-  border: 2px solid #00ffffa3;
+  border: 2px solid #00ffff;
   border-radius: 8px;
   box-shadow: 0 0 8px rgb(0, 255, 255);
-  color: aliceblue;
+  color: rgb(9, 140, 255);
   margin-bottom: 10px;
 }
 

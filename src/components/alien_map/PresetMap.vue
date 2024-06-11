@@ -2,13 +2,17 @@
   <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
-     <img src="/images/mapbg.jpg"/>
-    <component class='components' v-for="(visible, key) in componentsVisibility" :is="components[key]" :key="key"
-      v-show="visible.value" @click.stop>
-    </component>
-    <button v-show="overlayVisible" class="close-button" @click="hideAllComponents">
+     <!-- <img src="/images/mapbg.jpg"/> -->
+     <div class="comwrapper">
+      <button v-show="overlayVisible" class="close-button" @click="hideAllComponents">
       <img src="/images/close.svg" alt="Close Icon" class="svg-icon" />
     </button>
+      <component class='components' v-for="(visible, key) in componentsVisibility" :is="components[key]" :key="key"
+      v-show="visible.value" @click.stop>
+    </component>
+     </div>
+   
+    
     <div class="image-button" v-for="(component, index) in componentList" :key="component">
       <button @click="showComponent(component)" :class="'button-style'" :style="buttonStyle(index, component)"></button>
     </div>
@@ -57,12 +61,12 @@ const components: Record<string, any> = {
 
 // 按钮的位置
 const positions: Record<string, { top: number; left: number }> = {
-  YellowDog: { top: 50, left: 50 },
-  AnotherComponent: { top: 100, left: 100 },
-  Bigmouth: { top: 200, left: 200 },
-  Frogman: { top: 300, left: 300 },
-  Singer: { top: 400, left: 400 },
-  Hearted: { top: 440, left: 500 },
+  YellowDog: { top: 250, left: 250 },
+  AnotherComponent: { top: 400, left: 400 },
+  Bigmouth: { top: 300, left: 600 },
+  Frogman: { top: 500, left: 500 },
+  Singer: { top: 300, left: 1000 },
+  Hearted: { top: 400, left: 500 },
 };
 
 // 按钮的颜色
@@ -168,10 +172,10 @@ function navigateToNextPage() {
 }
 
 .map-container {
-  width: 462px;
-  height: 654px;
+  width: 80vw;
+  height: 80vh;
   position: relative;
-  margin: auto;
+  margin: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -179,20 +183,21 @@ function navigateToNextPage() {
   background-position: center;
   opacity: 1;
   display: flex;
+  background-image: url('/images/mapbg.jpg');
   justify-content: center;
 }
 
 .map-container img {
   position: absolute;
   top:0;
-  scale:0.8;
+  scale:0.7;
 
 }
 
 .close-button {
   position: absolute;
   top: 6px;
-  right: -2px;
+  right: 0px;
   background: transparent;
   /* color: rgb(255, 34, 34); */
   border: none;
@@ -209,13 +214,21 @@ function navigateToNextPage() {
   opacity: 0.9;
 }
 
+.comwrapper{
+  position: relative;
+  height:auto;
+  width:auto;
+
+
+}
+
 .close-button:hover {
   opacity: 0.3;
 }
 
 
 .close-button img.svg-icon {
-  margin-right: 8px;
+  /* margin-right: 8px; */
   width: 10px;  /* 调整SVG图标宽度 */
   height: 10px; /* 调整SVG图标高度 */
   

@@ -1,5 +1,5 @@
 <template>
-  <div>  
+  <div>
     <div v-if="showDrawApp">
       <DrawApp :xPos="xPos" :yPos="yPos" @close="closeDrawApp" />
       <div class="overlay"></div>
@@ -10,14 +10,14 @@
         <div class="overlay"></div>
       </div>
       <div v-for="(img, index) in images" :key="index" class="image-button"
-        :style="{ left: img.xPos + 'px', top: img.yPos + 'px'  }">
-        <button :style="{backgroundColor:img.color}" @click.stop="openCommentApp(img.xPos, img.yPos)" 
+        :style="{ left: img.xPos + 'px', top: img.yPos + 'px' }">
+        <button :style="{ backgroundColor: img.color }" @click.stop="openCommentApp(img.xPos, img.yPos)"
           @mouseover="showImage(img.url, $event)"
           @mouseleave="hideImage">
         </button>
       </div>
       <div v-if="hoveredImage" class="hover-image" :style="{ top: hoverY + 'px', left: hoverX + 'px' }">
-        <v-img :src="hoveredImage" :width = "200" :height = '200' cover/>
+        <v-img :src="hoveredImage" :width="200" :height="200" cover />
       </div>
     </div>
   </div>
@@ -41,11 +41,10 @@ const hoveredImage = ref<string | null>(null);
 const hoverX = ref(0);
 const hoverY = ref(0);
 const images = ref<{ xPos: number; yPos: number; url: string; color: string }[]>([]);
-const colors = ['#FF9900', '#FF00C7', '#52FF00','#FFF72E','#00FFFF','#7000FF'];
+const colors = ['#FF9900', '#FF00C7', '#52FF00', '#FFF72E', '#00FFFF', '#7000FF'];
 const loading = ref(true);
 
-const injected_func = inject('changep6') as () => void
-
+const injected_func = inject('changep6') as () => void;
 
 
 function getRandomColor() {
@@ -87,12 +86,12 @@ const hideImage = () => {
 };
 
 onMounted(() => {
-  injected_func()
+  injected_func();
   const imagesRef = dbRef(database, 'images_map');
   onValue(imagesRef, (snapshot) => {
     images.value = [];
     const promises: Promise<void>[] = [];
-    
+
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
       const color = getRandomColor();
@@ -121,7 +120,8 @@ onMounted(() => {
   width: 80vw;
   height: 80vh;
   position: relative;
-  margin: auto;
+  margin-left:10vw;
+  margin-right:10vw;
   top: 10vh;
   bottom: 0;
   left: 0;
@@ -141,26 +141,32 @@ onMounted(() => {
   padding: 0px;
   border: 0;
   cursor: pointer;
-  width: 20px; /* 设置按钮宽度 */
-  height: 20px; /* 设置按钮高度 */
+  width: 15px; /* 设置按钮宽度 */
+  height: 15px; /* 设置按钮高度 */
   border-radius: 50%; /* 将按钮形状设置为圆形 */
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* 添加阴影 */
   transition: transform 0.2s, box-shadow 0.2s; /* 添加过渡效果 */
-  z-index:6;
+  z-index: 6;
+  /* animation: blink 1s infinite; */
+}
+
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .hover-image {
   position: absolute;
   z-index: 7;
   border: 1px solid #ccc;
-  background-color: white;
+  background-color: rgb(0, 0, 0);
   padding: 5px;
 }
-
-/* .hover-image img {
-  max-width: 200px;
-  max-height: 200px;
-} */
 
 .overlay {
   position: fixed;
@@ -183,7 +189,6 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  /* backdrop-filter: blur(5px); */
   z-index: 999;
   display: flex;
   justify-content: center;
@@ -204,7 +209,7 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-.commentapp{
+.commentapp {
   z-index: 10000000;
 }
 

@@ -19,5 +19,6 @@
     text-align: right;
     font-size: 25px;
     color:#FF00F5;
+    background:transparent;
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
   <div v-if='route.path !== "/VR_video"'>
+    <div id="loading-screen" class="loading-screen" v-if="isLoading">
+      <div class="spinner"></div>
+    </div>
     <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
       @click="jumptonextpage('/alien_doc', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
     </v-btn>
@@ -45,6 +48,7 @@
         <page3 />
       </section>
     </div>
+    <div ref="threeContainer" class="three-container"></div>
   </div>
   <router-view v-if="route.path !== '/'"></router-view>
 </template>
@@ -59,6 +63,8 @@ import page0 from './components/main_sections/mainentry.vue';
 import page1 from './components/main_sections/phonespage.vue';
 import page3 from './components/main_sections/virtualreality.vue';
 import Cardgallery from './components/main_sections/cardgallery.vue';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
@@ -89,7 +95,8 @@ const page4Div = ref(null);
 const activeLink = ref(0);
 const flagleft = ref(false);
 const loading = ref(true);
-
+const modelAngle = ref(0);
+const isLoading = ref(true);
 
 let title = ref('Initial Title');
 let content = ref('Initial Content');
@@ -268,6 +275,11 @@ onMounted(() => {
       linkColor.value = '#FF00F5';
     }
   }
+  initThreeJS();
+  setTimeout(() => {
+    isLoading.value = false; // Hide the loading screen after a delay
+  }, 3000);
+
 });
 
 
@@ -276,17 +288,6 @@ function handleBackNavigation() {
   console.log('User navigated back to this page');
   location.reload();
 }
-
-// const scrollToSectionrecur = (sectionNumber: number) => {
-//   // if (route.path !== '/'){
-//   //   router.push('/')
-//   // }
-//   console.log(sectionNumber +'helo')
-//   const section = document.getElementById(`section${sectionNumber}`);
-//   if (section) {
-//     section.scrollIntoView({ behavior: 'smooth' });
-//   }
-// };
 
 const sectionNumber = ref<number | null>(null);
 
@@ -318,10 +319,94 @@ watch(() => route.path, async (newPath) => {
   }
 });
 
+let curve: THREE.CubicBezierCurve3;
+
+const initThreeJS = () => {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true,alpha: true });
+  const container = document.querySelector('.three-container') as HTMLElement;
+  if (container) {
+    renderer.setSize(700, 500);
+    container.appendChild(renderer.domElement);
+  }
+
+  const light = new THREE.DirectionalLight(0xffffff, 5);
+  light.position.set(0, 1, 1).normalize();
+  scene.add(light);
+
+  const loader = new GLTFLoader();
+  let model: THREE.Object3D;
+
+  
+  loader.load('Queen.glb', function (gltf) {
+    model = gltf.scene;
+    model.scale.set(0.15,0.15,0.15);
+    model.position.set(0, 0, 0);
+    scene.add(model);
+  }, undefined, function (error) {
+    console.error(error);
+  });
+
+  camera.position.set(0, 1, 5); // 设置摄像头位置
+  camera.rotation.x = THREE.MathUtils.degToRad(-10); // 向下倾斜10度
+
+  curve = new THREE.CubicBezierCurve3(
+    new THREE.Vector3(10, 0, 0), // 起点a
+    new THREE.Vector3(5, 15, 0), // 控制点1
+    new THREE.Vector3(1200, window.innerHeight, 0), // 控制点2
+    new THREE.Vector3(window.innerWidth-600, 0, 0) // 终点
+  );
+
+  const animate = () => {
+    requestAnimationFrame(animate);
+    if (model) {
+      // model.rotation.y += 0.01;
+    }
+    renderer.render(scene, camera);
+  };
+
+  const onScroll = () => {
+  const scrollLeft = sections.value!.scrollLeft || 0;
+  const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
+  const scrollProgress = (scrollLeft / scrollWidth) * 100;
+  if (model) {
+    const point = curve.getPoint(scrollProgress / 100);
+    // gsap.to(model.position, { duration: 0.1, x: point.x, y: point.y, z: point.z });
+    gsap.to(model.rotation, { duration: 0.1, y: scrollProgress * 0.01 * Math.PI * 2 });
+  }
+
+  // 更新 threeContainer 的位置
+  const container = document.querySelector('.three-container') as HTMLElement;
+  if (container) {
+    const point = curve.getPoint(scrollProgress / 100);
+    gsap.to(container, {
+      duration: 0.1,
+      motionPath: {
+        path: curve.getSpacedPoints(100),
+        align: 'self',
+        alignOrigin: [1, 1],
+        autoRotate: true,
+      },
+      x: point.x,
+      y: point.y,
+      z: point.z,
+      onUpdate: function() {
+        container.style.transform = `translate3d(${this.x}, ${this.y}, ${this.z})`;
+      }
+    });
+  }
+};
 
 
+sections.value!.addEventListener('scroll', onScroll);
+  animate();
 
-function jumptonextpage(path: string, newTitle: string = 'Default Title', newContent: string = 'Default Content') {
+  
+};
+
+
+function jumptonextpage(path: string,  newTitle: string = 'Default Title', newContent: string = 'Default Content') {
   if (path === '/page4' || '/page5' || '/alien_map') {
     showButton1.value = false;
     showButton2.value = false;
@@ -355,12 +440,25 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   font-family: "HelveticaNeue", sans-serif !important; 
 }
 
+
 .app-container {
   width: 100vw;
   height: 100vh;
   padding: 0;
   display: flex;
   overflow-x: hidden;
+  cursor: url('/images/censor.png'), auto;
+
+}
+
+.three-container {
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  z-index: 99;
+  background: transparent;
 }
 
 .nav-bar {
@@ -384,7 +482,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
 
 .nav-bar li {
   padding: 10px;
-  cursor: pointer;
+  cursor: url('/images/censor.png'), auto;
   margin-bottom: 70px;
 }
 
@@ -436,6 +534,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   height: 100vh;
   position: absolute;
   overflow-x: auto;
+  
 }
 
 .section {
@@ -449,6 +548,8 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   color: white;
   position: relative;
   overflow: hidden;
+  z-index: 98;
+  
 }
 
 .blur {
@@ -456,7 +557,7 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(0px);
-  z-index: 98;
+  z-index: 99;
   transition: backdrop-filter 1s ease;
   pointer-events: none;
 }
@@ -523,4 +624,19 @@ function jumptonextpage(path: string, newTitle: string = 'Default Title', newCon
   display: inline-block;
   padding-left: 100px;
 }
+
+.loading-screen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  /* filter: blur(10px); */
+  backdrop-filter: blur(10px);
+}
+
 </style>
