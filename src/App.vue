@@ -4,87 +4,88 @@
       The Internet is a little slow. Let's watch the dance!
     </div>
     <video autoplay loop muted class="loading-video">
-      <source src="/images/loading.mp4" type="video/mp4" />
+      <source src="/images/loading1.mp4" type="video/mp4"/>
       Your browser does not support the video tag.
     </video>
   </div>
-  <div v-show="!isLoading">
-  <div v-if="route.path !== '/VR_video' && !isLoading">
-    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1" @click="
-      jumptonextpage(
-        '/alien_doc',
-        'Spaceship Collection',
-        'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
-      )
-      ">
-    </v-btn>
-    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2" @click="
-      jumptonextpage(
-        '/gallery',
-        'Spaceship Collection',
-        'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
-      )
-      ">
-    </v-btn>
-    <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
-      @click="jumptonextpage('/VR_video', '', '')">
-    </v-btn>
-    <div v-if="showNav" class="gradient-div"></div>
-    <div class="gradient-div1"></div>
-    <div class="Title">
-      <div class="titleWrapper">
-        <h1>{{ title }}</h1>
-        <p>{{ content }}</p>
-      </div>
-    </div>
-    <div v-if="showNav" class="nav-bar">
-      <ul>
-        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">
-          01 <br /><br /><span class="spaced-text">PROJECTS</span>
-        </li>
-        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">
-          02 <br /><br /><span class="spaced-text">AR</span>
-        </li>
-        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(2)">
-          03 <br /><br /><span class="spaced-text">WORKSHOP</span>
-        </li>
-        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(3)">
-          04 <br /><br /><span class="spaced-text">VR</span>
-        </li>
-      </ul>
-    </div>
-  </div>
   <div>
-    <div>
-      <p style="color: white; position: absolute; z-index: 1000000">
-        isLoading: {{ isLoading }}
-      </p>
-    </div>
-    <div>
-      <div class="app-container" v-if="showSections" ref="backgroundSection">
-        <div class="sections" ref="sections">
-          <section id="section0" class="section section0">
-            <div v-if="blurover" class="blur" ref="blurDiv0"></div>
-            <page0 />
-          </section>
-          <section id="section1" class="section section1">
-            <div v-if="blurover" class="blur" ref="blurDiv1"></div>
-            <page1 />
-          </section>
-          <section id="section2" class="section section2">
-            <div v-if="blurover" class="blur" ref="blurDiv2"></div>
-            <Cardgallery />
-          </section>
-          <section id="section3" class="section section3">
-            <div v-if="blurover" class="blur" ref="blurDiv3"></div>
-            <page3 />
-          </section>
+    <div v-if="route.path !== '/VR_video'">
+      <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1" @click="
+        jumptonextpage(
+          '/alien_doc',
+          'Spaceship Collection',
+          'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+        )
+        ">
+      </v-btn>
+      <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2" @click="
+        jumptonextpage(
+          '/gallery',
+          'Spaceship Collection',
+          'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+        )
+        ">
+      </v-btn>
+      <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
+        @click="jumptonextpage('/VR_video', '', '')">
+      </v-btn>
+      <div v-if="showNav" class="gradient-div"></div>
+      <div class="gradient-div1"></div>
+      <div class="Title">
+        <div class="titleWrapper">
+          <h1>{{ title }}</h1>
+          <p>{{ content }}</p>
         </div>
-        <div ref="threeContainer" class="three-container"></div>
+      </div>
+      <div v-if="showNav" class="nav-bar">
+        <ul>
+          <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">
+            01 <br /><br /><span class="spaced-text">PROJECTS</span>
+          </li>
+          <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">
+            02 <br /><br /><span class="spaced-text">AR</span>
+          </li>
+          <li :class="{ active: activeLink === 3 }" @click="scrollToSection(2)">
+            03 <br /><br /><span class="spaced-text">WORKSHOP</span>
+          </li>
+          <li :class="{ active: activeLink === 4 }" @click="scrollToSection(3)">
+            04 <br /><br /><span class="spaced-text">VR</span>
+          </li>
+        </ul>
       </div>
     </div>
-    <router-view v-if="route.path !== '/'"></router-view>
-  </div>
+    <div>
+      <div>
+        <p style="color: white; position: absolute; z-index: 1000000">
+          isLoading: {{ isLoading }}
+        </p>
+      </div>
+      <div>
+        <div class="app-container" v-if="showSections" ref="backgroundSection">
+          <div class="sections" ref="sections">
+            <section id="section0" class="section section0">
+              <div v-if="blurover" class="blur" ref="blurDiv0"></div>
+              <page0 />
+            </section>
+            <section id="section1" class="section section1">
+              <div v-if="blurover" class="blur" ref="blurDiv1"></div>
+              <page1 />
+            </section>
+            <section id="section2" class="section section2">
+              <div v-if="blurover" class="blur" ref="blurDiv2"></div>
+              <Cardgallery />
+            </section>
+            <section id="section3" class="section section3">
+              <div v-if="blurover" class="blur" ref="blurDiv3"></div>
+              <page3 />
+            </section>
+          </div>
+         
+        </div>
+      </div>
+      <router-view v-if="route.path !== '/'"></router-view>
+    </div>
+    <div ref="threeContainer" class="three-container"></div>
   </div>
 </template>
 
@@ -231,8 +232,8 @@ const checkScrollPosition = () => {
     showButton3.value = false;
     changeColor("transparent", "#5F004A", "#FF00C7", 1);
     changeTitle(
-      "The Lighthouse Project",
-      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "",
+      "",
       "#FF00F5"
     );
   } else if (scrollProgress.value >= 25 && scrollProgress.value < 50) {
@@ -302,13 +303,13 @@ provide("changep5", changep5);
 provide("changep4", changep4);
 
 onMounted(() => {
-
+console.log(window.innerWidth);
   console.log("Mounted: Initial isLoading:", isLoading.value);
- 
+
   setTimeout(() => {
     fadeOutLoadingScreen();
   }, 3000);
-  
+
   window.addEventListener("popstate", handleBackNavigation);
 
   // Check localStorage for target section on page load
@@ -347,12 +348,6 @@ onMounted(() => {
   initThreeJS();
 
 });
-
-
-
-
-
-
 
 
 const fadeOutLoadingScreen = () => {
@@ -421,6 +416,7 @@ watch(
 let curve: THREE.CubicBezierCurve3;
 
 const initThreeJS = () => {
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -443,10 +439,10 @@ const initThreeJS = () => {
   let model: THREE.Object3D;
 
   loader.load(
-    "Queen.glb",
+    "/images/Queen.glb",
     function (gltf) {
       model = gltf.scene;
-      model.scale.set(0.15, 0.15, 0.15);
+      model.scale.set(0.1, 0.1, 0.1);
       model.position.set(0, 0, 0);
       scene.add(model);
     },
@@ -459,55 +455,62 @@ const initThreeJS = () => {
   camera.position.set(0, 1, 5); // 设置摄像头位置
   camera.rotation.x = THREE.MathUtils.degToRad(-10); // 向下倾斜10度
 
-  curve = new THREE.CubicBezierCurve3(
-    new THREE.Vector3(10, 0, 0), // 起点a
-    new THREE.Vector3(5, 15, 0), // 控制点1
-    new THREE.Vector3(1200, window.innerHeight, 0), // 控制点2
-    new THREE.Vector3(window.innerWidth - 600, 0, 0) // 终点
-  );
+  const initialPosition = { x: 0, y: 0 };
+  gsap.set(container, {
+    x: initialPosition.x,
+    y: initialPosition.y,
+    scale: 1,
+  });
+
+  // 创建 GSAP Timeline
+  const timeline = gsap.timeline({ paused: true });
+  timeline.to(container, {
+    duration: 1,
+    x: 100,
+    y: 100,
+    scale: 0.5,
+    onUpdate: function () {
+      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+    },
+  })
+  .to(container, {
+    duration: 1,
+    x: 300,
+    y: 200,
+    scale: 1.5,
+    onUpdate: function () {
+      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+    },
+  })
+  .to(container, {
+    duration: 1,
+    x: 500,
+    y: 100,
+    scale: 1,
+    onUpdate: function () {
+      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+    },
+  })
+  .to(container, {
+    duration: 1,
+    x: 700,
+    y: 300,
+    scale: 0.75,
+    onUpdate: function () {
+      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+    },
+  });
 
   const animate = () => {
     requestAnimationFrame(animate);
-    if (model) {
-      // model.rotation.y += 0.01;
-    }
     renderer.render(scene, camera);
   };
 
   const onScroll = () => {
     const scrollLeft = sections.value!.scrollLeft || 0;
-    const scrollWidth =
-      sections.value!.scrollWidth - sections.value!.clientWidth;
-    const scrollProgress = (scrollLeft / scrollWidth) * 100;
-    if (model) {
-      const point = curve.getPoint(scrollProgress / 100);
-      // gsap.to(model.position, { duration: 0.1, x: point.x, y: point.y, z: point.z });
-      gsap.to(model.rotation, {
-        duration: 0.1,
-        y: scrollProgress * 0.01 * Math.PI * 2,
-      });
-    }
-
-    // 更新 threeContainer 的位置
-    const container = document.querySelector(".three-container") as HTMLElement;
-    if (container) {
-      const point = curve.getPoint(scrollProgress / 100);
-      gsap.to(container, {
-        duration: 0.1,
-        motionPath: {
-          path: curve.getSpacedPoints(100),
-          align: "self",
-          alignOrigin: [1, 1],
-          autoRotate: true,
-        },
-        x: point.x,
-        y: point.y,
-        z: point.z,
-        onUpdate: function () {
-          container.style.transform = `translate3d(${this.x}, ${this.y}, ${this.z})`;
-        },
-      });
-    }
+    const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
+    const scrollProgress = scrollLeft / scrollWidth;
+    timeline.progress(scrollProgress);
   };
 
   sections.value!.addEventListener("scroll", onScroll);
@@ -552,14 +555,6 @@ function jumptonextpage(
   font-family: "HelveticaNeue", sans-serif !important;
 }
 
-.spinner {
-  color: #00ffff;
-  z-index: 100001;
-  font-size: 30px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
 
 .app-container {
   width: 100vw;
@@ -571,13 +566,14 @@ function jumptonextpage(
 }
 
 .three-container {
-  width: 30%;
+  width: 20%;
   height: 30%;
   position: absolute;
   top: 10%;
   left: 5%;
   z-index: 99;
   background: transparent;
+  overflow: hidden;
 }
 
 .nav-bar {
@@ -629,7 +625,7 @@ function jumptonextpage(
 }
 
 .titleWrapper {
-  width: 60vw;
+  width: 80vw;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -746,9 +742,11 @@ function jumptonextpage(
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background-color: black;
   top: 0;
   left: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 10000;
@@ -757,10 +755,19 @@ function jumptonextpage(
 }
 
 .loading-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+ 
+  width: 30%;
+  height: 30%;
   object-fit: cover;
   z-index: 1;
 }
+
+.spinner {
+  color: #00ffff;
+  z-index: 100001;
+  font-size: 30px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
 </style>
