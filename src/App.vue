@@ -1,18 +1,35 @@
 <template>
-  <div v-if='route.path !== "/VR_video"'>
-    <div id="loading-screen" class="loading-screen" v-if="isLoading">
-      <div class="spinner"></div>
+  <div id="loading-screen" class="loading-screen" v-if="isLoading">
+    <div class="spinner">
+      The Internet is a little slow. Let's watch the dance!
     </div>
-    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1"
-      @click="jumptonextpage('/alien_doc', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')">
+    <video autoplay loop muted class="loading-video">
+      <source src="/images/loading.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div v-show="!isLoading">
+  <div v-if="route.path !== '/VR_video' && !isLoading">
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1" @click="
+      jumptonextpage(
+        '/alien_doc',
+        'Spaceship Collection',
+        'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+      )
+      ">
     </v-btn>
-    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2"
-      @click="jumptonextpage('/gallery', 'Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.')"> 
+    <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2" @click="
+      jumptonextpage(
+        '/gallery',
+        'Spaceship Collection',
+        'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+      )
+      ">
     </v-btn>
     <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
       @click="jumptonextpage('/VR_video', '', '')">
     </v-btn>
-    <div v-if="showNav" class="gradient-div" ></div>
+    <div v-if="showNav" class="gradient-div"></div>
     <div class="gradient-div1"></div>
     <div class="Title">
       <div class="titleWrapper">
@@ -20,62 +37,88 @@
         <p>{{ content }}</p>
       </div>
     </div>
-    <div v-if="showNav" class="nav-bar" >
+    <div v-if="showNav" class="nav-bar">
       <ul>
-        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">01 <br><br><span class="spaced-text">PROJECTS</span></li>
-        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">02 <br><br><span class="spaced-text">AR</span></li>
-        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(2)">03 <br><br><span class="spaced-text">WORKSHOP</span></li>
-        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(3)">04 <br><br><span class="spaced-text">VR</span></li>
+        <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">
+          01 <br /><br /><span class="spaced-text">PROJECTS</span>
+        </li>
+        <li :class="{ active: activeLink === 2 }" @click="scrollToSection(1)">
+          02 <br /><br /><span class="spaced-text">AR</span>
+        </li>
+        <li :class="{ active: activeLink === 3 }" @click="scrollToSection(2)">
+          03 <br /><br /><span class="spaced-text">WORKSHOP</span>
+        </li>
+        <li :class="{ active: activeLink === 4 }" @click="scrollToSection(3)">
+          04 <br /><br /><span class="spaced-text">VR</span>
+        </li>
       </ul>
     </div>
   </div>
-  <div class="app-container" v-if="showSections" ref="backgroundSection">
-    <div class="sections" ref="sections">
-      <section id="section0" class="section section0">
-        <div v-if="blurover" class="blur" ref="blurDiv0"></div>
-        <page0 />
-      </section>
-      <section id="section1" class="section section1">
-        <div v-if="blurover" class="blur" ref="blurDiv1"></div>
-        <page1 />
-      </section>
-      <section id="section2" class="section section2">
-        <div v-if="blurover" class="blur" ref="blurDiv2"></div>
-        <Cardgallery />
-      </section>
-      <section id="section3" class="section section3">
-        <div v-if="blurover" class="blur" ref="blurDiv3"></div>
-        <page3 />
-      </section>
+  <div>
+    <div>
+      <p style="color: white; position: absolute; z-index: 1000000">
+        isLoading: {{ isLoading }}
+      </p>
     </div>
-    <div ref="threeContainer" class="three-container"></div>
+    <div>
+      <div class="app-container" v-if="showSections" ref="backgroundSection">
+        <div class="sections" ref="sections">
+          <section id="section0" class="section section0">
+            <div v-if="blurover" class="blur" ref="blurDiv0"></div>
+            <page0 />
+          </section>
+          <section id="section1" class="section section1">
+            <div v-if="blurover" class="blur" ref="blurDiv1"></div>
+            <page1 />
+          </section>
+          <section id="section2" class="section section2">
+            <div v-if="blurover" class="blur" ref="blurDiv2"></div>
+            <Cardgallery />
+          </section>
+          <section id="section3" class="section section3">
+            <div v-if="blurover" class="blur" ref="blurDiv3"></div>
+            <page3 />
+          </section>
+        </div>
+        <div ref="threeContainer" class="three-container"></div>
+      </div>
+    </div>
+    <router-view v-if="route.path !== '/'"></router-view>
   </div>
-  <router-view v-if="route.path !== '/'"></router-view>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref, computed, watch, onMounted, onBeforeUnmount, provide } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import page0 from './components/main_sections/mainentry.vue';
-import page1 from './components/main_sections/phonespage.vue';
-import page3 from './components/main_sections/virtualreality.vue';
-import Cardgallery from './components/main_sections/cardgallery.vue';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {
+  nextTick,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  provide,
+} from "vue";
+import { useRoute, useRouter } from "vue-router";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+import page0 from "./components/main_sections/mainentry.vue";
+import page1 from "./components/main_sections/phonespage.vue";
+import page3 from "./components/main_sections/virtualreality.vue";
+import Cardgallery from "./components/main_sections/cardgallery.vue";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
 const route = useRoute();
 const router = useRouter();
-const showSections = computed(() => route.path === '/');
+const showSections = computed(() => route.path === "/");
 
-const startColor = ref('#52FF00');
-const endColor = ref('transparent');
-const linkColor = ref('transparent');
-const titleColor = ref('#FF00F5');
+const startColor = ref("#52FF00");
+const endColor = ref("transparent");
+const linkColor = ref("transparent");
+const titleColor = ref("#FF00F5");
 
 const pageNumber = ref(1);
 const showButton1 = ref(false);
@@ -98,20 +141,20 @@ const loading = ref(true);
 const modelAngle = ref(0);
 const isLoading = ref(true);
 
-let title = ref('Initial Title');
-let content = ref('Initial Content');
+let title = ref("Initial Title");
+let content = ref("Initial Content");
 
 function changeTitle(newTitle: string, newContent: string, color: string) {
   title.value = newTitle;
   content.value = newContent;
   titleColor.value = color;
-  document.documentElement.style.setProperty('--title-color', titleColor.value);
+  document.documentElement.style.setProperty("--title-color", titleColor.value);
 }
 
 const updateGradient = () => {
-  document.documentElement.style.setProperty('--start-color', startColor.value);
-  document.documentElement.style.setProperty('--end-color', endColor.value);
-  document.documentElement.style.setProperty('--link-color', linkColor.value);
+  document.documentElement.style.setProperty("--start-color", startColor.value);
+  document.documentElement.style.setProperty("--end-color", endColor.value);
+  document.documentElement.style.setProperty("--link-color", linkColor.value);
 };
 
 watch([startColor, endColor, linkColor], updateGradient, { immediate: true });
@@ -121,7 +164,12 @@ const previousColor = ref(startColor.value);
 const previousColor2 = ref(endColor.value);
 const previousColor3 = ref(linkColor.value);
 
-const changeColor = (startColorValue: string, endColorValue: string, linkColorValue: string, page: number) => {
+const changeColor = (
+  startColorValue: string,
+  endColorValue: string,
+  linkColorValue: string,
+  page: number
+) => {
   pageNumber.value = page;
   activeLink.value = page;
 
@@ -146,119 +194,140 @@ const checkScrollPosition = () => {
   const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
   scrollProgress.value = (scrollLeft / scrollWidth) * 100;
   console.log(scrollProgress.value);
-  if ( scrollProgress.value < 15){
-    gsap.to(blurDiv0.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
-  }
-  else if (scrollProgress.value >= 15 && scrollProgress.value < 35){
-    gsap.to(blurDiv0.value, { filter: 'blur(10px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
-  }
-  else if(scrollProgress.value >= 35 && scrollProgress.value < 50){
-    gsap.to(blurDiv0.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
-  }
-  else if (scrollProgress.value >= 50 && scrollProgress.value < 60){
-    gsap.to(blurDiv0.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(10px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
-  }
-  else if(scrollProgress.value >= 60 && scrollProgress.value < 80){
-    gsap.to(blurDiv0.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
-  }
-  else if (scrollProgress.value >= 80 && scrollProgress.value < 100){
-    gsap.to(blurDiv0.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv1.value, { filter: 'blur(0px)', duration: 1 });
-    gsap.to(blurDiv2.value, { filter: 'blur(10px)', duration: 1 });
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
+  if (scrollProgress.value < 15) {
+    gsap.to(blurDiv0.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
+  } else if (scrollProgress.value >= 15 && scrollProgress.value < 35) {
+    gsap.to(blurDiv0.value, { filter: "blur(10px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
+  } else if (scrollProgress.value >= 35 && scrollProgress.value < 50) {
+    gsap.to(blurDiv0.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
+  } else if (scrollProgress.value >= 50 && scrollProgress.value < 60) {
+    gsap.to(blurDiv0.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(10px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
+  } else if (scrollProgress.value >= 60 && scrollProgress.value < 80) {
+    gsap.to(blurDiv0.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
+  } else if (scrollProgress.value >= 80 && scrollProgress.value < 100) {
+    gsap.to(blurDiv0.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv1.value, { filter: "blur(0px)", duration: 1 });
+    gsap.to(blurDiv2.value, { filter: "blur(10px)", duration: 1 });
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
   }
   if (scrollProgress.value >= 0 && scrollProgress.value < 25) {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
-    changeColor('transparent', '#5F004A', '#FF00C7', 1);
-    changeTitle('The Lighthouse Project', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FF00F5');
-    
+    changeColor("transparent", "#5F004A", "#FF00C7", 1);
+    changeTitle(
+      "The Lighthouse Project",
+      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "#FF00F5"
+    );
   } else if (scrollProgress.value >= 25 && scrollProgress.value < 50) {
     showButton1.value = false;
     showButton2.value = true;
     showButton3.value = false;
-    changeColor('#52FF00', 'transparent', '#52FF00', 2);
-    changeTitle('AR Search for Urban Legends.', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
-    gsap.to(blurDiv3.value, { filter: 'blur(0px)', duration: 1 });
+    changeColor("#52FF00", "transparent", "#52FF00", 2);
+    changeTitle(
+      "AR Search for Urban Legends.",
+      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "#52FF00"
+    );
+    gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
   } else if (scrollProgress.value >= 50 && scrollProgress.value < 75) {
     showButton1.value = true;
     showButton2.value = false;
     showButton3.value = false;
-    changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
-    changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
+    changeColor("#00FFFF", "transparent", "#00FFFF", 3);
+    changeTitle(
+      "Workshop Co-Creating Alien Communities",
+      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "#00FFFF"
+    );
   } else if (scrollProgress.value >= 75) {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = true;
-    changeColor('#FFF72E', 'transparent', '#FFF72E', 4);
-    changeTitle('Immersive VR Offline Exhibition', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#FFF72E');
+    changeColor("#FFF72E", "transparent", "#FFF72E", 4);
+    changeTitle(
+      "Immersive VR Offline Exhibition",
+      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "#FFF72E"
+    );
   }
 };
 
 function changep6() {
-  changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
-  changeTitle('Workshop Co-Creating Alien Communities', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
+  changeColor("#00FFFF", "transparent", "#00FFFF", 3);
+  changeTitle(
+    "Workshop Co-Creating Alien Communities",
+    "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+    "#00FFFF"
+  );
   flagleft.value = true;
 }
 
 function changep5() {
-  changeColor('#52FF00', 'transparent', '#52FF00', 2);
-  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#52FF00');
+  changeColor("#52FF00", "transparent", "#52FF00", 2);
+  changeTitle(
+    "Spaceship Collection",
+    "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+    "#52FF00"
+  );
 }
 
 function changep4() {
-  changeColor('#00FFFF', 'transparent', '#00FFFF', 3);
-  changeTitle('Spaceship Collection', 'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.', '#00FFFF');
+  changeColor("#00FFFF", "transparent", "#00FFFF", 3);
+  changeTitle(
+    "Spaceship Collection",
+    "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+    "#00FFFF"
+  );
 }
 
-provide('changep6', changep6);
-provide('changep5', changep5);
-provide('changep4', changep4);
-
-// onMounted(() => {
-//   window.addEventListener('popstate', handleBackNavigation);
-//   if (route.path === '/') {
-//     if (sections.value) {
-//       sections.value.addEventListener('scroll', checkScrollPosition);
-//       checkScrollPosition();
-//       endColor.value = "#FF00F5";
-//       linkColor.value = '#FF00F5';
-//     }
-//   }
-// });
+provide("changep6", changep6);
+provide("changep5", changep5);
+provide("changep4", changep4);
 
 onMounted(() => {
-  window.addEventListener('popstate', handleBackNavigation);
+
+  console.log("Mounted: Initial isLoading:", isLoading.value);
+ 
+  setTimeout(() => {
+    fadeOutLoadingScreen();
+  }, 3000);
+  
+  window.addEventListener("popstate", handleBackNavigation);
 
   // Check localStorage for target section on page load
-  const targetSection = localStorage.getItem('targetSection');
+  const targetSection = localStorage.getItem("targetSection");
   if (targetSection !== null) {
-    localStorage.removeItem('targetSection'); // Clear the stored section number
+    localStorage.removeItem("targetSection"); // Clear the stored section number
     sectionNumber.value = parseInt(targetSection, 10);
     nextTick(() => {
       const section = document.getElementById(`section${sectionNumber.value}`);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.scrollIntoView({ behavior: "smooth" });
         // Set loading to false after scroll
-        section.addEventListener('scroll', () => {
-          loading.value = false;
-        }, { once: true });
+        section.addEventListener(
+          "scroll",
+          () => {
+            loading.value = false;
+          },
+          { once: true }
+        );
       } else {
         loading.value = false; // If no section is found, stop loading
       }
@@ -267,25 +336,52 @@ onMounted(() => {
     loading.value = false; // If no target section, stop loading
   }
 
-  if (route.path === '/') {
+  if (route.path === "/") {
     if (sections.value) {
-      sections.value.addEventListener('scroll', checkScrollPosition);
+      sections.value.addEventListener("scroll", checkScrollPosition);
       checkScrollPosition();
       endColor.value = "#FF00F5";
-      linkColor.value = '#FF00F5';
+      linkColor.value = "#FF00F5";
     }
   }
   initThreeJS();
-  setTimeout(() => {
-    isLoading.value = false; // Hide the loading screen after a delay
-  }, 3000);
 
 });
 
 
 
+
+
+
+
+
+const fadeOutLoadingScreen = () => {
+  const loadingScreen = document.getElementById("loading-screen");
+  if (loadingScreen) {
+    console.log(isLoading);
+    gsap.to(loadingScreen, {
+      opacity: 0,
+      duration: 2,
+      onComplete: () => {
+        isLoading.value = false;
+        console.log(
+          "fadeOutLoadingScreen: Updated isLoading:",
+          isLoading.value
+        ); // 更新后的值
+      },
+    });
+  } else {
+    // 如果loadingScreen没有找到，立即更新isLoading
+    isLoading.value = false;
+    console.log(
+      "fadeOutLoadingScreen: loadingScreen not found, Updated isLoading:",
+      isLoading.value
+    );
+  }
+};
+
 function handleBackNavigation() {
-  console.log('User navigated back to this page');
+  console.log("User navigated back to this page");
   location.reload();
 }
 
@@ -293,9 +389,9 @@ const sectionNumber = ref<number | null>(null);
 
 const scrollToSection = async (sectionNum: number) => {
   sectionNumber.value = sectionNum;
-  localStorage.setItem('targetSection', sectionNum.toString()); // Store the section number in localStorage
-  if (route.path !== '/') {
-    await router.push('/');
+  localStorage.setItem("targetSection", sectionNum.toString()); // Store the section number in localStorage
+  if (route.path !== "/") {
+    await router.push("/");
     window.location.reload(); // Reload the page
   } else {
     // Use nextTick to wait for the DOM update
@@ -303,29 +399,37 @@ const scrollToSection = async (sectionNum: number) => {
 
     const section = document.getElementById(`section${sectionNum}`);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: "smooth" });
     }
   }
 };
 
 // Watch for route changes to ensure scroll happens after navigation
-watch(() => route.path, async (newPath) => {
-  if (newPath === '/' && sectionNumber.value !== null) {
-    await nextTick();
-    const section = document.getElementById(`section${sectionNumber.value}`);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+watch(
+  () => route.path,
+  async (newPath) => {
+    if (newPath === "/" && sectionNumber.value !== null) {
+      await nextTick();
+      const section = document.getElementById(`section${sectionNumber.value}`);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }
-});
+);
 
 let curve: THREE.CubicBezierCurve3;
 
 const initThreeJS = () => {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true,alpha: true });
-  const container = document.querySelector('.three-container') as HTMLElement;
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const container = document.querySelector(".three-container") as HTMLElement;
   if (container) {
     renderer.setSize(700, 500);
     container.appendChild(renderer.domElement);
@@ -338,15 +442,19 @@ const initThreeJS = () => {
   const loader = new GLTFLoader();
   let model: THREE.Object3D;
 
-  
-  loader.load('Queen.glb', function (gltf) {
-    model = gltf.scene;
-    model.scale.set(0.15,0.15,0.15);
-    model.position.set(0, 0, 0);
-    scene.add(model);
-  }, undefined, function (error) {
-    console.error(error);
-  });
+  loader.load(
+    "Queen.glb",
+    function (gltf) {
+      model = gltf.scene;
+      model.scale.set(0.15, 0.15, 0.15);
+      model.position.set(0, 0, 0);
+      scene.add(model);
+    },
+    undefined,
+    function (error) {
+      console.error(error);
+    }
+  );
 
   camera.position.set(0, 1, 5); // 设置摄像头位置
   camera.rotation.x = THREE.MathUtils.degToRad(-10); // 向下倾斜10度
@@ -355,7 +463,7 @@ const initThreeJS = () => {
     new THREE.Vector3(10, 0, 0), // 起点a
     new THREE.Vector3(5, 15, 0), // 控制点1
     new THREE.Vector3(1200, window.innerHeight, 0), // 控制点2
-    new THREE.Vector3(window.innerWidth-600, 0, 0) // 终点
+    new THREE.Vector3(window.innerWidth - 600, 0, 0) // 终点
   );
 
   const animate = () => {
@@ -367,65 +475,69 @@ const initThreeJS = () => {
   };
 
   const onScroll = () => {
-  const scrollLeft = sections.value!.scrollLeft || 0;
-  const scrollWidth = sections.value!.scrollWidth - sections.value!.clientWidth;
-  const scrollProgress = (scrollLeft / scrollWidth) * 100;
-  if (model) {
-    const point = curve.getPoint(scrollProgress / 100);
-    // gsap.to(model.position, { duration: 0.1, x: point.x, y: point.y, z: point.z });
-    gsap.to(model.rotation, { duration: 0.1, y: scrollProgress * 0.01 * Math.PI * 2 });
-  }
+    const scrollLeft = sections.value!.scrollLeft || 0;
+    const scrollWidth =
+      sections.value!.scrollWidth - sections.value!.clientWidth;
+    const scrollProgress = (scrollLeft / scrollWidth) * 100;
+    if (model) {
+      const point = curve.getPoint(scrollProgress / 100);
+      // gsap.to(model.position, { duration: 0.1, x: point.x, y: point.y, z: point.z });
+      gsap.to(model.rotation, {
+        duration: 0.1,
+        y: scrollProgress * 0.01 * Math.PI * 2,
+      });
+    }
 
-  // 更新 threeContainer 的位置
-  const container = document.querySelector('.three-container') as HTMLElement;
-  if (container) {
-    const point = curve.getPoint(scrollProgress / 100);
-    gsap.to(container, {
-      duration: 0.1,
-      motionPath: {
-        path: curve.getSpacedPoints(100),
-        align: 'self',
-        alignOrigin: [1, 1],
-        autoRotate: true,
-      },
-      x: point.x,
-      y: point.y,
-      z: point.z,
-      onUpdate: function() {
-        container.style.transform = `translate3d(${this.x}, ${this.y}, ${this.z})`;
-      }
-    });
-  }
-};
+    // 更新 threeContainer 的位置
+    const container = document.querySelector(".three-container") as HTMLElement;
+    if (container) {
+      const point = curve.getPoint(scrollProgress / 100);
+      gsap.to(container, {
+        duration: 0.1,
+        motionPath: {
+          path: curve.getSpacedPoints(100),
+          align: "self",
+          alignOrigin: [1, 1],
+          autoRotate: true,
+        },
+        x: point.x,
+        y: point.y,
+        z: point.z,
+        onUpdate: function () {
+          container.style.transform = `translate3d(${this.x}, ${this.y}, ${this.z})`;
+        },
+      });
+    }
+  };
 
-
-sections.value!.addEventListener('scroll', onScroll);
+  sections.value!.addEventListener("scroll", onScroll);
   animate();
-
-  
 };
 
-
-function jumptonextpage(path: string,  newTitle: string = 'Default Title', newContent: string = 'Default Content') {
-  if (path === '/page4' || '/page5' || '/alien_map') {
+function jumptonextpage(
+  path: string,
+  newTitle: string = "Default Title",
+  newContent: string = "Default Content"
+) {
+  if (path === "/page4" || "/page5" || "/alien_map") {
     showButton1.value = false;
     showButton2.value = false;
     showButton3.value = false;
   }
-  if (path === '/VR_video') {
+  if (path === "/VR_video") {
     showNav.value = false;
   }
   title.value = newTitle;
   content.value = newContent;
   const timeline = gsap.timeline();
   timeline.to(backgroundSection.value, {
-    y: '100%',
+    y: "100%",
     opacity: 0,
     duration: 0.5,
   });
   timeline.to(page4Div.value, {
     opacity: 1,
-    y: '0%',
+    y: "0%",
     duration: 0.5,
     onComplete() {
       page4.value = true;
@@ -437,9 +549,17 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
 
 <style scoped>
 .body {
-  font-family: "HelveticaNeue", sans-serif !important; 
+  font-family: "HelveticaNeue", sans-serif !important;
 }
 
+.spinner {
+  color: #00ffff;
+  z-index: 100001;
+  font-size: 30px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
 
 .app-container {
   width: 100vw;
@@ -447,8 +567,7 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
   padding: 0;
   display: flex;
   overflow-x: hidden;
-  cursor: url('/images/censor.png'), auto;
-
+  cursor: url("/images/censor.png"), auto;
 }
 
 .three-container {
@@ -482,7 +601,7 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
 
 .nav-bar li {
   padding: 10px;
-  cursor: url('/images/censor.png'), auto;
+  cursor: url("/images/censor.png"), auto;
   margin-bottom: 70px;
 }
 
@@ -534,7 +653,6 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
   height: 100vh;
   position: absolute;
   overflow-x: auto;
-  
 }
 
 .section {
@@ -549,7 +667,6 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
   position: relative;
   overflow: hidden;
   z-index: 98;
-  
 }
 
 .blur {
@@ -615,7 +732,7 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
 
 @font-face {
   font-family: "HelveticaNeue";
-  src: url('/fonts/HelveticaNeue.ttc') format('ttc');
+  src: url("/fonts/HelveticaNeue.ttc") format("ttc");
   font-weight: normal;
   font-style: normal;
 }
@@ -639,4 +756,11 @@ function jumptonextpage(path: string,  newTitle: string = 'Default Title', newCo
   backdrop-filter: blur(10px);
 }
 
+.loading-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
 </style>
