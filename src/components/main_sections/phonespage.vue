@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- Existing iPhone containers -->
     <div class="iPhoneContainer" @mouseover="showVideo('1')" @mouseleave="hideVideo('1')">
       <img class="img1" src="/images/iPhone1.png" />
       <img class="img2" src="/images/iPhone.png" />
@@ -24,14 +25,22 @@
         Your browser does not support the video tag.
       </video>
     </div>
+    <!-- New video in the top right corner -->
+    <div class="top-right-video-container">
+      <video ref="topRightVideo" class="top-right-video" autoplay muted loop>
+        <source src="/images/move1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, type Ref, inject, onMounted } from 'vue';
+import { ref, type Ref } from 'vue';
 
 const video1 = ref<HTMLVideoElement | null>(null);
 const video2 = ref<HTMLVideoElement | null>(null);
 const video3 = ref<HTMLVideoElement | null>(null);
+const topRightVideo = ref<HTMLVideoElement | null>(null);
 
 const videoHash = <{ [key: string]: Ref<HTMLVideoElement | null> }>({
   '1': video1,
@@ -63,16 +72,12 @@ const hideVideo = (key: string) => {
   }
 };
 </script>
-
 <style scoped>
 .container {
   display: flex;
   justify-content: space-between;
   width: 60vw;
-  
 }
-
-
 
 img {
   height: 60vh;
@@ -80,7 +85,7 @@ img {
 
 .iPhoneContainer {
   background-color: transparent;
-  overflow-y: hidden;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   position: relative;
@@ -102,7 +107,20 @@ img {
   width: auto;
   display: none; /* Hide video by default */
   top: 5px;
-  
 }
 
+.top-right-video-container {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 400px;
+  height: 400px;
+  z-index: -1;
+}
+
+.top-right-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>
