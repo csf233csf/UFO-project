@@ -102,7 +102,7 @@ import ScrollToPlugin from "gsap/ScrollToPlugin";
 import page0 from "./components/main_sections/mainentry.vue";
 import page1 from "./components/main_sections/phonespage.vue";
 import page3 from "./components/main_sections/virtualreality.vue";
-import Cardgallery from "./components/main_sections/cardgallery.vue";
+import Cardgallery from "./components/main_sections/pic_scroll.vue";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 

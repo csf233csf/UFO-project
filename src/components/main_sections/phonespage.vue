@@ -72,15 +72,13 @@ const hideVideo = (key: string) => {
   
 }
 
-
-
 img {
   height: 60vh;
 }
 
 .iPhoneContainer {
   background-color: transparent;
-  overflow-y: hidden;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   position: relative;
