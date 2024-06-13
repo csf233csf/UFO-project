@@ -569,6 +569,7 @@ function jumptonextpage(
   z-index: 99;
   background: transparent;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .nav-bar {

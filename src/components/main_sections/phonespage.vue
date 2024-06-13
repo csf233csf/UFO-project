@@ -4,7 +4,7 @@
       <img class="img1" src="/images/iPhone1.png" />
       <img class="img2" src="/images/iPhone.png" />
       <video ref="video1" class="hover-video" muted>
-        <source src="/images/0514.mp4" type="video/mp4">
+        <source src="/images/ar1.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -12,7 +12,7 @@
       <img class="img1" src="/images/iPhone2.png" />
       <img class="img2" src="/images/iPhone.png" />
       <video ref="video2" class="hover-video" muted>
-        <source src="/images/0514.mp4" type="video/mp4">
+        <source src="/images/ar2.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -20,7 +20,7 @@
       <img class="img1" src="/images/iPhone3.png" />
       <img class="img2" src="/images/iPhone.png" />
       <video ref="video3" class="hover-video" muted>
-        <source src="/images/0514.mp4" type="video/mp4">
+        <source src="/images/ar3.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -72,15 +72,15 @@ const hideVideo = (key: string) => {
   
 }
 
-.container .iPhoneContainer {
-  background-color: transparent;
-}
+
 
 img {
   height: 60vh;
 }
 
 .iPhoneContainer {
+  background-color: transparent;
+  overflow-y: hidden;
   display: flex;
   justify-content: center;
   position: relative;
@@ -96,12 +96,13 @@ img {
 }
 
 .hover-video {
-  height: 60vh;
+  height: 62vh;
   position: absolute;
   z-index: 3;
   width: auto;
   display: none; /* Hide video by default */
-  top: 20px;
+  top: 5px;
+  
 }
 
 </style>
