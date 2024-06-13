@@ -4,6 +4,13 @@
     <v-btn class="uploadbutton"> View<br></br>Panoramic<br></br>Video</v-btn>
     <img src="/images/VRbg.png" class="background-image" />
   </section>
+
+  <div class="top-right-video-container">
+      <video ref="topRightVideo" class="top-right-video" autoplay muted loop>
+        <source src="/images/move2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   <!-- <div v-if="page4" ref="page4Div" class="fade-in">
     <p4>page4</p4>
   </div> -->
@@ -94,5 +101,21 @@ function jumptonextpage() {
   color:black;
   min-height:60px;
   z-index:1000000;
+}
+
+.top-right-video-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 400px;
+  height: 400px;
+  z-index: -1;
+}
+
+.top-right-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(0.7);
 }
 </style>
