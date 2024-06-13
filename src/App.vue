@@ -352,7 +352,7 @@ const fadeOutLoadingScreen = () => {
     console.log(isLoading);
     gsap.to(loadingScreen, {
       opacity: 0,
-      duration: 2,
+      duration: 1,
       onComplete: () => {
         isLoading.value = false;
         console.log(

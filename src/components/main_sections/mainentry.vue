@@ -16,9 +16,8 @@
         </div>
 
         <div class="background-video-container">
-
-
             <div class="content1">
+                <img>
                 The
                 <br>Lighthouse
             </div>
@@ -188,7 +187,7 @@ body {
 .content {
     position: absolute;
     top: 40vh;
-    right: 100px;
+    right: 30px;
     width: 20%;
     text-align: right;
     font-size: 1rem;
