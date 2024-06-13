@@ -62,7 +62,6 @@ const createScene = (container: HTMLDivElement | null, modelUrl: string, positio
     mixers.forEach((mixer) => mixer.update(delta));
     renderer.render(scene, camera);
   };
-
   animate();
 };
 
