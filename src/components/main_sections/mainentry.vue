@@ -17,7 +17,7 @@
 
         <div class="background-video-container">
             <div class="content1">
-                <img src="/images/lighthouse.png" alt="Description of the image">
+                <img src="/images/lighthouse1.png" alt="Description of the image">
                 <br>The
                 <br>Lighthouse
             </div>
@@ -127,7 +127,7 @@ body {
 }
 
 .ticker {
-    height: 100px;
+    height: 6vh;
     width: 100vw;
     background-color: #000000;
     color: #ffffff;
@@ -135,7 +135,7 @@ body {
     overflow: hidden;
     /* white-space: nowrap; */
     position: relative;
-    font-size: 6vh;
+    font-size: 5vh;
 }
 
 .ticker div {
@@ -177,7 +177,7 @@ body {
 
 .content1 img{
     height:100%;
-    transform:scale(2);
+    transform:scale(1.8);
     transform-origin: center;
 
 }
@@ -195,7 +195,7 @@ body {
 
 .content {
     position: absolute;
-    top: 40vh;
+    top: 30vh;
     right: 30px;
     width: 20%;
     text-align: right;
