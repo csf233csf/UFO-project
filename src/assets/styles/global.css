@@ -7,6 +7,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Jeju';
   src: url('@/assets/fonts/JejuHallasan-Regular.ttf') format('truetype');

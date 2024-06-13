@@ -19,9 +19,11 @@
 
 
             <div class="content1">
-                The
+                <img src="/images/lighthouse.png" alt="Description of the image">
+                <br>The
                 <br>Lighthouse
             </div>
+
             <video autoplay loop muted class="background-video" ref="backgroundVideo">
                 <source src="/images/loading.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -49,31 +51,31 @@ import { ref, onMounted } from 'vue';
 const backgroundVideo = ref<HTMLVideoElement | null>(null);
 
 onMounted(() => {
-  setVideoPlaybackRate();
-  tryAutoPlay();
+    setVideoPlaybackRate();
+    tryAutoPlay();
 });
 
 function setVideoPlaybackRate() {
-  const video = document.getElementById('background-video') as HTMLVideoElement;
-  if (video) {
-    video.playbackRate = 0.5;
-  }
+    const video = document.getElementById('background-video') as HTMLVideoElement;
+    if (video) {
+        video.playbackRate = 0.5;
+    }
 }
 
 function tryAutoPlay() {
-  const video = backgroundVideo.value;
-  if (video) {
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log('Video is playing');
-        })
-        .catch((error) => {
-          console.log('Video play failed', error);
-        });
+    const video = backgroundVideo.value;
+    if (video) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    console.log('Video is playing');
+                })
+                .catch((error) => {
+                    console.log('Video play failed', error);
+                });
+        }
     }
-  }
 }
 
 </script>
@@ -164,6 +166,7 @@ body {
 
 
 .content1 {
+    height:100%;
     position: relative;
     text-align: center;
     font-size: 15vh;
@@ -172,6 +175,13 @@ body {
     background: transparent;
     font-family: 'Jeju', sans-serif;
     pointer-events: none;
+}
+
+.content1 img{
+    height:100%;
+    transform:scale(2);
+    transform-origin: center;
+
 }
 
 .background-video {

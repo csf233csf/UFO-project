@@ -551,7 +551,6 @@ function jumptonextpage(
   font-family: "HelveticaNeue", sans-serif !important;
 }
 
-
 .app-container {
   width: 100vw;
   height: 100vh;
