@@ -33,6 +33,7 @@ onMounted(() => {
   const loader = new GLTFLoader();
   let model1: THREE.Object3D | null = null;
   let model2: THREE.Object3D | null = null;
+  let model3: THREE.Object3D | null = null;
 
   // 加载第一个模型
   loader.load('/images/move1.glb', (gltf) => {
@@ -79,17 +80,17 @@ onMounted(() => {
 
   loader.load('/images/movegaga.glb', (gltf) => {
     model3 = gltf.scene;
-    model2.scale.set(5, 5, 5);
-    model2.position.set(10, -2, 0); // 将模型放置在不同位置
-    scene.add(model2);
-    const mixer2 = new AnimationMixer(model2);
-    mixers.push(mixer2);
-    const animationName2 = 'Action.003'; // 替换为你的动画名称
-    const clip2 = THREE.AnimationClip.findByName(gltf.animations, animationName2);
-    if (clip2) {
-      const action2 = mixer2.clipAction(clip2);
-      action2.play();
-      console.log(`Playing animation for model2: ${animationName2}`);
+    model3.scale.set(5, 5, 5);
+    model3.position.set(10, -2, 0); // 将模型放置在不同位置
+    scene.add(model3);
+    const mixer3 = new AnimationMixer(model3);
+    mixers.push(mixer3);
+    const animationName3 = 'Action.003'; // 替换为你的动画名称
+    const clip3 = THREE.AnimationClip.findByName(gltf.animations, animationName3);
+    if (clip3) {
+      const action3 = mixer3.clipAction(clip3);
+      action3.play();
+      console.log(`Playing animation for model3: ${animationName2}`);
     } else {
       console.error(`Animation ${animationName2} not found for model2`);
     }

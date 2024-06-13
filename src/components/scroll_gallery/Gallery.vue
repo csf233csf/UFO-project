@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <video autoplay muted loop id="background-video">
-      <source src="/images/bg.mp4" type="video/mp4">
+      <source src="/images/muma.mp4" type="video/mp4">
       Your browser does not support HTML5 video.
     </video>
   </div>
@@ -232,7 +232,15 @@ const uploadImage = async () => {
 onMounted(() => {
   fetchImages();
   inject_inst();
+  setVideoPlaybackRate();
 });
+
+function setVideoPlaybackRate() {
+  const video = document.getElementById('background-video') as HTMLVideoElement;
+  if (video) {
+    video.playbackRate = 0.7;
+  }
+}
 </script>
 
 <style scoped>

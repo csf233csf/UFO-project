@@ -56,12 +56,8 @@
     </div>
     <div>
       <div>
-        <p style="color: white; position: absolute; z-index: 1000000">
-          isLoading: {{ isLoading }}
-        </p>
-      </div>
-      <div>
         <div class="app-container" v-if="showSections" ref="backgroundSection">
+          <div ref="threeContainer" class="three-container"></div>
           <div class="sections" ref="sections">
             <section id="section0" class="section section0">
               <div v-if="blurover" class="blur" ref="blurDiv0"></div>
@@ -85,7 +81,7 @@
       </div>
       <router-view v-if="route.path !== '/'"></router-view>
     </div>
-    <div ref="threeContainer" class="three-container"></div>
+    
   </div>
 </template>
 
@@ -598,7 +594,9 @@ function jumptonextpage(
 .nav-bar li {
   padding: 10px;
   cursor: url("/images/censor.png"), auto;
-  margin-bottom: 70px;
+  margin-bottom: 60px;
+  font-family: 'Jeju', sans-serif;
+  font-size:1.5rem;
 }
 
 .nav-bar li:hover {
@@ -622,10 +620,11 @@ function jumptonextpage(
   justify-content: center;
   margin: 20px;
   margin-left: 0px;
+  
 }
 
 .titleWrapper {
-  width: 80vw;
+  width: 60vw;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -636,6 +635,7 @@ function jumptonextpage(
   max-width: 300px;
   line-height: 1.3;
   font-size: 40px;
+  font-family: 'Jeju', sans-serif;
 }
 
 .Title p {
@@ -742,7 +742,7 @@ function jumptonextpage(
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: black;
+  background-color:black;
   top: 0;
   left: 0;
   display: flex;
@@ -768,6 +768,7 @@ function jumptonextpage(
   font-size: 30px;
   position: relative;
   margin-bottom: 30px;
+  font-family: 'Jeju', sans-serif;
 }
 
 </style>

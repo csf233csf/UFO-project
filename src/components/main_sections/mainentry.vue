@@ -1,33 +1,38 @@
 <template>
     <div class="wrapper">
-<div class="tickerContainer">
-        <div class="ticker">
-            <div>
-                <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline Exhibition/ VR Online Exhibition/ 
-                    AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline Exhibition/ VR Online Exhibition</span>
-                <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline Exhibition/ VR Online Exhibition/ 
-                    AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline Exhibition/ VR Online Exhibition</span>
+        <div class="tickerContainer">
+            <div class="ticker">
+                <div>
+                    <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
+                        Exhibition/ VR Online Exhibition/
+                        AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
+                        Exhibition/ VR Online Exhibition</span>
+                    <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
+                        Exhibition/ VR Online Exhibition/
+                        AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
+                        Exhibition/ VR Online Exhibition</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="background-video-container">
+
+
+            <div class="content1">
+                The
+                <br>Lighthouse
+            </div>
+            <video autoplay loop muted class="background-video" ref="backgroundVideo">
+                <source src="/images/loading.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            <div class="content">
+                The project brings such people together, helping them to bond and build an alien community where they
+                can
+                share stories about aliens and create an ideal utopia together.
             </div>
         </div>
     </div>
-
-    <div class="background-video-container">
-        
-
-        <div class="content1">
-            The
-            <br>Lighthouse
-        </div>
-        <video autoplay loop muted class="background-video">
-            <source src="/images/loading.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-        </video>
-        <div class="content">
-            The project brings such people together, helping them to bond and build an alien community where they can
-            share stories about aliens and create an ideal utopia together.
-        </div>
-    </div>
-</div>
 </template>
 
 <script lang="ts" setup>
@@ -38,6 +43,39 @@ const texts = [
     'Immersive VR Offline Exhibition',
     'VR Online Exhibition'
 ];
+
+import { ref, onMounted } from 'vue';
+
+const backgroundVideo = ref<HTMLVideoElement | null>(null);
+
+onMounted(() => {
+  setVideoPlaybackRate();
+  tryAutoPlay();
+});
+
+function setVideoPlaybackRate() {
+  const video = document.getElementById('background-video') as HTMLVideoElement;
+  if (video) {
+    video.playbackRate = 0.5;
+  }
+}
+
+function tryAutoPlay() {
+  const video = backgroundVideo.value;
+  if (video) {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('Video is playing');
+        })
+        .catch((error) => {
+          console.log('Video play failed', error);
+        });
+    }
+  }
+}
+
 </script>
 
 <style scoped>
@@ -47,7 +85,7 @@ const texts = [
     height: 100vh;
     overflow: hidden;
     display: flex;
-    left:0px;
+    left: 0px;
     align-items: center;
     justify-content: center;
 }
@@ -56,14 +94,16 @@ const texts = [
     display: flex;
     white-space: nowrap;
     animation: scroll 10s linear infinite;
-   
+
 }
-.wrapper{
-position: relative;
-width: 100vw;
+
+.wrapper {
+    position: relative;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
+
 @keyframes scroll {
     from {
         transform: translateX(0%);
@@ -90,12 +130,12 @@ body {
     height: 100px;
     width: 100vw;
     background-color: #000000;
-    color: #FF00F5;
+    color: #ffffff;
     text-align: center;
     overflow: hidden;
     /* white-space: nowrap; */
     position: relative;
-    font-size:2.7rem;
+    font-size: 6vh;
 }
 
 .ticker div {
@@ -126,10 +166,12 @@ body {
 .content1 {
     position: relative;
     text-align: center;
-    font-size: 10rem;
+    font-size: 15vh;
     line-height: 1;
     color: #FF00F5;
     background: transparent;
+    font-family: 'Jeju', sans-serif;
+    pointer-events: none;
 }
 
 .background-video {
@@ -145,7 +187,7 @@ body {
 
 .content {
     position: absolute;
-    top: 400px;
+    top: 40vh;
     right: 100px;
     width: 20%;
     text-align: right;
