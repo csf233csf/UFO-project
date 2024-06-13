@@ -1,313 +1,92 @@
 <template>
-    <div class="page-container">
-    </div>
-    <div class="images-row">
-      <div class="image-container" ref="imageContainer1">
-        <div class="image-scroller" ref="imageScroller1">
-          <div v-for="(img, index) in images1" :key="img.id" class="scroll-image-container"
-            @click="showImageDetails(index, 1)">
-            <img :src="img.url" class="scroll-image" />
-            <div v-if="activeIndex1 === index" class="description">
-              {{ img.description }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="image-container" ref="imageContainer2">
-        <div class="image-scroller" ref="imageScroller2">
-          <div v-for="(img, index) in images2" :key="img.id" class="scroll-image-container"
-            @click="showImageDetails(index, 2)">
-            <img :src="img.url" class="scroll-image" />
-            <div v-if="activeIndex2 === index" class="description">
-              {{ img.description }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="image-container" ref="imageContainer3">
-        <div class="image-scroller" ref="imageScroller3">
-          <div v-for="(img, index) in images3" :key="img.id" class="scroll-image-container"
-            @click="showImageDetails(index, 3)">
-            <img :src="img.url" class="scroll-image" />
-            <div v-if="activeIndex3 === index" class="description">
-              {{ img.description }}
-            </div>
-          </div>
-        </div>
+  <div class="page-container">
+    <video class="background-video" autoplay muted loop>
+      <source src="/images/bg.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="images-container">
+      <div v-for="(img, index) in images" :key="img.id" class="image-wrapper" :style="{ top: img.top + 'px', left: img.left + 'px' }">
+        <img :src="img.url" class="scroll-image" />
       </div>
     </div>
-  </template>
-  
+  </div>
+</template>
 <script lang="ts" setup>
-import { ref, onMounted, type Ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import gsap from 'gsap';
 
-const images1 = ref<{ id: string; url: string; description: string }[]>([]);
-const images2 = ref<{ id: string; url: string; description: string }[]>([]);
-const images3 = ref<{ id: string; url: string; description: string }[]>([]);
-const imageContainer1 = ref<HTMLElement | null>(null);
-const imageContainer2 = ref<HTMLElement | null>(null);
-const imageContainer3 = ref<HTMLElement | null>(null);
-const imageScroller1 = ref<HTMLElement | null>(null);
-const imageScroller2 = ref<HTMLElement | null>(null);
-const imageScroller3 = ref<HTMLElement | null>(null);
-const activeIndex1 = ref<number | null>(null);
-const activeIndex2 = ref<number | null>(null);
-const activeIndex3 = ref<number | null>(null);
-const showImageDetail = ref(false);
-const selectedImage = ref<string | null>(null);
-const selectedImageDescription = ref<string | null>(null);
-const selectedImageComments = ref<string[]>([]);
-const selectedImageId = ref<string | null>(null);
-const showUploadDialog = ref(false);
-const previewUrl = ref<string | null>(null);
-
-const showDescriptionInput = ref(false);
-const selectedFile = ref<File | null>(null);
-const description = ref('');
-const uploadButtonText = ref('Upload UFO photo');
-
-const speed = ref();
-
-const currentIndex = ref(0);
-let intervalId = null;
-
-let timeline1: gsap.core.Timeline | null = null;
-let timeline2: gsap.core.Timeline | null = null;
-let timeline3: gsap.core.Timeline | null = null;
-
-const allImages = [
-  { id: '1', url: '/picscroll/11.png', description: 'Description for image 11.png' },
-  { id: '2', url: '/picscroll/111.png', description: 'Description for image 111.png' },
-  { id: '3', url: '/picscroll/1111.png', description: 'Description for image 1111.png' },
-  { id: '4', url: '/picscroll/6131.png', description: 'Description for image 6131.png' },
-  { id: '5', url: '/picscroll/6132.png', description: 'Description for image 6132.png' },
-  { id: '6', url: '/picscroll/6133.png', description: 'Description for image 6133.png' },
-  { id: '7', url: '/picscroll/6134.png', description: 'Description for image 6134.png' },
-  { id: '8', url: '/picscroll/6135.png', description: 'Description for image 6135.png' },
-  { id: '9', url: '/picscroll/11111.png', description: 'Description for image 11111.png' },
-];
-
-
-function fetchImages() {
-  // Randomly sort images
-  const shuffledImages = allImages.sort(() => Math.random() - 0.5);
-
-  // Distribute images to three containers
-  images1.value = [];
-  images2.value = [];
-  images3.value = [];
-  for (let i = 0; i < shuffledImages.length; i++) {
-    if (i % 3 === 0) {
-      images1.value.push(shuffledImages[i]);
-    } else if (i % 3 === 1) {
-      images2.value.push(shuffledImages[i]);
-    } else {
-      images3.value.push(shuffledImages[i]);
-    }
-  }
-  startScrolling();
-}
+const images = ref([
+  { id: '1', url: '/picscroll/11.png', left: 0, top: 100, direction: 'left' },
+  { id: '2', url: '/picscroll/111.png', left: 100, top: 800, direction: 'right' },
+  { id: '3', url: '/picscroll/1111.png', left: 200, top: 150, direction: 'left' },
+  { id: '4', url: '/picscroll/6131.png', left: 400, top: 800, direction: 'right' },
+  { id: '5', url: '/picscroll/6132.png', left: 400, top: 400, direction: 'left' },
+  { id: '6', url: '/picscroll/6133.png', left: 900, top: 600, direction: 'right' },
+  { id: '7', url: '/picscroll/6134.png', left: 800, top: 900, direction: 'left' },
+  { id: '8', url: '/picscroll/11111.png', left: 700, top: 660, direction: 'right' }
+]);
 
 function startScrolling() {
-  startContainerScrolling(imageScroller1, imageContainer1, timeline1, 400); // Scroll to the right
-  startContainerScrolling(imageScroller2, imageContainer2, timeline2, -350); // Scroll to the left
-  startContainerScrolling(imageScroller3, imageContainer3, timeline3, 500); // Scroll to the right
-}
-
-function startContainerScrolling(scroller: Ref<HTMLElement | null>, container: Ref<HTMLElement | null>, timeline: gsap.core.Timeline | null, speed: number) {
-  if (scroller.value && container.value) {
-    const containerWidth = container.value.clientWidth;
-    const scrollerWidth = scroller.value.scrollWidth;
-    const totalWidth = scrollerWidth + containerWidth;
-    if (timeline) {
-      timeline.kill();
-    }
-    timeline = gsap.timeline({ repeat: -1 });
-    timeline.fromTo(
-      scroller.value,
-      { x: speed > 0 ? containerWidth : (-scrollerWidth + 500) },
-      {
-        x: speed > 0 ? (-scrollerWidth + 500) : containerWidth,
-        duration: totalWidth / Math.abs(speed / 5),
-        ease: "slow(0.7, 0.7, false)",
+  images.value.forEach((img, index) => {
+    const imgElement = document.querySelectorAll('.image-wrapper')[index];
+    if (imgElement) {
+      gsap.to(imgElement, {
+        x: img.direction === 'left' ? '-100vw' : '100vw',
+        duration: 10,
+        ease: 'linear',
+        repeat: -1,
         modifiers: {
-          x: gsap.utils.unitize(x => parseFloat(x)),
-        },
-      }
-    );
-  }
-}
-
-function showImageDetails(index: number, container: number) {
-  const images = container === 1 ? images1 : container === 2 ? images2 : images3;
-  const img = images.value[index];
-  selectedImage.value = img.url;
-  selectedImageDescription.value = img.description;
-  selectedImageId.value = img.id;
-  showImageDetail.value = true;
+          x: gsap.utils.unitize(x => {
+            const parsedX = parseFloat(x);
+            return img.direction === 'left'
+              ? (parsedX % window.innerWidth) + 'px'
+              : (parsedX % window.innerWidth) - window.innerWidth + 'px';
+          })
+        }
+      });
+    }
+  });
 }
 
 onMounted(() => {
-  fetchImages();
+  startScrolling();
 });
 </script>
-  
-  <style scoped>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background-color: rgb(0, 0, 0);
-    padding: 20px;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
-  
-  .page-container video {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 60%;
-    height: 60%;
-    object-fit: contain;
-    z-index: -1;
-    /* transform: scale(0.1); */
-  }
-  
-  .images-row {
-    display: flex;
-    flex-direction: column;
-    /* Arrange containers in a column */
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .image-container {
-    width: 100%;
-    /* Ensure the containers fit within the column */
-    height: 33.3%;
-    overflow: hidden;
-    background-color: transparent;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 20px;
-    /* Add space between containers */
-  }
-  
-  .image-scroller {
-    display: flex;
-    flex-wrap: nowrap;
-    /* Prevent line breaks */
-    width: 100%;
-    transform: translate3d(0, 0, 0);
-    /* Smooth scrolling */
-  }
-  
-  .scroll-image-container {
-    flex: 0 0 auto;
-    /* Prevent shrinking */
-    height: 200px;
-    /* Ensure the height of the image container */
-    margin-right: 100px;
-    /* Space between images */
-    position: relative;
-    align-items: flex-start;
-    /* Align to the top */
-  }
-  
-  .scroll-image {
-    max-height: 100%;
-    /* Max height of the image */
-    width: auto;
-    /* Auto adjust width to maintain aspect ratio */
-    border-radius: 0;
-    /* No border radius */
-    align-self: flex-end;
-    filter: drop-shadow(-6px 6px 10px rgba(82, 255, 0, 0.6));
-    /*   filter: drop-shadow(-10px 5px 5px rgba(82, 255, 0, 0.3)); main merged*/
-  
-  }
-  
-  .scroll-image:hover {
-    max-height: 100%;
-    /* Max height of the image */
-    width: auto;
-    /* Auto adjust width to maintain aspect ratio */
-    border-radius: 0;
-    /* No border radius */
-    align-self: flex-end;
-  }
-  
-  .scroll-image-container:hover .scroll-image {
-    transform: scale(1.05);
-    /* Slight zoom on hover */
-    filter: drop-shadow(5px 5px 5px rgb(0, 0, 0, .0));
-  }
-  
-  .description {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-  }
-  
-  .description-input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .description-input input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-  }
-  
-  .description-input button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #61dafb;
-    color: #282c34;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .description-input button:hover {
-    background-color: #21a1f1;
-    /* Darker blue on hover */
-  }
-  
-  .uploadbutton {
-    position: fixed;
-    top: 5%;
-    right: 5%;
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    font-size: 9px;
-    flex-shrink: 0;
-    min-width: 32px;
-    background-color: #52ff00;
-    font-size: 10px;
-    z-index: 10000000;
-  }
-  </style>
+
+<style scoped>
+.page-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: -1;
+  transform: scale(0.7);
+}
+
+.images-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.image-wrapper {
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+.scroll-image {
+  height: 100px;
+  width: auto;
+}
+</style>
