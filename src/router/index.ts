@@ -7,6 +7,7 @@ import maptest from '@/components/alien_map/PresetMap.vue'
 import main from '@/App.vue'
 import modeltest from '@/components/models/model1.vue'
 import VR from '@/components/VR.vue'
+import cardgal from '@/components/main_sections/cardgallery.vue'
 
 // 这边修改ROUTE的路径
 const routes: Array<RouteRecordRaw> = [
@@ -21,7 +22,8 @@ const routes: Array<RouteRecordRaw> = [
     { path: '/alien_doc', name:'maptest', component: maptest},
     // model test page, /models
     { path: '/modeltest', name: 'modeltest', component: modeltest},
-    { path: '/VR_video', name: 'VRvideo', component: VR}
+    { path: '/VR_video', name: 'VRvideo', component: VR},
+    { path: '/cardgal', name: 'cardgal', component: cardgal}
 ]
 
 const router = createRouter({
