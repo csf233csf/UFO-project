@@ -1,5 +1,5 @@
 <template>
-  <div ref="three" class="three"></div>
+  <div ref="three" class="three-container"></div>
 </template>
 
 <script lang="ts" setup>
@@ -8,14 +8,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { AnimationMixer, Clock } from 'three';
 
-const three = ref(null);
+const three = ref<HTMLDivElement | null>(null);
 const clock = new Clock();
 
 onMounted(() => {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 0, 8);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true , alpha:true});
   renderer.setSize(window.innerWidth, window.innerHeight);
   if (three.value) {
     three.value.appendChild(renderer.domElement);
@@ -28,7 +28,7 @@ onMounted(() => {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // 0.5是光的强度
   scene.add(ambientLight);
 
-  const mixers = [];
+  const mixers: AnimationMixer[] = [];
 
   const loader = new GLTFLoader();
   let model1: THREE.Object3D | null = null;
@@ -78,6 +78,7 @@ onMounted(() => {
     console.error('An error happened while loading model2', error);
   });
 
+  // 加载第三个模型
   loader.load('/images/movegaga.glb', (gltf) => {
     model3 = gltf.scene;
     model3.scale.set(5, 5, 5);
@@ -90,26 +91,23 @@ onMounted(() => {
     if (clip3) {
       const action3 = mixer3.clipAction(clip3);
       action3.play();
-      console.log(`Playing animation for model3: ${animationName2}`);
+      console.log(`Playing animation for model3: ${animationName3}`);
     } else {
-      console.error(`Animation ${animationName2} not found for model2`);
+      console.error(`Animation ${animationName3} not found for model3`);
     }
   }, undefined, (error) => {
-    console.error('An error happened while loading model2', error);
+    console.error('An error happened while loading model3', error);
   });
 
   const animate = () => {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
-    if (model1 && model2) {
-      mixers.forEach((mixer) => mixer.update(delta));
-    }
+    mixers.forEach((mixer) => mixer.update(delta));
     renderer.render(scene, camera);
   };
 
   animate();
 });
-
 </script>
 
 <style scoped>
