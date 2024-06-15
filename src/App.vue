@@ -47,15 +47,15 @@
       mdi-chevron-double-down
       </v-icon>
       </v-btn>
-      <div v-if="showNav" class="gradient-div"></div>
-      <div class="gradient-div1"></div>
+      <!-- <div v-if="showNav" class="gradient-div"></div>
+      <div class="gradient-div1"></div> -->
       <div class="Title">
         <div class="titleWrapper">
           <h1>{{ title }}</h1>
           <p>{{ content }}</p>
         </div>
       </div>
-      <div v-if="showNav" class="nav-bar">
+      <!-- <div v-if="showNav" class="nav-bar">
         <ul>
           <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">
             01 <br /><br /><span class="spaced-text">PROJECTS</span>
@@ -70,7 +70,7 @@
             04 <br /><br /><span class="spaced-text">VR</span>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
     <div>
       <div>

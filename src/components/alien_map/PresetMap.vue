@@ -1,5 +1,5 @@
 <template>
-  <div id="loading-screen" class="loading-screen" v-if="isLoading">
+  <!-- <div id="loading-screen" class="loading-screen" v-if="isLoading">
     <div class="spinner">
       The Internet is a little slow. Let's watch the dance!
     </div>
@@ -7,7 +7,7 @@
       <source src="/images/loading1.mp4" type="video/mp4"/>
       Your browser does not support the video tag.
     </video>
-  </div>
+  </div> -->
   <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
