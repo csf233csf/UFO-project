@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <img src="/images/Singer.jpg" class="background-image" />
+      <img src="/images/eye.jpg" class="background-image" />
       <div ref="canvasContainer" class="canvas-container"></div>
     </div>
   </template>
@@ -22,7 +22,7 @@
     //   scene.background = new THREE.Color(); // Make the background transparent
   
       // Camera
-      camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000); // Aspect ratio set to 1 for square
+      camera = new THREE.PerspectiveCamera(75, 1, 0.1, 400); // Aspect ratio set to 1 for square
       camera.position.set(1.3, 2, 9.2);
   
       // Renderer
@@ -35,7 +35,7 @@
       }
   
       // Lights
-      const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 2);
       scene.add(ambientLight);
   
       const directionalLight = new THREE.DirectionalLight(0xffffff, 8);
@@ -45,16 +45,16 @@
       // Load GLB model
       const loader = new GLTFLoader();
       loader.load(
-        'table.glb',
+        'eyes.glb',
         (gltf : any) => {
           model = gltf.scene;
   
           // Center the model
-          const scale = 1.8
+          const scale = 0.2
           const box = new THREE.Box3().setFromObject(model);
           const center = box.getCenter(new THREE.Vector3());
           model?.position.sub(center); // Reposition the model to the center
-  
+          model.position.set(0, -3, 0);
           model?.scale.set(scale, scale, scale); // Scale the model if necessary
           scene.add(model);
         },
@@ -108,7 +108,7 @@
   .canvas-container {
     position: absolute;
     top: 30px; /* Adjust according to the red box position */
-    right: -170px; /* Adjust according to the red box position */
+    right: -200px; /* Adjust according to the red box position */
     pointer-events: none; /* Ensure the canvas doesn't block pointer events */
     z-index: 2;
   }

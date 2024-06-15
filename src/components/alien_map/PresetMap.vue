@@ -1,4 +1,13 @@
 <template>
+  <div id="loading-screen" class="loading-screen" v-if="isLoading">
+    <div class="spinner">
+      The Internet is a little slow. Let's watch the dance!
+    </div>
+    <video autoplay loop muted class="loading-video">
+      <source src="/images/loading1.mp4" type="video/mp4"/>
+      Your browser does not support the video tag.
+    </video>
+  </div>
   <div class="wrapper">
   <div v-if="overlayVisible" class="overlay" @click="hideAllComponents"></div>
   <div class="map-container">
@@ -25,48 +34,74 @@
 
 <script lang="ts" setup>
 import { ref, type Ref, onMounted, inject } from 'vue'; // 导入模型组件
+const inject_func_map = inject('changep6') as () => void;
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+import router from '@/router/index';
 import YellowDog from '@/components/models/model1.vue';
-import Bigmouth from '@/components/models/model2.vue';
-import AnotherComponent from '@/components/models/model3.vue';
+import gaga from '@/components/models/model2.vue';
+import eye from '@/components/models/model3.vue';
 import Frogman from '@/components/models/model4.vue';
 import Singer from '@/components/models/model5.vue';
-import router from '@/router/index';
 import Hearted from '@/components/models/model6.vue';
-const inject_func_map = inject('changep6') as () => void
+import Juhou from '@/components/models/model7.vue';
+import Jump from '@/components/models/model8.vue';
+import Xing from '@/components/models/model9.vue';
+import Huhu from '@/components/models/model10.vue';
+import { QueryFieldFilterConstraint } from 'firebase/firestore/lite';
+
+const isLoading = ref(true);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 onMounted(()=>{
   inject_func_map()
+  setTimeout(() => {
+    fadeOutLoadingScreen();
+  }, 3000);
 })
 
 // 哈希模型组件
-const componentList = ['YellowDog', 'AnotherComponent','Bigmouth','Frogman','Singer','Hearted'];
+const componentList = ['YellowDog', 'gaga','eye','Frogman','Singer','Hearted','Juhou','Jump','Xing','Huhu'];
 const componentsVisibility: Record<string, Ref<boolean>> = {
   YellowDog: ref(false),
-  AnotherComponent: ref(false),
-  Bigmouth: ref(false),
+  gaga: ref(false),
+  eye: ref(false),
   Frogman: ref(false),
   Singer: ref(false),
   Hearted: ref(false),
+  Juhou: ref(false),
+  Jump: ref(false),
+  Xing: ref(false),
+  Huhu: ref(false),
 };
 
 // 储存模型组件列表
 const components: Record<string, any> = {
   YellowDog,
-  AnotherComponent,
-  Bigmouth,
+  gaga,
+  eye,
   Frogman,
   Singer,
-  Hearted
+  Hearted,
+  Juhou,
+  Jump,
+  Xing,
+  Huhu,
 };
 
 // 按钮的位置
 const positions: Record<string, { top: number; left: number }> = {
-  YellowDog: { top: 250, left: 250 },
-  AnotherComponent: { top: 400, left: 400 },
-  Bigmouth: { top: 300, left: 600 },
-  Frogman: { top: 500, left: 500 },
-  Singer: { top: 300, left: 1000 },
-  Hearted: { top: 400, left: 500 },
+  YellowDog: { top: 60, left: 600 },
+  gaga: { top: 560, left: 720 },
+  eye: { top: 300, left: 680 },
+  Frogman: { top: 400, left: 560 },
+  Singer: { top: 500, left: 500 },
+  Hearted: { top: 300, left: 630 },
+  Juhou: { top: 100, left: 800 },
+  Jump: { top: 200, left: 650 },
+  Xing: { top: 300, left: 510 },
+  Huhu: { top: 300, left: 800 },
 };
 
 // 按钮的颜色
@@ -105,8 +140,32 @@ function buttonStyle(index: number, component: string) {
 
 function navigateToNextPage() {
   router.push('/alien_map'); // Replace '/next-page' with your desired route
-  
 }
+
+const fadeOutLoadingScreen = () => {
+  const loadingScreen = document.getElementById("loading-screen");
+  if (loadingScreen) {
+    console.log(isLoading);
+    gsap.to(loadingScreen, {
+      opacity: 0,
+      duration: 1,
+      onComplete: () => {
+        isLoading.value = false;
+        console.log(
+          "fadeOutLoadingScreen: Updated isLoading:",
+          isLoading.value
+        ); // 更新后的值
+      },
+    });
+  } else {
+    // 如果loadingScreen没有找到，立即更新isLoading
+    isLoading.value = false;
+    console.log(
+      "fadeOutLoadingScreen: loadingScreen not found, Updated isLoading:",
+      isLoading.value
+    );
+  }
+};
 </script>
 
 <style scoped>
@@ -224,6 +283,7 @@ function navigateToNextPage() {
 
 .close-button:hover {
   opacity: 0.3;
+  cursor: url("/images/hover.png"), auto; 
 }
 
 
@@ -287,6 +347,7 @@ function navigateToNextPage() {
   /* 添加过渡效果 */
   z-index: 99;
   /* Ensure buttons are above overlay */
+  cursor: url("/images/hover.png"), auto; 
 }
 
 .nav-button {
@@ -301,7 +362,40 @@ function navigateToNextPage() {
   min-width: 32px;
   background-color: #00FFFF;
   font-size: 10px;
-  z-index: 10000000;
+  z-index: 1000;
 
+}
+
+.loading-screen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color:black;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  /* filter: blur(10px); */
+  backdrop-filter: blur(10px);
+}
+
+.loading-video {
+ 
+  width: 30%;
+  height: 30%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.spinner {
+  color: #00ffff;
+  z-index: 100001;
+  font-size: 30px;
+  position: relative;
+  margin-bottom: 30px;
+  font-family: 'Jeju', sans-serif;
 }
 </style>

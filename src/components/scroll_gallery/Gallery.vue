@@ -398,6 +398,6 @@ function setVideoPlaybackRate() {
   min-width: 32px;
   background-color: #52ff00;
   font-size: 10px;
-  z-index: 10000000;
+  z-index: 100000;
 }
 </style>

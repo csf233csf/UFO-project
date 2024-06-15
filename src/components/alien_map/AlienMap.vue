@@ -44,8 +44,6 @@ const images = ref<{ xPos: number; yPos: number; url: string; color: string }[]>
 const colors = ['#FF9900', '#FF00C7', '#52FF00', '#FFF72E', '#00FFFF', '#7000FF'];
 const loading = ref(true);
 
-const injected_func = inject('changep6') as () => void;
-
 
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
@@ -55,6 +53,8 @@ function getRandomColor() {
 const closeDrawApp = () => {
   showDrawApp.value = false;
 };
+const inject_inst = inject('changea_maptitle') as () => void
+
 
 const closeCommentApp = () => {
   showCommentApp.value = false;
@@ -86,7 +86,7 @@ const hideImage = () => {
 };
 
 onMounted(() => {
-  injected_func();
+  inject_inst();
   const imagesRef = dbRef(database, 'images_map');
   onValue(imagesRef, (snapshot) => {
     images.value = [];
@@ -149,6 +149,12 @@ onMounted(() => {
   z-index: 6;
   /* animation: blink 1s infinite; */
 }
+
+
+.image-button button:hover {
+  cursor: url("/images/hover.png"), auto; 
+}
+
 
 
 @keyframes blink {

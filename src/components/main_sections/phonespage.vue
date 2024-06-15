@@ -5,7 +5,7 @@
       <img class="img1" src="/images/iPhone1.png" />
       <img class="img2" src="/images/iPhone.png" />
       <video ref="video1" class="hover-video" muted>
-        <source src="/images/ar1.mp4" type="video/mp4">
+        <source src="/images/ar3.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -18,10 +18,10 @@
       </video>
     </div>
     <div class="iPhoneContainer" @mouseover="showVideo('3')" @mouseleave="hideVideo('3')">
-      <img class="img1" src="/images/iPhone3.png" />
+      <img class="img1" src="/images/iPhone4.png" />
       <img class="img2" src="/images/iPhone.png" />
       <video ref="video3" class="hover-video" muted>
-        <source src="/images/ar3.mp4" type="video/mp4">
+        <source src="/images/ar1.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -111,8 +111,8 @@ img {
 
 .top-right-video-container {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: -30px;
+  right: -30px;
   width: 400px;
   height: 400px;
   z-index: -1;

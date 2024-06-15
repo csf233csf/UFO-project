@@ -3,14 +3,14 @@
         <div class="tickerContainer">
             <div class="ticker">
                 <div>
-                    <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
-                        Exhibition/ VR Online Exhibition/
-                        AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
-                        Exhibition/ VR Online Exhibition</span>
-                    <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
-                        Exhibition/ VR Online Exhibition/
-                        AR Search for Urban Legends/ Workshop Co-Creating Alien Communities/ Immersive VR Offline
-                        Exhibition/ VR Online Exhibition</span>
+                    <span>AR Search for Urban Legends / Workshop Co-Creating Alien Communities / Immersive VR Offline
+                        Exhibition / VR Online Exhibition /
+                        AR Search for Urban Legends / Workshop Co-Creating Alien Communities / Immersive VR Offline
+                        Exhibition / VR Online Exhibition</span>
+                    <span>AR Search for Urban Legends/ Workshop Co-Creating Alien Communities / Immersive VR Offline
+                        Exhibition / VR Online Exhibition /
+                        AR Search for Urban Legends/ Workshop Co-Creating Alien Communities / Immersive VR Offline
+                        Exhibition / VR Online Exhibition</span>
                 </div>
             </div>
         </div>
@@ -195,10 +195,10 @@ body {
 
 .content {
     position: absolute;
-    top: 30vh;
-    right: 30px;
-    width: 20%;
-    text-align: right;
+    top: 12vh;
+    left: 20vw;
+    width: 25%;
+    text-align: left;
     font-size: 1rem;
     color: #FF00F5;
     background: transparent;

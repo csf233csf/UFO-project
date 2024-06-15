@@ -4,7 +4,7 @@
       The Internet is a little slow. Let's watch the dance!
     </div>
     <video autoplay loop muted class="loading-video">
-      <source src="/images/loading1.mp4" type="video/mp4"/>
+      <source src="/images/loading1.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </div>
@@ -13,21 +13,39 @@
       <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1" @click="
         jumptonextpage(
           '/alien_doc',
-          'Spaceship Collection',
-          'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+          'Workshop Co-Creating Alien Communities',
+          'Organise the stories and images of aliens that people in the workshop have about the alien community into an archive format.'
         )
         ">
+           Click to See More
+        <v-icon
+        down
+      >
+      mdi-chevron-double-down
+      </v-icon>
       </v-btn>
       <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton2" @click="
         jumptonextpage(
           '/gallery',
           'Spaceship Collection',
-          'The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.'
+          'Upload your UFO lights found in the city.'
         )
         ">
+        Click to See More
+        <v-icon
+        down
+      >
+      mdi-chevron-double-down
+      </v-icon>
       </v-btn>
       <v-btn :ripple="true" variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton3"
         @click="jumptonextpage('/VR_video', '', '')">
+        Click to See More
+        <v-icon
+        down
+      >
+      mdi-chevron-double-down
+      </v-icon>
       </v-btn>
       <div v-if="showNav" class="gradient-div"></div>
       <div class="gradient-div1"></div>
@@ -57,7 +75,7 @@
     <div>
       <div>
         <div class="app-container" v-if="showSections" ref="backgroundSection">
-          <div ref="threeContainer" class="three-container"></div>
+          <!-- <div ref="threeContainer" class="three-container"></div> -->
           <div class="sections" ref="sections">
             <section id="section0" class="section section0">
               <div v-if="blurover" class="blur" ref="blurDiv0"></div>
@@ -76,12 +94,12 @@
               <page3 />
             </section>
           </div>
-         
+
         </div>
       </div>
       <router-view v-if="route.path !== '/'"></router-view>
     </div>
-    
+
   </div>
 </template>
 
@@ -138,8 +156,8 @@ const loading = ref(true);
 const modelAngle = ref(0);
 const isLoading = ref(true);
 
-let title = ref("Initial Title");
-let content = ref("Initial Content");
+let title = ref("");
+let content = ref("");
 
 function changeTitle(newTitle: string, newContent: string, color: string) {
   title.value = newTitle;
@@ -238,8 +256,8 @@ const checkScrollPosition = () => {
     showButton3.value = false;
     changeColor("#52FF00", "transparent", "#52FF00", 2);
     changeTitle(
-      "AR Search for Urban Legends.",
-      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "AR Search for \u200b \u200b \u200b \u200b \u200b\u200b \u200b \u200b \u200b \u200b\u200b \u200b \u200b \u200b \u200b\u200b  Urban Legends",
+      "Posting small adverts on the streets of Beijing's CBD to engage audiences in the search for urban alien legends.",
       "#52FF00"
     );
     gsap.to(blurDiv3.value, { filter: "blur(0px)", duration: 1 });
@@ -250,7 +268,7 @@ const checkScrollPosition = () => {
     changeColor("#00FFFF", "transparent", "#00FFFF", 3);
     changeTitle(
       "Workshop Co-Creating Alien Communities",
-      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "Workshop brings together-audiences that use their imaginations to fabricate images of aliens to create community stories.",
       "#00FFFF"
     );
   } else if (scrollProgress.value >= 75) {
@@ -259,8 +277,8 @@ const checkScrollPosition = () => {
     showButton3.value = true;
     changeColor("#FFF72E", "transparent", "#FFF72E", 4);
     changeTitle(
-      "Immersive VR Offline Exhibition",
-      "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+      "Immersive VR OfflineExhibition",
+      "Offline exhibitions allow for a more immersive experience of the joy of creation and the viewing of co-constructed utopian communities.",
       "#FFF72E"
     );
   }
@@ -269,8 +287,8 @@ const checkScrollPosition = () => {
 function changep6() {
   changeColor("#00FFFF", "transparent", "#00FFFF", 3);
   changeTitle(
-    "Workshop Co-Creating Alien Communities",
-    "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+    "Extraterrestrial file",
+    "Organise the stories and images of aliens that people in the workshop have about the alien community into an archive format.",
     "#00FFFF"
   );
   flagleft.value = true;
@@ -279,8 +297,8 @@ function changep6() {
 function changep5() {
   changeColor("#52FF00", "transparent", "#52FF00", 2);
   changeTitle(
-    "Spaceship Collection",
-    "The project brings such people together, helping them to bond and build an alien community where they can share stories about aliens and create an ideal utopia together.",
+    "UFO Lighthouse \u200b \u200b \u200b \u200b \u200b\u200b \u200b \u200b \u200b \u200b\u200bPhoto Collection",
+    "Upload your UFO lights found in the city.",
     "#52FF00"
   );
 }
@@ -294,12 +312,22 @@ function changep4() {
   );
 }
 
+function changea_maptitle(){
+  changeColor("#00FFFF", "transparent", "#00FFFF", 3);
+  changeTitle(
+    "Participation in \u200b \u200b \u200b \u200b \u200b\u200b \u200b \u200b \u200b \u200b\u200b \u200b \u200b \u200b \u200b\u200bbuilding communities",
+    "Join us in an online workshop to build a utopia together, you can draw your aliens and make up stories, use your imagination.",
+    "#00FFFF"
+  );
+}
+
 provide("changep6", changep6);
 provide("changep5", changep5);
 provide("changep4", changep4);
+provide("changea_maptitle", changea_maptitle);
 
 onMounted(() => {
-console.log(window.innerWidth);
+  console.log(window.innerWidth);
   console.log("Mounted: Initial isLoading:", isLoading.value);
 
   setTimeout(() => {
@@ -469,33 +497,33 @@ const initThreeJS = () => {
       container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
     },
   })
-  .to(container, {
-    duration: 1,
-    x: 300,
-    y: 200,
-    scale: 1.5,
-    onUpdate: function () {
-      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
-    },
-  })
-  .to(container, {
-    duration: 1,
-    x: 500,
-    y: 100,
-    scale: 1,
-    onUpdate: function () {
-      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
-    },
-  })
-  .to(container, {
-    duration: 1,
-    x: 700,
-    y: 300,
-    scale: 0.75,
-    onUpdate: function () {
-      container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
-    },
-  });
+    .to(container, {
+      duration: 1,
+      x: 300,
+      y: 200,
+      scale: 1.5,
+      onUpdate: function () {
+        container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+      },
+    })
+    .to(container, {
+      duration: 1,
+      x: 500,
+      y: 100,
+      scale: 1,
+      onUpdate: function () {
+        container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+      },
+    })
+    .to(container, {
+      duration: 1,
+      x: 700,
+      y: 300,
+      scale: 0.75,
+      onUpdate: function () {
+        container.style.transform = `translate3d(${this.targets()[0].x}px, ${this.targets()[0].y}px, 0) scale(${this.targets()[0].scale})`;
+      },
+    });
 
   const animate = () => {
     requestAnimationFrame(animate);
@@ -589,14 +617,14 @@ function jumptonextpage(
 .nav-bar ul {
   list-style-type: none;
   padding: 0;
+  cursor: url("/images/hover.png"), auto;
 }
 
 .nav-bar li {
   padding: 10px;
-  cursor: url("/images/censor.png"), auto;
   margin-bottom: 60px;
-  font-family: 'Jeju', sans-serif;
-  font-size:1.5rem;
+  /* font-family: 'Jeju', sans-serif; */
+  font-size: 1.5rem;
 }
 
 .nav-bar li:hover {
@@ -620,7 +648,8 @@ function jumptonextpage(
   justify-content: center;
   margin: 20px;
   margin-left: 0px;
-  
+  pointer-events: none;
+
 }
 
 .titleWrapper {
@@ -632,10 +661,10 @@ function jumptonextpage(
 }
 
 .Title h1 {
-  max-width: 300px;
+  max-width: 440px;
   line-height: 1.3;
   font-size: 40px;
-  font-family: 'Jeju', sans-serif;
+  
 }
 
 .Title p {
@@ -713,8 +742,10 @@ function jumptonextpage(
   left: 50%;
   bottom: 6%;
   transform: translateX(-50%);
-  z-index: 1000001;
-  opacity: 40%;
+  z-index: 1001;
+  opacity: 80%;
+  color: #ffffff;
+  cursor: url("/images/hover.png"), auto; 
 }
 
 .sections::-webkit-scrollbar {
@@ -742,20 +773,20 @@ function jumptonextpage(
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color:black;
+  background-color: black;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 100000;
   /* filter: blur(10px); */
   backdrop-filter: blur(10px);
 }
 
 .loading-video {
- 
+
   width: 30%;
   height: 30%;
   object-fit: cover;
@@ -768,7 +799,6 @@ function jumptonextpage(
   font-size: 30px;
   position: relative;
   margin-bottom: 30px;
-  font-family: 'Jeju', sans-serif;
+  /* font-family: 'Jeju', sans-serif; */
 }
-
 </style>

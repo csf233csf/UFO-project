@@ -8,12 +8,7 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Jeju';
-  src: url('@/assets/fonts/JejuHallasan-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+
 
 
 /* Apply the font globally */
@@ -22,5 +17,11 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  cursor: url("/images/censor.png"), auto;
 }
+
+button:hover {
+  cursor: url("/images/hover.png"), auto; 
+}
+
 /* Additional global styles can go here */

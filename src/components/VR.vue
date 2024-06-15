@@ -1,8 +1,9 @@
 <template>
+  <div class="title">Drag your mouse to switch viewpoint</div>
   <div>
     <a-scene>
       <a-assets>
-        <video id="vr-video" autoplay loop crossorigin="anonymous" src="/images/video.mp4" playsinline></video>
+        <video id="vr-video" autoplay loop crossorigin="anonymous" src="/images/VR.mp4" playsinline></video>
       </a-assets>
       <a-videosphere src="#vr-video" rotation="0 -90 0" material="shader: flat;"></a-videosphere>
       <a-camera wasd-controls-enabled="true" look-controls-enabled="true"></a-camera>
@@ -36,6 +37,21 @@ onMounted(() => {
 </script>
 
 <style>
+
+.title{
+  color:white;
+  width:100vw;
+  font-size:30px;
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  position:absolute;
+  z-index:10;
+  bottom:10px;
+  left:10px;
+  background-color: #0000002a;
+
+}
 /* 覆盖 A-Frame 默认的加载屏幕样式 */
 a-loading-screen {
   background: #000 !important; /* 设置加载页面背景为黑色 */
