@@ -4,7 +4,7 @@ This project is written in typescript, vue3 with vite scaffolding fully in compo
 
 ## Previews
 Dive into our workspace, draw and upload your own piece of artwork to become a piece of this site
-![image](https://github.com/csf233csf/UFO-project/assets/56235101/bc210d50-d98e-4c12-8d30-c20eb7cbd934)
+![Linux host env shown](https://github.com/csf233csf/UFO-project/assets/56235101/bc210d50-d98e-4c12-8d30-c20eb7cbd934)
 
 ## Main libs used:
 **Gsap** for most animations <br> 
