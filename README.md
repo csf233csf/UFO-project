@@ -15,6 +15,9 @@ Dive into our workspace, draw and upload your own piece of artwork to become a p
 
 ## Project Setups
 
+A free Azure Server can host this website. With cloudflare server side Cache.
+![image](https://github.com/csf233csf/UFO-project/assets/56235101/6f52466a-211a-44b4-8f6b-daca4a11ea69)
+
 1. Module Install
 ```sh
 npm install --force
