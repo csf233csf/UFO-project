@@ -9,7 +9,7 @@
     </video>
   </div>
   <div>
-    <div v-if="route.path !== '/VR_video'">
+    <div v-show="route.path !== '/VR_video' || !isLoading">
       <v-btn variant="plain" icon="mdi-chevron-double-down" class="jump-button" v-if="showButton1" @click="
         jumptonextpage(
           '/alien_doc',
@@ -55,7 +55,7 @@
           <p>{{ content }}</p>
         </div>
       </div>
-      <div v-if="showNav" class="nav-bar">
+      <div v-if="showNav && route.path ==='/'" class="nav-bar">
         <ul>
           <li :class="{ active: activeLink === 1 }" @click="scrollToSection(0)">
             01 <br /><br /><span class="spaced-text">PROJECTS</span>
@@ -97,7 +97,7 @@
 
         </div>
       </div>
-      <router-view v-if="route.path !== '/'"></router-view>
+      <router-view v-show="route.path !== '/' || !isLoading"></router-view>
     </div>
 
   </div>
@@ -412,6 +412,7 @@ const scrollToSection = async (sectionNum: number) => {
   if (route.path !== "/") {
     await router.push("/");
     window.location.reload(); // Reload the page
+    console.log('page reloaded bc of scrolltosection')
   } else {
     // Use nextTick to wait for the DOM update
     await nextTick();
