@@ -123,7 +123,6 @@ import page3 from "./components/main_sections/virtualreality.vue";
 import Cardgallery from "./components/main_sections/pic_scroll.vue";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { transformWithEsbuild } from "vite";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const sections = ref<HTMLElement | null>(null);
